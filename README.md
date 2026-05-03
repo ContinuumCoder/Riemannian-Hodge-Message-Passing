@@ -25,7 +25,7 @@ pip install torch numpy scipy
 ```
 
 **Data generation only** (not needed for evaluation):
-- `pyvista` (T3/T4 ellipsoid meshes)
+- `pyvista` (T3 ellipsoid meshes)
 - `airfrans` (T8 airfoil data from AirfRANS dataset)
 
 T1 vorticity data is derived from [PDEBench](https://github.com/pdebench/PDEBench) (Takamoto et al., NeurIPS 2022).
