@@ -1,0 +1,25 @@
+# Large files (hosted on OSF, run: python3 download.py)
+datasets/*.pkl
+checkpoints/
+
+# Ablation regenerable assets (final tables/figures kept in ablation/results, ablation/figures)
+ablation/checkpoints/
+ablation/outputs/
+
+# Multi-seed scheduler runtime state
+status/
+logs/
+*.log
+*.pid
+
+# Python
+__pycache__/
+*.pyc
+
+# Archives
+*.tar.gz
+
+# Editor / OS
+.DS_Store
+.vscode/
+.idea/

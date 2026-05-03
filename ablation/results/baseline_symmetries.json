@@ -1,0 +1,1661 @@
+{
+  "config": {
+    "C": 32,
+    "n_layers": 2,
+    "n_trials": 5,
+    "init_seed": 42,
+    "thresholds": {
+      "exact": 1e-05,
+      "numerical_pass": 0.001
+    }
+  },
+  "fixtures": {
+    "irregular": {
+      "n0": 6,
+      "n1": 11,
+      "n2": 6,
+      "n_points": 6,
+      "seed": 0,
+      "kind": "Delaunay on uniform random points"
+    },
+    "regular": {
+      "n0": 16,
+      "n1": 33,
+      "n2": 18,
+      "side": 4,
+      "kind": "Delaunay on a 4x4 regular lattice"
+    }
+  },
+  "results": {
+    "irregular": {
+      "GCN": {
+        "T(n)": {
+          "mean": 1.901413153804159e-08,
+          "max": 3.045847465819425e-08,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(n)": {
+          "mean": 3.004333578310229e-08,
+          "max": 3.730386059692414e-08,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(n)": {
+          "mean": 2.8259119720264352e-08,
+          "max": 3.730386059692414e-08,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient": {
+          "mean": 0.602125878661077,
+          "max": 0.6153044896507651,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(C)": {
+          "mean": 1.597389457138392,
+          "max": 1.7332331046461507,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(C)": {
+          "mean": 1.5879845381231532,
+          "max": 1.8860175124205387,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "S_C": {
+          "mean": 1.7152216794277646,
+          "max": 1.9873152227709923,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "(Z_2)^C": {
+          "mean": 1.5741825846488235,
+          "max": 1.762979965533188,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient (MP)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "d^2=0": {
+          "status": "N/A",
+          "reason": "model does not use coboundary operators"
+        },
+        "U(1) flat": {
+          "status": "N/A",
+          "reason": "no cochain representation"
+        }
+      },
+      "GAT": {
+        "T(n)": {
+          "mean": 1.5237734362480442e-07,
+          "max": 1.8674885528814423e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(n)": {
+          "mean": 1.8570015712193853e-07,
+          "max": 2.295569870422959e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(n)": {
+          "mean": 1.0736264311643411e-07,
+          "max": 1.4335235488818441e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient": {
+          "mean": 0.16290019272013145,
+          "max": 0.42375731417518325,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(C)": {
+          "mean": 0.7049827457959233,
+          "max": 0.7655806247404655,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(C)": {
+          "mean": 0.7155205375421507,
+          "max": 0.7539247298182367,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "S_C": {
+          "mean": 0.7139047600793103,
+          "max": 0.7643155340915206,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "(Z_2)^C": {
+          "mean": 0.721564948463814,
+          "max": 0.828955057766593,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient (MP)": {
+          "mean": 2.012803101876757e-08,
+          "max": 3.2818094130845514e-08,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "d^2=0": {
+          "status": "N/A",
+          "reason": "model does not use coboundary operators"
+        },
+        "U(1) flat": {
+          "status": "N/A",
+          "reason": "no cochain representation"
+        }
+      },
+      "SchNet": {
+        "T(n)": {
+          "mean": 1.1303231162456294e-07,
+          "max": 1.5964980251601377e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(n)": {
+          "mean": 1.3300789035724715e-07,
+          "max": 1.5731640506415752e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(n)": {
+          "mean": 1.299649828233946e-07,
+          "max": 1.4599967145644415e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient": {
+          "mean": 0.3800340211348122,
+          "max": 0.8142622461139631,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(C)": {
+          "mean": 0.44262040257067314,
+          "max": 0.47018942388906815,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(C)": {
+          "mean": 0.4361076116988533,
+          "max": 0.4761701840348248,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "S_C": {
+          "mean": 0.3350915081010782,
+          "max": 0.36528942922995433,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "(Z_2)^C": {
+          "mean": 0.429538569457399,
+          "max": 0.45314931273256254,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient (MP)": {
+          "mean": 5.3851556892898394e-08,
+          "max": 7.212056571261596e-08,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "d^2=0": {
+          "status": "N/A",
+          "reason": "model does not use coboundary operators"
+        },
+        "U(1) flat": {
+          "status": "N/A",
+          "reason": "no cochain representation"
+        }
+      },
+      "EGNN": {
+        "T(n)": {
+          "mean": 1.3824576425218378e-07,
+          "max": 1.7804237106085778e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(n)": {
+          "mean": 1.5378071915033448e-07,
+          "max": 2.0275955810055452e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(n)": {
+          "mean": 1.2701938095493564e-07,
+          "max": 1.478308943242532e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient": {
+          "mean": 0.30925562972871207,
+          "max": 0.8361906941234474,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(C)": {
+          "mean": 0.44482593082658123,
+          "max": 0.48378414837476363,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(C)": {
+          "mean": 0.4361496500736014,
+          "max": 0.4834746396726202,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "S_C": {
+          "mean": 0.3505744102054968,
+          "max": 0.38702020210710336,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "(Z_2)^C": {
+          "mean": 0.4210802905139054,
+          "max": 0.4650915297749223,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient (MP)": {
+          "mean": 6.753134000584361e-08,
+          "max": 7.487019531506669e-08,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "d^2=0": {
+          "status": "N/A",
+          "reason": "model does not use coboundary operators"
+        },
+        "U(1) flat": {
+          "status": "N/A",
+          "reason": "no cochain representation"
+        }
+      },
+      "MPSN": {
+        "T(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient": {
+          "mean": 0.5845920337327725,
+          "max": 0.6260413612524889,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(C)": {
+          "mean": 1.2924056678660087,
+          "max": 1.3996734188021438,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(C)": {
+          "mean": 1.2791633981456103,
+          "max": 1.4268104749132335,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "S_C": {
+          "mean": 1.2354491677155992,
+          "max": 1.3676187182884803,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "(Z_2)^C": {
+          "mean": 1.1790847977754981,
+          "max": 1.3802476601916736,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient (MP)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "d^2=0": {
+          "status": "N/A",
+          "reason": "model does not use coboundary operators"
+        },
+        "U(1) flat": {
+          "status": "by-design",
+          "reason": "processes 1-cochain features"
+        }
+      },
+      "SCCNN": {
+        "T(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient": {
+          "mean": 0.5985792115872812,
+          "max": 0.6056215019373885,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(C)": {
+          "mean": 1.563874837856408,
+          "max": 1.6630019705554666,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(C)": {
+          "mean": 1.5715625656248937,
+          "max": 1.6111927667826684,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "S_C": {
+          "mean": 1.22037538319072,
+          "max": 1.3008844427011823,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "(Z_2)^C": {
+          "mean": 1.556796441502972,
+          "max": 1.6975211045747467,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient (MP)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "d^2=0": {
+          "status": "exact",
+          "reason": "inherits K.d1 @ K.d0 = 0"
+        },
+        "U(1) flat": {
+          "status": "by-design",
+          "reason": "processes 1-cochain features"
+        }
+      },
+      "GaugeEqCNN": {
+        "T(n)": {
+          "mean": 1.4842040614353618e-08,
+          "max": 3.7105101535884046e-08,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(n)": {
+          "mean": 0.023939512659555646,
+          "max": 0.051237247347653135,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(n)": {
+          "mean": 0.02773036382257053,
+          "max": 0.05425804323575483,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient": {
+          "mean": 0.007647265308389127,
+          "max": 0.013048918030081255,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(C)": {
+          "mean": 1.615617295389112,
+          "max": 1.7533520817264348,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(C)": {
+          "mean": 1.6099175282626774,
+          "max": 1.7339814049340663,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "S_C": {
+          "mean": 1.5797527504264839,
+          "max": 1.7739931701980196,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "(Z_2)^C": {
+          "mean": 1.4259122114798441,
+          "max": 1.4954417355470055,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient (MP)": {
+          "mean": 0.2220069929206126,
+          "max": 0.3788110147737516,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "d^2=0": {
+          "status": "N/A",
+          "reason": "model does not use coboundary operators"
+        },
+        "U(1) flat": {
+          "status": "N/A",
+          "reason": "no cochain representation"
+        }
+      },
+      "GEM-CNN": {
+        "T(n)": {
+          "mean": 2.1809152036178765e-08,
+          "max": 5.452288009044691e-08,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(n)": {
+          "mean": 0.10821026247096384,
+          "max": 0.13313659933381763,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(n)": {
+          "mean": 0.11762048220689425,
+          "max": 0.1610196683656723,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient": {
+          "mean": 0.07719529697631373,
+          "max": 0.1736120137676815,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(C)": {
+          "mean": 1.4404933995295819,
+          "max": 1.5044588887408628,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(C)": {
+          "mean": 1.4283302676686445,
+          "max": 1.4904305900923283,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "S_C": {
+          "mean": 1.3784332919177948,
+          "max": 1.5107239180738516,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "(Z_2)^C": {
+          "mean": 1.3378043246360702,
+          "max": 1.4196360349872674,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient (MP)": {
+          "mean": 0.1781851465162823,
+          "max": 0.2257096818398486,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "d^2=0": {
+          "status": "N/A",
+          "reason": "model does not use coboundary operators"
+        },
+        "U(1) flat": {
+          "status": "N/A",
+          "reason": "no cochain representation"
+        }
+      },
+      "CWNet": {
+        "T(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient": {
+          "mean": 0.049558815977696916,
+          "max": 0.058386976685435334,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(C)": {
+          "mean": 1.6101813762295443,
+          "max": 1.73353636521411,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(C)": {
+          "mean": 1.6348571252883222,
+          "max": 1.727276056882752,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "S_C": {
+          "mean": 1.4632459821343817,
+          "max": 1.514779734154466,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "(Z_2)^C": {
+          "mean": 1.6079771469008517,
+          "max": 1.8822088596249091,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient (MP)": {
+          "mean": 0.14563878724880935,
+          "max": 0.17311022255495243,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "d^2=0": {
+          "status": "exact",
+          "reason": "inherits K.d1 @ K.d0 = 0"
+        },
+        "U(1) flat": {
+          "status": "by-design",
+          "reason": "processes 1-cochain features"
+        }
+      },
+      "Cliff-SMPN": {
+        "T(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient": {
+          "mean": 0.24281634817042877,
+          "max": 0.27531034631521045,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(C)": {
+          "mean": 1.2945838371648617,
+          "max": 1.3676124831059142,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(C)": {
+          "mean": 1.2791590456735138,
+          "max": 1.3723730070966689,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "S_C": {
+          "mean": 1.3184012959020663,
+          "max": 1.4045347624999716,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "(Z_2)^C": {
+          "mean": 1.306798248225179,
+          "max": 1.4176882840991079,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient (MP)": {
+          "mean": 0.5051143766682017,
+          "max": 0.5523857577136381,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "d^2=0": {
+          "status": "exact",
+          "reason": "inherits K.d1 @ K.d0 = 0"
+        },
+        "U(1) flat": {
+          "status": "by-design",
+          "reason": "processes 1-cochain features"
+        }
+      },
+      "FNO": {
+        "T(n)": {
+          "status": "N/A",
+          "reason": "regular-grid spectral method; not applicable to irregular meshes"
+        },
+        "SO(n)": {
+          "status": "N/A",
+          "reason": "regular-grid spectral method; not applicable to irregular meshes"
+        },
+        "O(n)": {
+          "status": "N/A",
+          "reason": "regular-grid spectral method; not applicable to irregular meshes"
+        },
+        "Z_2 orient": {
+          "status": "N/A",
+          "reason": "regular-grid spectral method; not applicable to irregular meshes"
+        },
+        "O(C)": {
+          "status": "N/A",
+          "reason": "regular-grid spectral method; not applicable to irregular meshes"
+        },
+        "SO(C)": {
+          "status": "N/A",
+          "reason": "regular-grid spectral method; not applicable to irregular meshes"
+        },
+        "S_C": {
+          "status": "N/A",
+          "reason": "regular-grid spectral method; not applicable to irregular meshes"
+        },
+        "(Z_2)^C": {
+          "status": "N/A",
+          "reason": "regular-grid spectral method; not applicable to irregular meshes"
+        },
+        "Z_2 orient (MP)": {
+          "status": "N/A",
+          "reason": "regular-grid spectral method; not applicable to irregular meshes"
+        },
+        "d^2=0": {
+          "status": "N/A",
+          "reason": "no internal coboundary operator"
+        },
+        "U(1) flat": {
+          "status": "N/A",
+          "reason": "no cochain representation"
+        }
+      },
+      "DeepONet": {
+        "T(n)": {
+          "mean": 0.0170690187314201,
+          "max": 0.03207517425007449,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(n)": {
+          "mean": 0.1257081213908856,
+          "max": 0.22051412527594752,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(n)": {
+          "mean": 0.08794268258669494,
+          "max": 0.1064972312135597,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(C)": {
+          "status": "N/A",
+          "reason": "no message-passing body; branch+trunk outer product"
+        },
+        "SO(C)": {
+          "status": "N/A",
+          "reason": "no message-passing body; branch+trunk outer product"
+        },
+        "S_C": {
+          "status": "N/A",
+          "reason": "no message-passing body; branch+trunk outer product"
+        },
+        "(Z_2)^C": {
+          "status": "N/A",
+          "reason": "no message-passing body; branch+trunk outer product"
+        },
+        "Z_2 orient (MP)": {
+          "status": "N/A",
+          "reason": "no message-passing body; branch+trunk outer product"
+        },
+        "d^2=0": {
+          "status": "N/A",
+          "reason": "model does not use coboundary operators"
+        },
+        "U(1) flat": {
+          "status": "N/A",
+          "reason": "no cochain representation"
+        }
+      },
+      "GSHMP": {
+        "T(n)": {
+          "mean": 1.2432891246362698e-07,
+          "max": 2.0971158332468834e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(n)": {
+          "mean": 1.9877529389902966e-07,
+          "max": 2.3557855123172834e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(n)": {
+          "mean": 1.8007254964483203e-07,
+          "max": 1.9947550683522085e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient": {
+          "mean": 0.8295352778710441,
+          "max": 1.0415456540428678,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(C)": {
+          "mean": 4.588319358559565e-07,
+          "max": 5.924161848433135e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(C)": {
+          "mean": 4.588319358559565e-07,
+          "max": 5.924161848433135e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "S_C": {
+          "mean": 7.239862284229404e-09,
+          "max": 3.619931142114702e-08,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "(Z_2)^C": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient (MP)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "d^2=0": {
+          "status": "exact",
+          "reason": "inherits K.d1 @ K.d0 = 0"
+        },
+        "U(1) flat": {
+          "status": "by-design",
+          "reason": "processes 1-cochain features"
+        }
+      }
+    },
+    "regular": {
+      "GCN": {
+        "T(n)": {
+          "mean": 1.8742328540081834e-08,
+          "max": 2.8018955805002722e-08,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(n)": {
+          "mean": 1.607460639117969e-08,
+          "max": 2.506091556746985e-08,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(n)": {
+          "mean": 2.1803421484836837e-08,
+          "max": 2.8018955805002722e-08,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient": {
+          "mean": 0.3428541706325565,
+          "max": 0.35306978171842296,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(C)": {
+          "mean": 1.5649778542156554,
+          "max": 1.5982821462670043,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(C)": {
+          "mean": 1.5766425889866107,
+          "max": 1.6355410238117145,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "S_C": {
+          "mean": 1.6119666798895314,
+          "max": 1.7868676592362212,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "(Z_2)^C": {
+          "mean": 1.4604137977324043,
+          "max": 1.5806047348916203,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient (MP)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "d^2=0": {
+          "status": "N/A",
+          "reason": "model does not use coboundary operators"
+        },
+        "U(1) flat": {
+          "status": "N/A",
+          "reason": "no cochain representation"
+        }
+      },
+      "GAT": {
+        "T(n)": {
+          "mean": 1.4361400327331497e-07,
+          "max": 1.4877241684948516e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(n)": {
+          "mean": 9.358841456776418e-08,
+          "max": 1.0661009442246598e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(n)": {
+          "mean": 1.1074948497193205e-07,
+          "max": 1.2563103513784092e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient": {
+          "mean": 0.34980592855118675,
+          "max": 0.453340637015843,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(C)": {
+          "mean": 0.6772336518266682,
+          "max": 0.7074769849196548,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(C)": {
+          "mean": 0.6796458519706183,
+          "max": 0.7071217723899708,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "S_C": {
+          "mean": 0.6956009373364913,
+          "max": 0.724310646966739,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "(Z_2)^C": {
+          "mean": 0.6758794846150515,
+          "max": 0.7095601149629999,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient (MP)": {
+          "mean": 1.7463870377159606e-08,
+          "max": 2.0852022658735962e-08,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "d^2=0": {
+          "status": "N/A",
+          "reason": "model does not use coboundary operators"
+        },
+        "U(1) flat": {
+          "status": "N/A",
+          "reason": "no cochain representation"
+        }
+      },
+      "SchNet": {
+        "T(n)": {
+          "mean": 9.343012745386243e-08,
+          "max": 1.2058824638415659e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(n)": {
+          "mean": 1.047365932439885e-07,
+          "max": 1.1768889422091238e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(n)": {
+          "mean": 1.1128204898720334e-07,
+          "max": 1.2843722561791162e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient": {
+          "mean": 0.27290086386859785,
+          "max": 0.46338339547233315,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(C)": {
+          "mean": 0.39713410163474927,
+          "max": 0.41735962039330615,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(C)": {
+          "mean": 0.39519467133138997,
+          "max": 0.40797233400088645,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "S_C": {
+          "mean": 0.3046814626982576,
+          "max": 0.32109659716505445,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "(Z_2)^C": {
+          "mean": 0.3692828830876188,
+          "max": 0.3886907321836404,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient (MP)": {
+          "mean": 4.332554671298435e-08,
+          "max": 4.74003903907371e-08,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "d^2=0": {
+          "status": "N/A",
+          "reason": "model does not use coboundary operators"
+        },
+        "U(1) flat": {
+          "status": "N/A",
+          "reason": "no cochain representation"
+        }
+      },
+      "EGNN": {
+        "T(n)": {
+          "mean": 1.1530722694253083e-07,
+          "max": 1.4086036659836142e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(n)": {
+          "mean": 1.380092067553857e-07,
+          "max": 1.6183974602024658e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(n)": {
+          "mean": 1.1441259805184524e-07,
+          "max": 1.3153501963669882e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient": {
+          "mean": 0.2828772926738565,
+          "max": 0.6265493917016416,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(C)": {
+          "mean": 0.4311283372667772,
+          "max": 0.45225531402672425,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(C)": {
+          "mean": 0.4281651129296534,
+          "max": 0.4620126515334025,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "S_C": {
+          "mean": 0.3512768786500401,
+          "max": 0.38304214216267984,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "(Z_2)^C": {
+          "mean": 0.400068269794405,
+          "max": 0.4366687020882853,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient (MP)": {
+          "mean": 6.406187187040258e-08,
+          "max": 7.065219013928707e-08,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "d^2=0": {
+          "status": "N/A",
+          "reason": "model does not use coboundary operators"
+        },
+        "U(1) flat": {
+          "status": "N/A",
+          "reason": "no cochain representation"
+        }
+      },
+      "MPSN": {
+        "T(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient": {
+          "mean": 0.33418592172230444,
+          "max": 0.3873059558248545,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(C)": {
+          "mean": 1.3136591102933775,
+          "max": 1.3785778192913372,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(C)": {
+          "mean": 1.3003782818610472,
+          "max": 1.3659048998189354,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "S_C": {
+          "mean": 1.2054745936668838,
+          "max": 1.2432250881205398,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "(Z_2)^C": {
+          "mean": 1.2253156510646033,
+          "max": 1.4094554096660423,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient (MP)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "d^2=0": {
+          "status": "N/A",
+          "reason": "model does not use coboundary operators"
+        },
+        "U(1) flat": {
+          "status": "by-design",
+          "reason": "processes 1-cochain features"
+        }
+      },
+      "SCCNN": {
+        "T(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient": {
+          "mean": 0.3406478805106092,
+          "max": 0.3487837482781721,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(C)": {
+          "mean": 1.2391820746022244,
+          "max": 1.3079754530205538,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(C)": {
+          "mean": 1.2513936628288393,
+          "max": 1.3048898796623114,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "S_C": {
+          "mean": 1.084941674658272,
+          "max": 1.181753518244942,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "(Z_2)^C": {
+          "mean": 1.3053183411141593,
+          "max": 1.5157613463597321,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient (MP)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "d^2=0": {
+          "status": "exact",
+          "reason": "inherits K.d1 @ K.d0 = 0"
+        },
+        "U(1) flat": {
+          "status": "by-design",
+          "reason": "processes 1-cochain features"
+        }
+      },
+      "GaugeEqCNN": {
+        "T(n)": {
+          "mean": 2.6132616973405247e-08,
+          "max": 3.170418041397751e-08,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(n)": {
+          "mean": 0.022189571571603013,
+          "max": 0.039770349665380844,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(n)": {
+          "mean": 0.02800423797797148,
+          "max": 0.03425518206616018,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient": {
+          "mean": 0.0032073193947210186,
+          "max": 0.010313974307619342,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(C)": {
+          "mean": 1.533339148467895,
+          "max": 1.612049872068415,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(C)": {
+          "mean": 1.5199864001772596,
+          "max": 1.5996294708488872,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "S_C": {
+          "mean": 1.5180999529205166,
+          "max": 1.561585947289959,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "(Z_2)^C": {
+          "mean": 1.3887291964179982,
+          "max": 1.5133818377173094,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient (MP)": {
+          "mean": 0.07863362862539874,
+          "max": 0.2286602028997826,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "d^2=0": {
+          "status": "N/A",
+          "reason": "model does not use coboundary operators"
+        },
+        "U(1) flat": {
+          "status": "N/A",
+          "reason": "no cochain representation"
+        }
+      },
+      "GEM-CNN": {
+        "T(n)": {
+          "mean": 2.484036784185898e-08,
+          "max": 3.90919345714519e-08,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(n)": {
+          "mean": 0.15566975348935702,
+          "max": 0.24692829914774253,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(n)": {
+          "mean": 0.1736722610984453,
+          "max": 0.2097152355993752,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient": {
+          "mean": 0.028434976212706013,
+          "max": 0.0664825427904797,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(C)": {
+          "mean": 1.3974608014728416,
+          "max": 1.4471537817445228,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(C)": {
+          "mean": 1.39285910913477,
+          "max": 1.436511423369875,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "S_C": {
+          "mean": 1.3554695590674737,
+          "max": 1.4417283622196453,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "(Z_2)^C": {
+          "mean": 1.3453719223758125,
+          "max": 1.4192994041484022,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient (MP)": {
+          "mean": 0.07498520258895733,
+          "max": 0.1447756488946364,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "d^2=0": {
+          "status": "N/A",
+          "reason": "model does not use coboundary operators"
+        },
+        "U(1) flat": {
+          "status": "N/A",
+          "reason": "no cochain representation"
+        }
+      },
+      "CWNet": {
+        "T(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient": {
+          "mean": 0.0235161781418244,
+          "max": 0.037919594182778585,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(C)": {
+          "mean": 1.3848535636551667,
+          "max": 1.4535886073666109,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(C)": {
+          "mean": 1.3921960942291274,
+          "max": 1.4654843432460707,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "S_C": {
+          "mean": 1.227479331762046,
+          "max": 1.2894865558748903,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "(Z_2)^C": {
+          "mean": 1.3468935713512669,
+          "max": 1.5222373705792518,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient (MP)": {
+          "mean": 0.09151983042274438,
+          "max": 0.1162749597157253,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "d^2=0": {
+          "status": "exact",
+          "reason": "inherits K.d1 @ K.d0 = 0"
+        },
+        "U(1) flat": {
+          "status": "by-design",
+          "reason": "processes 1-cochain features"
+        }
+      },
+      "Cliff-SMPN": {
+        "T(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient": {
+          "mean": 0.13862850493281936,
+          "max": 0.3371584461839738,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(C)": {
+          "mean": 1.3687296910070141,
+          "max": 1.4001268957764543,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(C)": {
+          "mean": 1.364524276972665,
+          "max": 1.3870225929947362,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "S_C": {
+          "mean": 1.3495033371465006,
+          "max": 1.3678836180115126,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "(Z_2)^C": {
+          "mean": 1.3336317893223282,
+          "max": 1.3759447114073604,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient (MP)": {
+          "mean": 0.2869629889004549,
+          "max": 0.35223284388742776,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "d^2=0": {
+          "status": "exact",
+          "reason": "inherits K.d1 @ K.d0 = 0"
+        },
+        "U(1) flat": {
+          "status": "by-design",
+          "reason": "processes 1-cochain features"
+        }
+      },
+      "FNO": {
+        "T(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(n)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(C)": {
+          "mean": 1.4041050750123023,
+          "max": 1.4478164827731754,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(C)": {
+          "mean": 1.4107714463699779,
+          "max": 1.4541964298670422,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "S_C": {
+          "mean": 1.253519255800976,
+          "max": 1.2892565570688443,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "(Z_2)^C": {
+          "mean": 1.4013415174656174,
+          "max": 1.4794405116584681,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient (MP)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "d^2=0": {
+          "status": "N/A",
+          "reason": "model does not use coboundary operators"
+        },
+        "U(1) flat": {
+          "status": "N/A",
+          "reason": "no cochain representation"
+        }
+      },
+      "DeepONet": {
+        "T(n)": {
+          "mean": 0.012252964287233156,
+          "max": 0.026443346352257344,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(n)": {
+          "mean": 0.09836895095670746,
+          "max": 0.17150530474968784,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(n)": {
+          "mean": 0.08762242204970565,
+          "max": 0.11895032327291746,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(C)": {
+          "status": "N/A",
+          "reason": "no message-passing body; branch+trunk outer product"
+        },
+        "SO(C)": {
+          "status": "N/A",
+          "reason": "no message-passing body; branch+trunk outer product"
+        },
+        "S_C": {
+          "status": "N/A",
+          "reason": "no message-passing body; branch+trunk outer product"
+        },
+        "(Z_2)^C": {
+          "status": "N/A",
+          "reason": "no message-passing body; branch+trunk outer product"
+        },
+        "Z_2 orient (MP)": {
+          "status": "N/A",
+          "reason": "no message-passing body; branch+trunk outer product"
+        },
+        "d^2=0": {
+          "status": "N/A",
+          "reason": "model does not use coboundary operators"
+        },
+        "U(1) flat": {
+          "status": "N/A",
+          "reason": "no cochain representation"
+        }
+      },
+      "GSHMP": {
+        "T(n)": {
+          "mean": 3.302771284434754e-07,
+          "max": 3.7327861333995854e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(n)": {
+          "mean": 2.767866833902409e-07,
+          "max": 3.4027048896314373e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(n)": {
+          "mean": 3.0347024198053305e-07,
+          "max": 3.9227422534189143e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient": {
+          "mean": 0.369707931395018,
+          "max": 0.49209611239786943,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "O(C)": {
+          "mean": 4.272998557425925e-07,
+          "max": 4.783825918611088e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "SO(C)": {
+          "mean": 4.272998557425925e-07,
+          "max": 4.783825918611088e-07,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "S_C": {
+          "mean": 6.932073353222558e-09,
+          "max": 3.466036676611279e-08,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "(Z_2)^C": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "Z_2 orient (MP)": {
+          "mean": 0.0,
+          "max": 0.0,
+          "n_trials": 5,
+          "status": "ok"
+        },
+        "d^2=0": {
+          "status": "exact",
+          "reason": "inherits K.d1 @ K.d0 = 0"
+        },
+        "U(1) flat": {
+          "status": "by-design",
+          "reason": "processes 1-cochain features"
+        }
+      }
+    }
+  }
+}
