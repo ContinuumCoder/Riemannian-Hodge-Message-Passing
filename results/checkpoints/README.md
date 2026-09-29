@@ -1,9 +1,11 @@
 # Model zoo
 
-Twelve trained models from the experiments of [REPORT.md](../../REPORT.md) (2.4 MB in total).  Each directory is a
+Fifteen trained models from the experiments of [REPORT.md](../../REPORT.md) (4.0 MB in total).  Each directory is a
 trainer run directory reduced to `best.pt` (the model with the best validation R2), `config.json` (trainer arguments,
 model configuration and the data normalisation) and `result.json` (test metrics).  The full result files of every run
-are under `results/cab75/<source>`.
+are under `results/cab75/<source>` (`results/cab16/<source>` for the two MeshGraphNet baselines, trained on the second
+machine).  The last three rows are the comparison runs of the qualitative field figures (REPORT.md section 6.8,
+`scripts/make_field_figures.py`).
 
 | checkpoint | task | model | params | test R2 | 4x / transfer R2 | size | source |
 |---|---|---|---:|---:|---|---:|---|
@@ -19,6 +21,9 @@ are under `results/cab75/<source>`.
 | `T3_native_s42` | T3 | general stack, least-squares vector readout; the paper's T3 target | 29621 | 0.9958 | test100 0.9961 | 165 KB | `paper/T3_native_s42` |
 | `SURF_s42` | SURF | general stack; screened Poisson on variable closed surfaces | 89557 | 0.9967 | geo 0.9965 / topo 0.9964 | 399 KB | `suite/SURF_s42` |
 | `DYNfix_s42` | DYNfix | general stack; advection-diffusion step (1-form velocity input) for rollouts | 89749 | 0.9997 | - | 400 KB | `suite/DYNfix_s42` |
+| `HP_k100_general_s42` | HP_k100 | general stack (diagonal metric, polynomial layers, 100 epochs); the material is an ordinary input | 89941 | 0.8255 | 0.6992 | 401 KB | `new/HP_k100_s42` |
+| `HP_k100_mgn_s42` | HP_k100 | MeshGraphNet baseline (15 message-passing steps, parameter-matched to the v2 model) | 92376 | 0.9488 | 0.2581 | 463 KB | cab16 `baselines/HP_k100_native/mgn_s42` |
+| `AHP_r100_mgn_s42` | AHP_r100 | MeshGraphNet baseline (15 message-passing steps, parameter-matched to the v2 model) | 92401 | 0.6649 | 0.3998 | 463 KB | cab16 `aniso/AHP_r100_mgn_s42` |
 
 † uncentred R2 (odd cochain target).  4x: zero-shot test on 4x finer meshes.
 
@@ -33,7 +38,10 @@ print(model.cfg.layer_types, model.cfg.metric_type, model.num_parameters())     
 
 `RHMP.from_checkpoint` accepts the trainer's `best.pt` (and `last.pt`, and files written by `model.to_checkpoint()`).
 Inputs are `{degree: (n_k, B, F_k)}` tensors in the normalisation of the run (`config.json['data']`); columns listed in
-`config.json['raw_input_columns']` (material / metric-reference columns) are raw physical log values.
+`config.json['raw_input_columns']` (material / metric-reference columns) are raw physical log values.  The two
+MeshGraphNet checkpoints are baselines, not `RHMP` models: rebuild them with
+`rhmp.baselines.registry.from_checkpoint(torch.load(path, weights_only=False), task)` (the task fixes their input
+encoders), or evaluate them with `--eval-ckpt` as below, which handles both kinds.
 
 [load_example.py](load_example.py) applies the HP_k100 tensor solver to a new random mesh with a synthetic
 conductivity field (no data set needed; CPU, a few seconds) and compares its learned per-face tensors with the input

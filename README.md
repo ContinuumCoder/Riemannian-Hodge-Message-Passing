@@ -64,6 +64,17 @@ methods (MeshGraphNet 0.9997 vs v2 0.9967, both transfer without loss); tensor m
 need about 137 GB of host RAM; the exactly conservative DYN parametrisation (`DYNfix_cons`) is conservative but
 unstable in rollouts.
 
+## What it looks like
+
+![one heterogeneous Poisson test problem at the training resolution and on a 4x finer mesh](docs/figures/field1_hetero_poisson_compact.png)
+
+One heterogeneous-Poisson test problem (conductivity contrast 100; the first test sample, not selected), at the
+training resolution and on a 4x finer mesh that no model saw in training.  The physics-solver mode (2.4K parameters)
+cannot be told apart from the FEM solution on either mesh; the general network and MeshGraphNet lose the solution on
+the finer mesh.  [REPORT.md section 6.8](REPORT.md#68-qualitative-comparisons) shows the full figure with inputs and
+error maps, and the same kind of comparison for anisotropic media, a gauge field on new meshes, a genus-2 surface,
+rollouts and a vector field on an ellipsoid (`scripts/make_field_figures.py`).
+
 ## Install
 
 ```bash
@@ -157,9 +168,10 @@ DeepONet) are in [docs/API.md](docs/API.md).  The scripts that produced the rele
 
 ## Model zoo
 
-[results/checkpoints/](results/checkpoints) holds twelve small trained models (2.4 MB in total) with their training
+[results/checkpoints/](results/checkpoints) holds fifteen small trained models (4.0 MB in total) with their training
 configuration and result, among them the 2.4K-parameter HP_k100 solver with a learned tensor metric, the AHP_r100 and
-ASURF_r100 tensor solvers, the T5g solver, T6f / T6 / T3 / SURF / DYNfix models:
+ASURF_r100 tensor solvers, the T5g solver, T6f / T6 / T3 / SURF / DYNfix models, and the general-stack and
+MeshGraphNet comparison runs of the field figures:
 
 ```python
 from rhmp import RHMP
@@ -205,7 +217,7 @@ so that `ours_v1`, the v1 baselines and `--eval-v1` work without the old tree.
 | `tests/` | the test suite (`python -m pytest tests -q`) |
 | `examples/` | six runnable examples (CPU) |
 | `docs/` | [TUTORIAL](docs/TUTORIAL.md), [MATH](docs/MATH.md), [THEORY](docs/THEORY.md), [API](docs/API.md) (generated), [DESIGN](docs/DESIGN.md), [TASK_SUITE](docs/TASK_SUITE.md), [TASK_SUITE_DETAILS](docs/TASK_SUITE_DETAILS.md), [ANISO_TASKS](docs/ANISO_TASKS.md), [BASELINES](docs/BASELINES.md), [DATASETS](docs/DATASETS.md), [REPORT_zh](docs/REPORT_zh.md) (Chinese report), `figures/` |
-| `scripts/` | experiment drivers, evaluation (robustness, transfer, metric recovery, rollouts), `collect_results.py`, `make_figures.py` |
+| `scripts/` | experiment drivers, evaluation (robustness, transfer, metric recovery, rollouts), `collect_results.py`, `make_figures.py`, `make_field_figures.py` |
 | `datasets/` | [README](datasets/README.md), the v1 downloader and the v2 generators (`datasets/generators/`) |
 | `bench/` | operator / training-step / batching benchmarks and their results |
 | `results/` | per-run result files (`cab75/`, `cab16/`: the two machines), `RESULTS.md`, the model zoo |

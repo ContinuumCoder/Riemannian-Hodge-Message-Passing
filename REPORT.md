@@ -467,12 +467,62 @@ advective flux `theta_e (x_i + x_j) / 2` is an odd bilinear term that the curren
 The first conservative convention (`DYN_cons`, loss on the mass change `M du`) diverges on meshes whose lumped masses
 differ 900:1, because node-uniform errors in `M du` become `1/M` errors in `du`.
 
+### 6.8 Qualitative comparisons
+
+The fields behind the numbers, drawn by `scripts/make_field_figures.py` along the evaluation path of
+`rhmp.train --eval-ckpt` (the run's normalisation, raw material columns, block-diagonal batches) from the model zoo.
+Every figure shows the first test sample of its task (no selection), except figure 2, which shows the median case
+(below).  The R2 in a panel title is the R2 of that one sample, centred on its own mean: stricter than the pooled test
+R2 of the tables, whose total sum of squares also contains the variation between samples; figures 1 and 2 give the
+medians over the first 20 test samples for comparison.  Per-panel numbers:
+`results/cab75/fieldviz/field_figures_stats.json`.
+
+![heterogeneous Poisson fields](docs/figures/field1_hetero_poisson.png)
+
+*Heterogeneous Poisson (HP_k100)*: on the training-resolution mesh and on the 4x finer one, the solver-mode model
+with a learned tensor metric cannot be told apart from the FEM solution (R2 0.99987 / 0.99985 for this sample), while
+the general network (0.628 / -0.483) and MeshGraphNet (0.899 / -0.929) lose the shape of the solution on the finer
+mesh; the medians over the first 20 test samples are 0.99990 / 0.99992, 0.650 / 0.111 and 0.906 / -1.370, so on the
+4x mesh this first sample is harder than the median for the general network and easier for MeshGraphNet.
+
+![anisotropic Poisson fields](docs/figures/field2_anisotropic.png)
+
+*Anisotropic Poisson (AHP_r100)*, the median case (test sample 15: among the first 20 test samples its scalar-metric
+R2 is the closest to their median, 0.776, tied with sample 16 at 0.773): the exact operator needs negative edge weights
+on 27 % of the interior edges, which a scalar metric cannot produce; the scalar-metric solver smears the ridge that
+the fibres draw out of the source (R2 0.779), the tensor-metric solver follows it (0.956; its median 0.967), and
+MeshGraphNet reaches 0.491 (median 0.579).
+
+![gauge field on new meshes](docs/figures/field3_gauge_transfer.png)
+
+*U(1) gauge field (T6f)*: one physical field on the training mesh, a new random mesh and a 4x finer new mesh; the
+model trained on the first mesh reproduces the face flux on all three (uncentred R2 0.99999 / 0.9975 / 0.99991), and
+its errors on the new mesh sit in single triangles around the vortex cores.
+
+![closed surfaces](docs/figures/field4_surface.png)
+
+*Closed surfaces (SURF)*: a torus from the test split (R2 0.9930) and a genus-2 surface, a topology never seen in
+training (0.9915); the errors on the genus-2 surface are of the same size as on the torus.
+
+![rollout snapshots](docs/figures/field5_rollout_snapshots.png)
+
+*Rollouts (DYNfix)*: the forecast follows the advected blobs for about ten steps (R2 0.946 at step 10 on this
+trajectory), then keeps structure that the true field has already diffused away; the mass projection removes the
+drift of the mean (up to 13 % without it) but not this pattern error.
+
+![vector field on an ellipsoid](docs/figures/field6_t3_vector.png)
+
+*Tangent flow on an ellipsoid (T3)*: the predicted vector field matches the true one to a relative L2 error of 5.5 %
+(R2 0.9969), with the largest errors in two small regions of the surface.
+
 ## 7. Model zoo
 
-[results/checkpoints/](results/checkpoints) contains twelve trained models (2.4 MB in total, `best.pt` +
+[results/checkpoints/](results/checkpoints) contains fifteen trained models (4.0 MB in total, `best.pt` +
 `config.json` + `result.json` each): HP_k100 solver mode with a learned tensor / learned diagonal / frozen FEM metric,
 AHP_r100 tensor (lr 3e-4) and diagonal solvers, the ASURF_r100 tensor solver, the T5g tensor solver, T6f, T6
-(native), T3 (native), SURF and DYNfix.  `RHMP.from_checkpoint(".../best.pt")` rebuilds a model;
+(native), T3 (native), SURF and DYNfix, plus the comparison runs of section 6.8 (the general-stack HP_k100 model and
+MeshGraphNet on HP_k100 and AHP_r100).  `RHMP.from_checkpoint(".../best.pt")` rebuilds a v2 model (the MeshGraphNet
+baselines: `rhmp.baselines.registry.from_checkpoint`);
 `python -m rhmp.train --task <task> --eval-ckpt results/checkpoints/<run>` re-evaluates it on its data (the zoo DYNfix
 checkpoint reproduces its stored rollout to the last digit).
 
@@ -533,6 +583,7 @@ Environment: Python 3.12, torch 2.10 (CUDA 12.8), numpy, scipy, matplotlib; one 
 | rollouts (6.7) | `python3 scripts/eval_on.py --run RUN --task DYNfix --rollout --steps 100 [--project-mass]` |
 | benchmarks (3) | `python3 bench/step_bench.py --report`, `python3 bench/ops_bench.py`, `python3 bench/batch_bench.py` |
 | tables and figures | `python3 scripts/collect_results.py results --out results/RESULTS.md`; `python3 scripts/make_figures.py` (header lists the arguments of figures 2 and 4) |
+| qualitative field figures (6.8) | `python3 scripts/make_field_figures.py` (GPU host with the data; all checkpoints from the model zoo; `--only 1,2` for a subset) |
 
 The result files of every run are in `results/cab75/` and `results/cab16/` (the two GPU machines that produced them,
 mirroring their `runs/` directories), the v1 paper metrics in `results/v1_paper/`.
