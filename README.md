@@ -1,81 +1,98 @@
-# RHMP v2: Riemannian Hodge message passing with learned DEC/Whitney metrics
+# RHMP v2: learning physical fields on meshes through a learned discrete metric
 
-`rhmp` is a PyTorch library for learning physical fields on meshes with the exact structure of discrete exterior
-calculus (DEC) and finite-element exterior calculus (FEEC).  A mesh becomes a cochain complex with exact coboundaries
-`d_k`; inputs and outputs live on any degree (vertex scalars, edge 1-forms, face fluxes, cell densities); and every
-learned propagation step is a Hodge operator built from `d_k` and an SPD **cochain metric**, which starts at the DEC
-Hodge star of the mesh and is corrected by a small network that sees only local, invariant quantities.
+`rhmp` is a PyTorch library for learning physical fields on meshes: temperatures, pressures, potentials, fluxes and
+gauge fields on triangle meshes, curved surfaces and tetrahedral volumes.  Its one design decision: the mesh is turned
+into an exact discrete calculus (a *cochain complex*, with fields living on vertices, edges, faces or cells), and every
+operator the network applies is a discrete gradient, divergence or Laplacian assembled from that calculus and a
+learned **metric**, a per-cell material tensor.  Nothing else in the network moves information across the mesh.
+
+That single choice buys four things that ordinary mesh networks lack: models that work on meshes and resolutions they
+were never trained on, exact conservation laws and symmetries, correct treatment of anisotropic materials, and a model
+whose learned metric can be read off as the physical material.
 
 This is version 2 (v2) of the code of *Learning Discrete Riemannian Metrics for Physical Fields with Cochain-Frame
 Equivariance* (Zheng & Allen-Blanchette, arXiv:2608.14556).  Compared with the paper's original code (v1), the
-engineering, the algorithms and the task suite are new.  The technical report with every number is
-[REPORT.md](REPORT.md), and the per-run tables are in [results/RESULTS.md](results/RESULTS.md).
+implementation, the algorithms and the benchmark tasks are new.  Every number below is documented in the technical
+report [REPORT.md](REPORT.md); the per-run tables are in [results/RESULTS.md](results/RESULTS.md).
+
+## Two kinds of models
+
+* **The physics-solver model** (a few thousand parameters).  The network only produces the metric, i.e. the material
+  tensor of every cell, from local inputs; the model then *solves* the discrete PDE with that metric, exactly as a
+  finite-element solver would.  Its only nonlinearity is the map from inputs to material.  The report calls this
+  *solver mode*.
+* **The general network** (about 90K parameters).  A nonlinear message-passing network in which every propagation step
+  is still a metric-weighted discrete operator, but with learned features, gates and several layers.  The report calls
+  this the *general stack*.
+
+Scores are R2 (coefficient of determination; 1 is a perfect prediction).  "4x-resolution" means the trained model is
+evaluated, without any retraining, on meshes four times finer than those it was trained on.
 
 ## Four results
 
-**1. A tensor metric represents anisotropic media; a diagonal metric cannot.**  Per-cell material tensors
-`sigma_f = b_f expm(sum_j s_j t_j t_j^T)` enter through the Whitney/Galerkin Hodge star, so `d_0^T H_1(sigma) d_0` *is*
-the anisotropic P1 stiffness matrix, and `d_1^T H_2 d_1` is the Nedelec curl-curl operator on tetrahedra.  A diagonal
-metric produces only M-matrix operators, and strong or misaligned anisotropy yields operators outside this class
-([docs/THEORY.md](docs/THEORY.md)).  In solver mode (a linear FEEC solver whose only nonlinearity is the learned metric,
-described below) the tensor metric is more accurate on every anisotropic task:
+**1. Anisotropic materials need a tensor metric, and the library has one.**  A material whose conductivity depends on
+direction (layered rock, fibres, a stretched grid) leads to discrete operators with negative couplings between
+neighbouring vertices.  A metric with one number per cell (a *diagonal metric*) can only produce non-negative
+couplings, so it cannot represent such materials, whatever it learns.  A full symmetric positive-definite tensor per
+cell (the *tensor metric*) can, and it reproduces exactly the finite-element operators of anisotropic diffusion and
+of curl-curl problems ([docs/THEORY.md](docs/THEORY.md)).  With the physics-solver model:
 
-| task (solver mode; test R2 / zero-shot R2 on the 4x-resolution test set) | diagonal metric | tensor metric |
+| task (test R2 / 4x-resolution R2) | diagonal metric | tensor metric |
 |---|---:|---:|
-| AHP_r100: 2-D Poisson, misaligned anisotropy ratio 100 | 0.832 / 0.699 | **0.964 / 0.958** |
-| AHP_r10: ratio 10 | 0.965 / 0.914 | **0.992 / 0.928** |
-| ASURF_r100: fibre diffusion on curved closed surfaces | 0.823 / 0.822 | **0.961 / 0.956** |
-| ADARCYp_r100: 3-D Darcy pressure on tetrahedra (1500 samples) | 0.919 / 0.866 | **0.977 / 0.970** |
-| T5 (paper task; generator with negative-weight edges) | 0.464 (test100) | **1.000** (test100) |
+| 2-D diffusion, anisotropy ratio 100, principal axes not aligned with the mesh | 0.832 / 0.699 | **0.964 / 0.958** |
+| the same with ratio 10 | 0.965 / 0.914 | **0.992 / 0.928** |
+| fibre diffusion on curved closed surfaces, ratio 100 | 0.823 / 0.822 | **0.961 / 0.956** |
+| 3-D Darcy flow in a tetrahedral volume, ratio 100 (1500 samples) | 0.919 / 0.866 | **0.977 / 0.970** |
+| the paper's electrostatics task (its reference data contain negative couplings); first 100 test samples | 0.464 | **1.000** |
 
-MeshGraphNet reaches 0.665 / 0.400 on AHP_r100 with 92K parameters; the tensor-metric solver has 2.5K.
+On the first task, MeshGraphNet reaches 0.665 / 0.400 with 92K parameters; the tensor-metric solver has 2.5K.
 
 ![diagonal vs tensor metric](docs/figures/fig3_aniso_diag_vs_tensor.png)
 
-**2. Models transfer across meshes and resolutions.**  The model has no per-cell parameters: metrics are functions of
-local invariants, operators are normalised per sample, and descriptors are scale-free.  One T6f model (edge U(1)
-connection to face flux), trained on a single mesh, keeps R2 0.9961 and 0.9999 on two unseen random meshes, 0.9999 on a
-4x finer and 0.9997 on a 4x coarser mesh; the paper's v1 model cannot be evaluated on another mesh at all.  On
-heterogeneous Poisson (HP_k100), the solver-mode model with a learned tensor metric keeps **R2 1.0000 on the
-4x-resolution test set**, while MeshGraphNet drops from 0.949 to 0.258 (v2 parameter budget) or from 0.927 to 0.4345 (v1
-budget).
+**2. Trained models transfer to new meshes and resolutions.**  The model has no parameters attached to individual
+cells: the metric is a function of local, scale-free geometric quantities, and every operator is normalised per
+sample.  A gauge-field model trained on a single mesh (edge connection in, face flux out) keeps R2 0.9961 and 0.9999
+on two random meshes it has never seen, 0.9999 on a 4x finer mesh and 0.9997 on a 4x coarser one; the paper's v1 model
+cannot be evaluated on another mesh at all.  On heterogeneous diffusion (conductivity varying by a factor of 100 across
+the domain), the physics-solver model keeps **R2 1.0000 at 4x resolution**, while MeshGraphNet drops from 0.949 to
+0.258 (at the same parameter budget) or from 0.927 to 0.4345 (at the paper's five-times larger budget).
 
-![HP_k100 resolution transfer](docs/figures/fig1_hp_k100_transfer.png)
+![resolution transfer on heterogeneous diffusion](docs/figures/fig1_hp_k100_transfer.png)
 
-**3. The structure is exact, and tested.**  `d_{k+1} d_k = 0` holds exactly on every complex and every batch.
-Channel-frame transformations O(C), E(n) transformations, vertex relabelling, face-orientation changes, Abelian gauge
-transformations and changes of the batch composition are exact symmetries: under them, the R2 of the trained T6f and T3
-models and of the HP_k100 solver-mode model changes by 1e-11 to 4e-9.  Constraint readouts give curl-free (`grad`),
-closed (`curl`), co-closed (`div`) and exactly mass-conserving (`mdiv`) outputs, and `||L|| <= 1` holds for every
-sample.  The test suite (1771 tests, CPU and CUDA) checks each of these guarantees.
+**3. Structure is exact, and tested.**  The discrete identity "curl of a gradient is zero" holds to machine precision
+on every mesh and batch.  Rotating or reflecting the mesh, renumbering its vertices, flipping face orientations,
+changing the gauge of a connection field, or changing which samples share a batch are exact symmetries: the R2 of
+trained models changes by 1e-11 to 4e-9 under them.  Dedicated output layers make predictions exactly curl-free,
+divergence-free or mass-conserving, and every operator has norm at most 1, so deep stacks cannot blow up.  The test
+suite (1771 tests, CPU and CUDA) checks each of these guarantees.
 
-**4. Physical inversion: when the model solves with its metric, the learned metric is the material.**  In solver mode
-the model is a linear lifting, one solve layer and a linear readout, that is, a linear FEEC solver whose only
-nonlinearity is the metric map; the material columns reach only the metric heads.  The learned per-face tensors then
-match the true conductivity **in physical units**: on HP_k100, face `log det(sigma_f)/2` vs `log sigma_f` gives
-r = 0.996, slope 1.04 and intercept 0.005, and the edge action gives r = 0.993, with 2.4K parameters and test R2 0.9999.
-Freezing the metric at the true material reproduces the FEM solution without any training (R2 0.99999999, verified by
-the test suite).  In the general stack (the nonlinear message-passing network), where the material also enters the
-features, the metric does not become the material (|r| <= 0.3 for diagonal metrics, with mixed signs): an accurate model
-is not automatically an interpretable one.
+**4. When the model solves with its metric, the learned metric is the material.**  In the physics-solver model the
+material inputs reach only the metric, and the model solves with it.  The learned per-cell tensors then match the true
+conductivity **in physical units**: on heterogeneous diffusion, the learned log conductivity versus the true one has
+correlation 0.996, slope 1.04 and intercept 0.005 (correlation 0.993 for the edge couplings), with 2.4K parameters and
+test R2 0.9999.  Freezing the metric at the true material reproduces the finite-element solution with no training at
+all (R2 0.99999999, verified by the test suite).  In the general network, where the material also feeds the ordinary
+features, the metric does not become the material (correlation at most 0.3 in magnitude, with mixed signs): an accurate
+model is not automatically an interpretable one.
 
 ![metric recovery](docs/figures/fig2_metric_recovery.png)
 
-The report also documents negative results ([REPORT.md](REPORT.md) sections 8 and 9): v2 trails the v1 checkpoint and
-GEM-CNN on the T8 airfoil task (0.51 vs 0.62 / 0.70 test R2); SURF does not discriminate between methods (MeshGraphNet
-0.9997 vs v2 0.9967, both transfer without loss); tensor metrics on the 3000-sample tetrahedral sets need about 137 GB
-of host memory; and the exactly conservative DYN parameterisation (`DYNfix_cons`) is unstable in rollouts.
+The report also documents what did not work ([REPORT.md](REPORT.md) sections 8 and 9): on the paper's airfoil-pressure
+task the v2 model (0.51) trails the v1 checkpoint (0.62) and GEM-CNN (0.70); the closed-surface diffusion task does not
+separate methods (MeshGraphNet 0.9997, v2 0.9967, both transfer without loss); tensor metrics on the 3000-sample
+tetrahedral data sets need about 137 GB of host memory; and the exactly mass-conserving variant of the time-stepping
+model is unstable over long rollouts.
 
 ## What it looks like
 
-![one heterogeneous Poisson test problem at the training resolution and on a 4x finer mesh](docs/figures/field1_hetero_poisson_compact.png)
+![one heterogeneous diffusion test problem at the training resolution and on a 4x finer mesh](docs/figures/field1_hetero_poisson_compact.png)
 
-The figure shows one heterogeneous-Poisson test problem (conductivity contrast 100; the first test sample, not a
-selected one) at the training resolution and on a 4x finer mesh that no model saw in training.  The solver-mode model
-(2.4K parameters) cannot be told apart from the FEM solution on either mesh; the general stack and MeshGraphNet lose the
+One heterogeneous-diffusion test problem (conductivity contrast 100; the first test sample, not a selected one) at the
+training resolution and on a 4x finer mesh that no model saw in training.  The physics-solver model (2.4K parameters)
+cannot be told apart from the finite-element solution on either mesh; the general network and MeshGraphNet lose the
 solution on the finer mesh.  [REPORT.md section 6.8](REPORT.md#68-qualitative-comparisons) shows the full figure with
 inputs and error maps, and the same kind of comparison for anisotropic media, a gauge field on new meshes, a genus-2
-surface, rollouts and a vector field on an ellipsoid (drawn by `scripts/make_field_figures.py`).
+surface, long rollouts and a vector field on an ellipsoid (drawn by `scripts/make_field_figures.py`).
 
 ## Install
 
@@ -85,9 +102,9 @@ pip install -e ".[viz,dev]"      # + matplotlib (figures, example 06) and pytest
 python -m pytest tests -q        # CPU; CUDA tests run when a GPU is visible
 ```
 
-The datasets are not part of the repository: `python3 datasets/download_v1.py` fetches the paper's datasets from OSF,
-and `bash scripts/gen_datasets.sh` generates the v2 sets ([datasets/README.md](datasets/README.md)).  The library, the
-examples and most tests need no data.
+The data sets are not part of the repository: `python3 datasets/download_v1.py` fetches the paper's data sets from
+OSF, and `bash scripts/gen_datasets.sh` generates the new ones ([datasets/README.md](datasets/README.md)).  The
+library, the examples and most tests need no data.
 
 ## Quickstart
 
@@ -115,66 +132,82 @@ opt.zero_grad(); loss.backward(); opt.step()
 print(tuple(y.shape), f"loss {loss.item():.3f}", f"{model.num_parameters()} parameters")
 ```
 
-A solver-mode model (the model class behind results 1 and 4) is configured in one line:
+Inputs and outputs are dictionaries keyed by *degree*: 0 for vertex values, 1 for edge values (such as a flux
+through each edge or a gauge connection), 2 for face values, 3 for cell values.  A physics-solver model (the model
+behind results 1 and 4) is configured in one line:
 `RHMPConfig.solver_preset(in_dims={0: 1, 1: 1, 2: 1}, even_dims={1: 1, 2: 1}, material_dims={1: 1, 2: 1},
 metric_type="tensor", solve_precond="twolevel")`.  Next steps: [docs/TUTORIAL.md](docs/TUTORIAL.md) and the runnable
 [examples/](examples) (each runs on a CPU in under two minutes):
 
 | example | shows |
 |---|---|
-| `01_build_complex.py` | all mesh builders, validation, stars, descriptors, `d_k` on `(n_k, B, C)` cochains, batches |
-| `02_dec_toolkit.py` | Hodge Laplacians, Betti numbers, Hodge decomposition, batched CG, Whitney/Galerkin metrics, sharp/flat |
-| `03_train_poisson.py` | heterogeneous Poisson on random meshes (scipy FEM data), block-diagonal training loop, checkpoints |
-| `04_custom_task.py` | your data as a `TaskData`, the library trainer, a gauge connection and a face target, exact gauge check |
-| `05_variable_meshes.py` | `CochainComplex.batch`, batch independence, per-graph CG, a variable-mesh `TaskData` |
-| `06_metric_inspection.py` | `model.diagnostics`, `model.metric_fields`, the tensor metric drawn as ellipses |
+| `01_build_complex.py` | building a mesh calculus from triangles, polygons, tetrahedra or grids; checking it; batching meshes |
+| `02_dec_toolkit.py` | discrete Laplacians, Betti numbers, Hodge decomposition, a batched conjugate-gradient solver, metrics from material tensors |
+| `03_train_poisson.py` | training on heterogeneous diffusion problems on random meshes, with checkpoints |
+| `04_custom_task.py` | wrapping your own data as a task, the library trainer, a gauge connection as input and a face flux as output |
+| `05_variable_meshes.py` | training with a different mesh in every sample |
+| `06_metric_inspection.py` | reading the learned metric out of a model and drawing the material tensors as ellipses |
 
-## The model in five lines
+## How it works, briefly
 
-```
-d_{k+1} d_k = 0                                                     exact topology (integer incidence)
-H_m = star_m * exp(ref_m) * exp( a * tanh( MLP_m(psi_m) ) )         metric = DEC star x known material x bounded correction
-sigma_f = b_f expm( sum_j s_j t_j t_j^T ),  H_1 = sum_f Whitney(sigma_f)   tensor metric (Galerkin star; P1 stiffness at init)
-L_up = S^-1/2 d_k^T H_{k+1} d_k S^-1/2 / beta ,  beta = Gershgorin bound  =>  ||L|| <= 1 for every sample
-x_k <- x_k + gamma sigmoid(MLP(log(1 + r))) m_k / r ,   m_k = poly(L) x_k + T x_{k+-1}   |  resolvent / solve layers
-```
+* **Topology from the mesh.**  Oriented incidence matrices give the discrete gradient (vertices to edges), curl
+  (edges to faces) and divergence; their compositions vanish exactly.
+* **A learned metric.**  Each cell gets a positive weight (diagonal metric) or a positive-definite tensor (tensor
+  metric).  It starts from the geometric weights of discrete exterior calculus, is multiplied by any known material,
+  and is corrected by a small network that sees only local, rotation- and scale-invariant geometry (and any material
+  inputs).  In formula form, `H = star * exp(known material) * exp(a * tanh(MLP(local invariants)))`.
+* **Operators from both.**  Every propagation step applies a metric-weighted Laplacian or transfer operator built
+  from the incidence matrices and the metric, normalised per sample so that its norm is at most 1.  Besides
+  polynomial (local) steps, a *resolvent layer* and a *solve layer* apply the inverse of such an operator with a
+  batched conjugate-gradient solver, which turns the metric into a learned Green's function.
+* **Symmetries by construction.**  Channel mixing is orthogonal-equivariant, geometry enters only through invariants,
+  and gauge connections are handled by an exactly gauge-invariant mode.
 
-`psi_m` contains only O(C)- and E(n)-invariant quantities.  Besides the polynomial layer, a **resolvent layer**
-`(I + tau L)^{-1}` and a **solve layer** `(Delta_H + lambda)^{-1}` in physical units turn the metric into a learned
-discrete Green's function; both are batched, O(C)-equivariant conjugate-gradient solves with implicit gradients, and the
-solve layer has a two-level preconditioner.  [docs/MATH.md](docs/MATH.md) gives the mathematics as implemented, with the
-tests of every guarantee, and [docs/THEORY.md](docs/THEORY.md) covers representability and identifiability.
+The mathematics as implemented, with the test of every guarantee, is in [docs/MATH.md](docs/MATH.md); what the
+metric family can and cannot represent, and what data can identify, is in [docs/THEORY.md](docs/THEORY.md).
 
 ## Command line
 
 ```bash
 python -m rhmp.train --task HP_k100 --check-data                          # load a task and print its summary
-python -m rhmp.train --task T6f --native --epochs 100 --out runs/t6f      # a paper task with native cochain inputs
+python -m rhmp.train --task T6f --native --epochs 100 --out runs/t6f      # the gauge-field task of result 2
 python -m rhmp.train --task HP_k100 --native --solver-mode --solve-precond twolevel --solve-iters 128 \
-    --material 1:1,2:1 --metric-type tensor --log-range 3 --epochs 30 --out runs/hp_solver   # solver mode, learned tensor
+    --material 1:1,2:1 --metric-type tensor --log-range 3 --epochs 30 --out runs/hp_solver   # physics-solver model, tensor metric
 python -m rhmp.train --task AHP_r100 --native --solver-mode --solve-precond twolevel --solve-iters 128 \
-    --metric-type tensor --log-range 5 --lr 3e-4 --epochs 60 --out runs/ahp_tensor      # anisotropic media
-python -m rhmp.train --task T6f --model mgn --epochs 100                  # a parameter-matched baseline, same protocol
-python -m rhmp.train --task HP_k1000 --eval-ckpt runs/hp_solver --out runs/hp_on_k1000  # transfer evaluation
-python3 scripts/eval_robustness.py runs/t6f --all                         # symmetry / robustness table of a run
-python3 scripts/metric_recovery.py runs/hp_solver                         # learned metric vs true material
+    --metric-type tensor --log-range 5 --lr 3e-4 --epochs 60 --out runs/ahp_tensor      # anisotropic diffusion (result 1)
+python -m rhmp.train --task T6f --model mgn --epochs 100                  # MeshGraphNet with the same data and protocol
+python -m rhmp.train --task HP_k1000 --eval-ckpt runs/hp_solver --out runs/hp_on_k1000  # evaluate a trained model on another task
+python3 scripts/eval_robustness.py runs/t6f --all                         # symmetry and robustness table of a run
+python3 scripts/metric_recovery.py runs/hp_solver                         # learned metric versus true material
 ```
 
 Every option of `RHMPConfig` has a flag (`--layers poly,resolvent,poly`, `--metric-ref 1:0`, `--latent 1:8`,
-`--aux-pde 1.0`, ...).  The full `--help`, the task registry (paper tasks T1-T8, HP / TET Poisson, SURF, DYN, QUAL,
-AHP / ASURF / ACURL / ADARCY) and the model registry (the v2 controls `dec_fixed`, `unit_star`, `unit_fixed`, the v1
-model `ours_v1`, MeshGraphNet, GCN, GAT, SchNet, EGNN, GaugeEquivCNN, GEM-CNN, MPSN, SCCNN, CW Net, Clifford-SMPN, FNO,
-DeepONet) are documented in [docs/API.md](docs/API.md).  The scripts that produce the reported results are in
-[scripts/](scripts) (`run_paper_tasks.sh`, `run_new_tasks.sh`, `run_metric_variants.sh`,
-`run_material_identification.sh`, `run_aniso.sh`, `run_baselines.sh`, ...); REPORT.md section 11 lists the command of
-each table.
+`--aux-pde 1.0`, ...).  The full `--help`, the list of tasks and the list of models (the v2 controls, the v1 model,
+MeshGraphNet, GCN, GAT, SchNet, EGNN, GaugeEquivCNN, GEM-CNN, MPSN, SCCNN, CW Net, Clifford-SMPN, FNO and DeepONet,
+all trained by the same trainer) are documented in [docs/API.md](docs/API.md).  The scripts that produce the reported
+results are in [scripts/](scripts); REPORT.md section 11 lists the command of each table.
+
+### Task names used in the report and the result files
+
+| name | task |
+|---|---|
+| `HP_k10`, `HP_k100`, `HP_k1000` | heterogeneous diffusion on random 2-D meshes; conductivity contrast 10, 100, 1000; each with a 4x-finer test set |
+| `AHP_r10`, `AHP_r100` | anisotropic 2-D diffusion, anisotropy ratio 10 or 100, principal axes not aligned with the mesh |
+| `ASURF_r100` | fibre (anisotropic) diffusion on curved closed surfaces |
+| `ACURL_*`, `ADARCY*` | anisotropic curl-curl problems and 3-D Darcy flow on tetrahedral meshes (`ADARCYp`: the pressure) |
+| `TET_k100` | 3-D heterogeneous diffusion on tetrahedral meshes |
+| `SURF`, `SURF_heat` | diffusion and heat flow on closed surfaces of varying shape, with unseen-geometry and unseen-topology test sets |
+| `DYN`, `DYNfix`, `DYNfix_cons` | advection-diffusion time stepping and long rollouts on varying / one fixed mesh; `_cons`: exactly mass-conserving variant |
+| `HP_qual_*` | the heterogeneous diffusion problems on meshes of degraded quality |
+| `T1` ... `T8` | the tasks of the paper: vorticity (T1), transport on a torus (T2), flow on an ellipsoid (T3), electrostatics (T5), a U(1) gauge field (T6), an SU(2) gauge field (T7), airfoil pressure (T8) |
+| `T6f`, `T7f`, `T5g`, `T1q` | variants of the paper tasks with the target on its natural cochain (face flux), a gradient output layer, or a quadrilateral mesh |
 
 ## Model zoo
 
-[results/checkpoints/](results/checkpoints) holds fifteen small trained models (4.0 MB in total), each with its training
-configuration and test result.  Among them are the 2.4K-parameter HP_k100 solver with a learned tensor metric, the
-AHP_r100 and ASURF_r100 tensor-metric solvers, the T5g solver, the T6f, T6, T3, SURF and DYNfix models, and the
-general-stack and MeshGraphNet comparison runs of the field figures:
+[results/checkpoints/](results/checkpoints) holds fifteen small trained models (4.0 MB in total), each with its
+training configuration and test result: the 2.4K-parameter physics-solver models of results 1, 2 and 4, the
+gauge-field, surface, time-stepping and vector-field models of the figures, and the general-network and MeshGraphNet
+comparison runs.  Loading one takes a line:
 
 ```python
 from rhmp import RHMP
@@ -182,50 +215,52 @@ model = RHMP.from_checkpoint("results/checkpoints/HP_k100_solver_tensor_learn/be
 ```
 
 `python -m rhmp.train --task HP_k100 --eval-ckpt results/checkpoints/HP_k100_solver_tensor_learn --out runs/zoo`
-re-evaluates a checkpoint on its task; the checkpoint directory carries the data normalisation of its run.
+re-evaluates a checkpoint on its task; [results/checkpoints/README.md](results/checkpoints/README.md) lists all
+fifteen, and `results/checkpoints/load_example.py` applies one to a new mesh without any data set.
 
 ## What changed compared with the paper code (v1)
 
-The core idea is unchanged: fixed topology with `d_{k+1} d_k = 0`, geometry and material learned only through SPD
-cochain metrics, O(C) cochain-frame equivariance, E(n) invariance and Abelian gauge invariance.  The implementation is
-new ([CHANGELOG.md](CHANGELOG.md) lists every change):
+The core idea is unchanged: the mesh topology is fixed and exact, and geometry and material enter only through a
+positive-definite learned metric, with the paper's symmetries (channel-frame equivariance, Euclidean invariance,
+gauge invariance).  The implementation is new ([CHANGELOG.md](CHANGELOG.md) lists every change):
 
 | | v1 (paper code) | v2 (`rhmp`) |
 |---|---|---|
-| metric | per-cell free parameters (`n_k x 8` bases) predicted from a global mean: tied to one mesh | DEC reference star x bounded correction from local invariants; full-SPD Whitney tensor metric; no per-cell parameters |
-| batches | metric built from the batch mean: predictions depend on the other samples | per-sample metrics; outputs independent of the batch |
-| operators | unbounded metric, un-normalised operators, LayerNorm (breaks O(C)) | bounded log-metric, per-sample Gershgorin normalisation (`||L|| <= 1`), radial gate |
-| layers | polynomial Hodge message passing | + resolvent and solve layers (learned Green's functions), solver mode, material-only routing |
-| geometry | one metric variant uses absolute coordinates | intrinsic geometry only; 2-D, surfaces and 3-D |
-| inputs / outputs | vertices only; edge fields hand-encoded to vertices | any degree; exact gauge connection mode; exact constraint readouts |
-| complexes | triangles; dense `d_1 d_0` check (20 GB and 4.4 s at 100K faces) | triangles, surfaces, polygons, tetrahedra, grids, block-diagonal batches; a 100K-face complex builds and checks in 8 ms |
-| speed | COO products, per-sample loops for variable meshes | CSR with cached transposes, fused kernels: 1.65-1.74x faster training, 2.8-2.9x faster inference, -40 % memory; 6-14x for variable meshes |
+| metric | free parameters for every cell of one fixed mesh (`n_k x 8` bases), modulated by a global mean | a function of local geometry (plus known material); full tensor metric; nothing tied to a particular mesh |
+| batches | the metric was computed from the batch mean, so a prediction depended on the other samples in the batch | per-sample metrics; outputs independent of the batch |
+| operators | unbounded metric, un-normalised operators, a LayerNorm that broke the channel symmetry | bounded metric, operators normalised to norm at most 1 per sample, symmetry-preserving gates |
+| layers | polynomial message passing only | plus resolvent and solve layers (learned Green's functions) and the physics-solver model |
+| geometry | one variant used absolute coordinates | intrinsic geometry only; 2-D, surfaces and 3-D |
+| inputs / outputs | vertices only; edge fields hand-encoded onto vertices | any degree; exact gauge-invariant handling of connection fields; exactly constrained outputs |
+| meshes | triangles; a dense consistency check (20 GB and 4.4 s at 100K faces) | triangles, surfaces, polygons, tetrahedra, grids, batches of different meshes; a 100K-face mesh is built and checked in 8 ms |
+| speed | sparse products recomputed at every call, per-sample loops for varying meshes | cached sparse operators and fused kernels: 1.65-1.74x faster training, 2.8-2.9x faster inference, 40 % less memory; 6-14x faster for varying meshes |
 
-**Pseudo-scalar targets.**  The v1 targets of T1, T6/T7 and T3 are pseudo-scalars or pseudo-vectors: they flip sign
-under a change of the face-orientation convention or under a reflection.  An exactly invariant model cannot output them
-from native cochain inputs; v1 fits them because its per-cell parameters memorise the mesh frame.  v2 predicts the field
-on its true cochain (edge connection to face flux) and applies a fixed, parameter-free orientation map, which reproduces
-the v1 targets exactly (to 7e-8).  With this map, v2 outperforms the re-evaluated v1 checkpoints on T6 (1.000 vs 0.955
-test100 R2), T7 (0.879 vs 0.653), T3 (0.996 vs 0.971) and T5 (1.000 in solver mode vs 0.676).
+**Targets that are not invariant.**  The v1 targets of the vorticity, gauge-field and ellipsoid tasks flip sign under
+a reflection or under a change of the face-orientation convention (they are pseudo-scalars).  An exactly invariant
+model cannot output them from the fields themselves; v1 fitted them because its per-cell parameters memorised the
+mesh frame.  v2 predicts the field on its natural cochain and applies a fixed, parameter-free orientation map, which
+reproduces the v1 targets exactly (to 7e-8).  With this map, v2 outperforms the re-evaluated v1 checkpoints on the
+U(1) gauge field (1.000 vs 0.955 R2 on the first 100 test samples), the SU(2) gauge field (0.879 vs 0.653), the
+ellipsoid flow (0.996 vs 0.971) and electrostatics (1.000 with the physics-solver model vs 0.676).
 
 The v1 model and baselines are vendored in `rhmp.baselines.v1` (from
 [ContinuumCoder/Riemannian-Hodge-Message-Passing](https://github.com/ContinuumCoder/Riemannian-Hodge-Message-Passing)),
-so that `ours_v1`, these baselines and `--eval-v1` work without a copy of the original repository.
+so that the v1 model (`ours_v1`), these baselines and `--eval-v1` work without a copy of the original repository.
 
 ## Repository layout
 
 | path | contents |
 |---|---|
-| `rhmp/` | the package: complexes, DEC toolkit, metrics, layers, model, readouts, trainer, tasks, baselines (`rhmp/baselines/v1`: vendored v1 code) |
+| `rhmp/` | the package: mesh calculus, discrete-calculus toolkit, metrics, layers, model, output layers, trainer, tasks, baselines (`rhmp/baselines/v1`: vendored v1 code) |
 | `tests/` | the test suite (`python -m pytest tests -q`) |
 | `examples/` | six runnable examples (CPU) |
 | `docs/` | [TUTORIAL](docs/TUTORIAL.md), [MATH](docs/MATH.md), [THEORY](docs/THEORY.md), [API](docs/API.md) (generated by `docs/gen_api.py`), [DESIGN](docs/DESIGN.md), [TASK_SUITE](docs/TASK_SUITE.md), [TASK_SUITE_DETAILS](docs/TASK_SUITE_DETAILS.md), [ANISO_TASKS](docs/ANISO_TASKS.md), [BASELINES](docs/BASELINES.md), [DATASETS](docs/DATASETS.md), [REPORT_zh](docs/REPORT_zh.md) (Chinese report), `figures/` and `figures_zh/` |
-| `scripts/` | experiment drivers, dataset generation (`gen_datasets.sh`), evaluation (robustness, transfer, metric recovery, rollouts), `collect_results.py`, `make_figures.py`, `make_field_figures.py` |
-| `datasets/` | [README](datasets/README.md), the v1 downloader and the v2 generators (`datasets/generators/`) |
-| `bench/` | operator / training-step / batching benchmarks and their results |
+| `scripts/` | experiment drivers, data-set generation (`gen_datasets.sh`), evaluation (robustness, transfer, metric recovery, rollouts), `collect_results.py`, `make_figures.py`, `make_field_figures.py` |
+| `datasets/` | [README](datasets/README.md), the downloader for the paper's data sets and the generators of the new ones (`datasets/generators/`) |
+| `bench/` | operator, training-step and batching benchmarks and their results |
 | `results/` | per-run result files (`results/<group>/<run>/`; see [results/README.md](results/README.md)), `RESULTS.md` and the model zoo (`results/checkpoints/`) |
 | `tools/` | helpers for running experiments on a remote GPU host (sync, run, fetch; `HOST=... tools/remote.sh ...`) |
-| `shims/` | a pyvista unpickling shim for the T3 pickle on machines without pyvista |
+| `shims/` | a pyvista unpickling shim for the ellipsoid data set (T3) on machines without pyvista |
 
 ## Citation and licence
 
