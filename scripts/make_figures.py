@@ -90,14 +90,14 @@ def _hbar_pairs(ax, labels, a, b, la, lb, ca, cb, xmax=1.0):
 # ================================================================================================================
 def fig1(res: str, out: str) -> None:
     plt = _plt()
-    rows = [("v2 solver mode, learned tensor metric", "cab75/stage3/HP_k100_S3c_solver_tensor_learn"),
-            ("v2 solver mode, learned diagonal metric", "cab75/stage3/HP_k100_S3c_solver_diag_learn"),
-            ("v2 general stack, resolvent layer", "cab75/stage2/HP_k100_diag-resolvent_s42"),
-            ("v2 general stack, polynomial layers", "cab75/new/HP_k100_s42"),
-            ("dec_fixed (v2 stack, frozen DEC star)", "cab16/baselines/HP_k100_native/dec_fixed_s42"),
-            ("MeshGraphNet, v2 budget", "cab16/baselines/HP_k100_native/mgn_s42"),
-            ("MeshGraphNet, v1 budget", "cab16/baselines_v1budget/HP_k100_native/mgn_s42"),
-            ("EGNN, v2 budget", "cab16/baselines/HP_k100_native/egnn_s42")]
+    rows = [("Ours, physics-solver mode, learned tensor material", "cab75/stage3/HP_k100_S3c_solver_tensor_learn"),
+            ("Ours, physics-solver mode, learned scalar material", "cab75/stage3/HP_k100_S3c_solver_diag_learn"),
+            ("Ours, general network with an implicit (solve) layer", "cab75/stage2/HP_k100_diag-resolvent_s42"),
+            ("Ours, general network, local layers only", "cab75/new/HP_k100_s42"),
+            ("Ours, geometry only (no material learning)", "cab16/baselines/HP_k100_native/dec_fixed_s42"),
+            ("MeshGraphNet, same size", "cab16/baselines/HP_k100_native/mgn_s42"),
+            ("MeshGraphNet, 5x larger", "cab16/baselines_v1budget/HP_k100_native/mgn_s42"),
+            ("EGNN", "cab16/baselines/HP_k100_native/egnn_s42")]
     labels, a, b = [], [], []
     for lab, d in rows:
         r = _load(res, os.path.join(d, "result.json"))
@@ -107,9 +107,9 @@ def fig1(res: str, out: str) -> None:
         a.append(_r2(r))
         b.append(_r2(r, "fine"))
     fig, ax = plt.subplots(figsize=(8.6, 4.6))
-    _hbar_pairs(ax, labels, a, b, "test split (training resolution)", "zero-shot 4x finer meshes", BLUE, ORANGE)
-    ax.set_xlabel("R2 (HP_k100: heterogeneous Poisson, contrast 100, variable meshes)")
-    ax.set_title("Resolution transfer needs the metric to be the physics", loc="left", pad=26)
+    _hbar_pairs(ax, labels, a, b, "meshes like the training ones", "4x finer meshes, never seen in training", BLUE, ORANGE)
+    ax.set_xlabel("accuracy (R2) on heterogeneous-media Poisson problems, conductivity contrast 100")
+    ax.set_title("Accuracy at the training resolution and on 4x finer meshes", loc="left", pad=26)
     ax.legend(loc="lower left", bbox_to_anchor=(0.0, 1.0), ncol=2, borderaxespad=0.3)
     _save(fig, out, "fig1_hp_k100_transfer.png")
     plt.close(fig)
@@ -117,20 +117,20 @@ def fig1(res: str, out: str) -> None:
 
 def fig3(res: str, out: str) -> None:
     plt = _plt()
-    tasks = [("AHP_r10\n(2-D, ratio 10)", "cab75/aniso/AHP_r10_diag-solver_s42", "cab75/aniso/AHP_r10_tensor-solver_s42"),
-             ("AHP_r100\n(2-D, ratio 100)", "cab75/aniso/AHP_r100_diag-solver_s42",
+    tasks = [("2-D Poisson\nanisotropy 10:1", "cab75/aniso/AHP_r10_diag-solver_s42", "cab75/aniso/AHP_r10_tensor-solver_s42"),
+             ("2-D Poisson\nanisotropy 100:1", "cab75/aniso/AHP_r100_diag-solver_s42",
               "cab75/aniso/AHP_r100_tensor-solver_lr3e-4_s42"),
-             ("ASURF_r100\n(surfaces)", "cab75/aniso_solver/ASURF_r100_diag-solver_s42",
+             ("curved surfaces\nfibre diffusion 100:1", "cab75/aniso_solver/ASURF_r100_diag-solver_s42",
               "cab75/aniso_solver/ASURF_r100_tensor-solver_s42"),
-             ("ADARCYp_r100\n(3-D tetrahedra)", "cab16/aniso/ADARCYp_r100_n1500_diag-solver_s42",
+             ("3-D Darcy flow\nanisotropy 100:1", "cab16/aniso/ADARCYp_r100_n1500_diag-solver_s42",
               "cab16/aniso/ADARCYp_r100_n1500_tensor-solver_s42")]
     mgn = _load(res, "cab16/aniso/AHP_r100_mgn_s42/result.json")
     fig, axes = plt.subplots(1, 2, figsize=(10.0, 3.9), sharey=True)
     w = 0.26
-    for ax, key, title in ((axes[0], "test", "test split"), (axes[1], "fine", "zero-shot 4x finer meshes")):
+    for ax, key, title in ((axes[0], "test", "meshes like the training ones"), (axes[1], "fine", "4x finer meshes, never seen in training")):
         x = np.arange(len(tasks))
-        for j, (lab, col, off) in enumerate((("diagonal metric (solver mode)", ORANGE, -w / 2),
-                                            ("full-SPD tensor metric (solver mode)", BLUE, w / 2))):
+        for j, (lab, col, off) in enumerate((("scalar (diagonal) material metric", ORANGE, -w / 2),
+                                            ("full tensor material metric", BLUE, w / 2))):
             vals = [_r2(_load(res, os.path.join(t[1 + j], "result.json")), key) for t in tasks]
             v = np.array([np.nan if q is None else q for q in vals], dtype=float)
             ax.bar(x + off, np.nan_to_num(v), width=w, color=col, edgecolor=SURFACE, linewidth=1.5, label=lab)
@@ -140,7 +140,7 @@ def fig3(res: str, out: str) -> None:
         mv = _r2(mgn, key)
         if mv is not None:
             ax.bar([1 + 1.5 * w], [mv], width=w, color=AQUA, edgecolor=SURFACE, linewidth=1.5,
-                   label="MeshGraphNet (92K params, general)")
+                   label="MeshGraphNet")
             ax.text(1 + 1.5 * w, mv + 0.012, f"{mv:.3f}", ha="center", va="bottom", fontsize=7.2, color=INK2)
         ax.set_xticks(x)
         ax.set_xticklabels([t[0] for t in tasks], color=INK)
@@ -150,7 +150,7 @@ def fig3(res: str, out: str) -> None:
     axes[0].set_ylabel("R2")
     handles, labels = axes[0].get_legend_handles_labels()
     fig.legend(handles, labels, loc="lower center", ncol=3, bbox_to_anchor=(0.5, -0.06))
-    fig.suptitle("Anisotropic media: diagonal (M-matrix) metric vs full-SPD Whitney tensor metric", x=0.01, ha="left",
+    fig.suptitle("Anisotropic media: a scalar material metric is not enough, a tensor one is", x=0.01, ha="left",
                  fontsize=10.5, fontweight="semibold")
     fig.tight_layout(rect=(0, 0.05, 1, 0.97))
     _save(fig, out, "fig3_aniso_diag_vs_tensor.png")
@@ -160,9 +160,9 @@ def fig3(res: str, out: str) -> None:
 def fig5(res: str, out: str) -> None:
     plt = _plt()
     base = _load(res, "cab75/new/T6f_s42/result.json")
-    pts = [("training mesh\n(1024 vertices, test split)", _r2(base))]
-    for tag, lab in (("mesh7_n1024", "new mesh, seed 7\n(1024)"), ("mesh11_n1024", "new mesh, seed 11\n(1024)"),
-                     ("mesh7_n4096", "4x finer new mesh\n(4096)"), ("mesh7_n256", "4x coarser new mesh\n(256)")):
+    pts = [("the mesh it was\ntrained on", _r2(base))]
+    for tag, lab in (("mesh7_n1024", "a new random mesh\n(same size)"), ("mesh11_n1024", "another new mesh\n(same size)"),
+                     ("mesh7_n4096", "a new mesh,\n4x finer"), ("mesh7_n256", "a new mesh,\n4x coarser")):
         pts.append((lab, _r2(_load(res, f"cab75/transfer/T6f_s42/transfer_T6f_{tag}.json"))))
     fig, ax = plt.subplots(figsize=(7.6, 3.2))
     x = np.arange(len(pts))
@@ -175,9 +175,9 @@ def fig5(res: str, out: str) -> None:
     ax.set_xticks(x)
     ax.set_xticklabels([p[0] for p in pts], color=INK, fontsize=8)
     ax.set_ylim(0.99, 1.0015)
-    ax.set_ylabel("R2 (uncentred, face flux)")
+    ax.set_ylabel("accuracy (R2)")
     ax.grid(axis="x", visible=False)
-    ax.set_title("T6f: one trained model evaluated zero-shot on unseen meshes and resolutions (v1: not applicable)",
+    ax.set_title("Gauge-field task: one trained model, evaluated without retraining on meshes it has never seen",
                  loc="left", fontsize=9.5)
     _save(fig, out, "fig5_t6f_mesh_transfer.png")
     plt.close(fig)
@@ -185,10 +185,9 @@ def fig5(res: str, out: str) -> None:
 
 def fig6(res: str, out: str) -> None:
     plt = _plt()
-    specs = [("DYNfix, mass projection", "cab75/suite/DYNfix_s42/rollout_DYNfix_proj.json", BLUE),
-             ("DYNfix, no projection", "cab75/suite/DYNfix_s42/rollout_DYNfix.json", ORANGE),
-             ("DYN (variable meshes), no projection", "cab75/suite/DYN_s42/rollout_DYN.json", AQUA),
-             ("DYN (variable meshes), mass projection", "cab75/suite/DYN_s42/rollout_DYN_proj.json", YELLOW)]
+    specs = [("ours, with exact mass conservation enforced", "cab75/suite/DYNfix_s42/rollout_DYNfix_proj.json", BLUE),
+             ("ours, plain autoregressive", "cab75/suite/DYNfix_s42/rollout_DYNfix.json", ORANGE),
+]
     fig, ax = plt.subplots(figsize=(7.6, 4.0))
     lo = -1.25
     pers = None
@@ -204,10 +203,10 @@ def fig6(res: str, out: str) -> None:
         if y[-1] < lo:
             ax.annotate(f"{y[-1]:.1f} at step {int(h[-1])}", xy=(h[-1], lo), xytext=(h[-1] * 0.55, lo + 0.18),
                         fontsize=7.5, color=INK2, arrowprops=dict(arrowstyle="-", color=MUTED, lw=0.8))
-        if pers is None and "DYNfix" in lab:
+        if pers is None and "DYNfix" in rel:
             pers = (h, np.array(r["persistence_R2"], dtype=float))
     if pers is not None:
-        ax.plot(pers[0], np.clip(pers[1], lo, None), color=MUTED, linewidth=1.5, label="persistence baseline (DYNfix)")
+        ax.plot(pers[0], np.clip(pers[1], lo, None), color=MUTED, linewidth=1.5, label="no-change baseline (repeat the last state)")
     ax.set_xscale("log")
     ax.set_xlim(1, 100)
     from matplotlib.ticker import FixedLocator, NullFormatter, ScalarFormatter
@@ -216,9 +215,9 @@ def fig6(res: str, out: str) -> None:
     ax.xaxis.set_minor_formatter(NullFormatter())
     ax.set_ylim(lo, 1.05)
     ax.axhline(0, color=AXIS, linewidth=0.8)
-    ax.set_xlabel("rollout step (autoregressive, 100-step test trajectories)")
-    ax.set_ylabel("R2 (curves clipped at -1.25)")
-    ax.set_title("Advection-diffusion rollouts: mass drift is the dominant long-horizon error", loc="left")
+    ax.set_xlabel("time steps predicted ahead (each step feeds the previous prediction)")
+    ax.set_ylabel("accuracy (R2)")
+    ax.set_title("Advection-diffusion, 100-step forecasts on a fixed mesh", loc="left")
     ax.legend(loc="lower left")
     _save(fig, out, "fig6_dyn_rollouts.png")
     plt.close(fig)
@@ -255,10 +254,10 @@ def fig2(res: str, out: str, tensor_run: str, general_run: str, device: str = "c
     recover(general_run, n=n, device=device, plots=False, out_dir=tmp, samples_out=sg)
     fig, axes = plt.subplots(1, 3, figsize=(11.2, 3.6))
     lt = st["layers"][0]
-    _hex(axes[0], st["t_face"], lt["hld"], "solver mode, learned tensor: faces", "true log sigma (face)",
-         "learned log det(sigma_f) / 2")
-    _hex(axes[1], st["t_edge"], lt["kappa"], "solver mode, learned tensor: edge action", "true log sigma (edge)",
-         "learned log mean_f t^T sigma_f t")
+    _hex(axes[0], st["t_face"], lt["hld"], "physics-solver mode, per triangle", "true conductivity (log)",
+         "learned conductivity (log)")
+    _hex(axes[1], st["t_edge"], lt["kappa"], "physics-solver mode, per edge", "true conductivity (log)",
+         "learned conductivity (log)")
     # general stack: the layer whose diagonal metric correlates most with the material (best case)
     best, best_r = None, -1.0
     for l, d in sg["layers"].items():
@@ -269,9 +268,9 @@ def fig2(res: str, out: str, tensor_run: str, general_run: str, device: str = "c
         rr = abs(np.corrcoef(x[ok], y[ok])[0, 1])
         if rr > best_r:
             best, best_r = l, rr
-    _hex(axes[2], sg["t_edge"], sg["layers"][best]["lr"], f"general stack (diag + resolvent), best layer {best}",
-         "true log sigma (edge)", "learned log(H_1 / star_1)")
-    fig.suptitle("HP_k100: the learned metric is the material only when the architecture solves with it "
+    _hex(axes[2], sg["t_edge"], sg["layers"][best]["lr"], "general network, its best layer",
+         "true conductivity (log)", "learned metric (log)")
+    fig.suptitle("Is the learned metric the true material?  Yes in physics-solver mode, no in a general network "
                  "(first 32 test samples, physical units)", x=0.01, ha="left", fontsize=10, fontweight="semibold")
     fig.tight_layout(rect=(0, 0, 1, 0.94))
     _save(fig, out, "fig2_metric_recovery.png")
@@ -340,7 +339,7 @@ def fig4(res: str, out: str, run: str, device: str = "cpu", sample: int = 0,
         ax.set_xticks([])
         ax.set_yticks([])
     cb = fig.colorbar(ec, cax=axes[2])
-    cb.set_label("log eigenvalue ratio (anisotropy)")
+    cb.set_label("anisotropy strength (log ratio)")
     cb.outline.set_visible(False)
     ax = axes[3]
     pos3 = ax.get_position()
@@ -352,12 +351,12 @@ def fig4(res: str, out: str, run: str, device: str = "cpu", sample: int = 0,
     ax.text(med + 2, ax.get_ylim()[1] * 0.92, f"median {med:.1f} deg\n(random directions: 45)", fontsize=8,
             color=INK2, va="top")
     ax.set_xlim(0, 90)
-    ax.set_xlabel("principal-direction error (deg)")
-    ax.set_ylabel("triangles (true ratio > 10)")
-    ax.set_title("direction agreement on the whole mesh", loc="left", fontsize=9)
+    ax.set_xlabel("direction error (degrees)")
+    ax.set_ylabel("number of triangles")
+    ax.set_title("how well the learned fibre direction matches the true one (whole mesh)", loc="left", fontsize=9)
     ax.grid(axis="x", visible=False)
-    fig.suptitle(f"AHP_r100 test mesh ({K.n[0]} vertices, window [{x0}, {x1}]^2): per-triangle tensors as ellipses "
-                 "(major axis along the fibre, aspect sqrt(ratio))", x=0.01, ha="left", fontsize=10,
+    fig.suptitle("Anisotropic 2-D Poisson (ratio 100): the learned material tensor of each triangle, drawn as an ellipse, "
+                 "next to the true one", x=0.01, ha="left", fontsize=10,
                  fontweight="semibold")
     _save(fig, out, "fig4_tensor_ellipses.png")
     plt.close(fig)
