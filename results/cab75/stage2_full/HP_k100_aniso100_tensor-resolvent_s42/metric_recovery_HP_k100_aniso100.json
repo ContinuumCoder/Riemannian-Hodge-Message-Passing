@@ -1,0 +1,217 @@
+{
+  "run": "runs/stage2_full/HP_k100_aniso100_tensor-resolvent_s42",
+  "task": "HP_k100_aniso100",
+  "metric_type": "tensor",
+  "log_range": 3.0,
+  "layer_types": [
+    "poly",
+    "poly",
+    "resolvent",
+    "poly"
+  ],
+  "metric_reference": {},
+  "material_dims": {},
+  "raw_input_columns": {},
+  "solver_mode": false,
+  "tensor_set": true,
+  "n_samples": 64,
+  "params": 93783,
+  "accessor": "metric_fields",
+  "layers": [
+    {
+      "layer": 0,
+      "type": "poly",
+      "tensor_halflogdet_vs_face": {
+        "pearson": -0.017639236791544003,
+        "spearman": -0.03709792752360391,
+        "n": 184944,
+        "learned_std": 0.45536940940861487,
+        "truth_std": 1.0720868501099037,
+        "slope": -0.007492274379972968,
+        "intercept": 1.7981885044362433,
+        "pearson_per_sample": 0.003916546006915607,
+        "intercept_per_sample_std": 0.07079129644257365
+      },
+      "tensor_logmeaneig_vs_face": {
+        "pearson": -0.07135559924940126,
+        "spearman": -0.08473981871570671,
+        "n": 184944,
+        "learned_std": 0.45681751915925295,
+        "truth_std": 1.0720868501099037,
+        "slope": -0.030404708185621045,
+        "intercept": 1.9057050132017452,
+        "pearson_per_sample": -0.04829619968520816,
+        "intercept_per_sample_std": 0.06478634042655206
+      },
+      "tensor_anisotropy": {
+        "median": 2.067661559298051,
+        "p90": 4.3456962379517226,
+        "max": 163.2178932198298,
+        "mean_log_ratio": 0.8219458866755519
+      },
+      "tensor_logratio_vs_true": {
+        "pearson": 0.19708665702196365,
+        "spearman": 0.23356707740815305,
+        "n": 184944,
+        "learned_std": 0.5172363685260353,
+        "truth_std": 1.1884459718719897,
+        "slope": 0.0857762062186169,
+        "intercept": 0.618168287922966,
+        "pearson_per_sample": 0.17771921989787653,
+        "intercept_per_sample_std": 0.04258258508724507
+      },
+      "tensor_action_vs_edge": {
+        "pearson": 0.22112734708548384,
+        "spearman": 0.1849047278909747,
+        "n": 282400,
+        "learned_std": 0.5546818895761724,
+        "truth_std": 1.3919578237411465,
+        "slope": 0.08811713446078644,
+        "intercept": 1.9212396191051107,
+        "pearson_per_sample": 0.26091135048025343,
+        "intercept_per_sample_std": 0.09705854856116955
+      },
+      "tensor_angle_err_deg_median": 17.241552792675318
+    },
+    {
+      "layer": 1,
+      "type": "poly",
+      "tensor_halflogdet_vs_face": {
+        "pearson": -0.13847951828408078,
+        "spearman": -0.09267202648726942,
+        "n": 184944,
+        "learned_std": 0.5873099967385959,
+        "truth_std": 1.0720868501099037,
+        "slope": -0.0758617694298262,
+        "intercept": 3.442755844402842,
+        "pearson_per_sample": -0.12441900719662907,
+        "intercept_per_sample_std": 0.12698641825763132
+      },
+      "tensor_logmeaneig_vs_face": {
+        "pearson": -0.08918097571717333,
+        "spearman": -0.04361489639946451,
+        "n": 184944,
+        "learned_std": 0.6250073096365644,
+        "truth_std": 1.0720868501099037,
+        "slope": -0.051990901388297664,
+        "intercept": 3.7386886417491882,
+        "pearson_per_sample": -0.07676644944241962,
+        "intercept_per_sample_std": 0.14347226721377898
+      },
+      "tensor_anisotropy": {
+        "median": 3.882379786873881,
+        "p90": 13.574571474685861,
+        "max": 382.2614038754383,
+        "mean_log_ratio": 1.4733599284675354
+      },
+      "tensor_logratio_vs_true": {
+        "pearson": -0.010828818586442582,
+        "spearman": -0.02272040274355578,
+        "n": 184944,
+        "learned_std": 0.8162707330261441,
+        "truth_std": 1.1884459718719897,
+        "slope": -0.007437652105833613,
+        "intercept": 1.4910294775569521,
+        "pearson_per_sample": -0.011093776724271524,
+        "intercept_per_sample_std": 0.058118617003155064
+      },
+      "tensor_action_vs_edge": {
+        "pearson": 0.10532343339597267,
+        "spearman": 0.13600657587221482,
+        "n": 282400,
+        "learned_std": 0.7342037306902306,
+        "truth_std": 1.3919578237411465,
+        "slope": 0.055554023555535285,
+        "intercept": 3.8790949410966586,
+        "pearson_per_sample": 0.1303495267644214,
+        "intercept_per_sample_std": 0.1557550394992483
+      },
+      "tensor_angle_err_deg_median": 30.826731212507028
+    },
+    {
+      "layer": 2,
+      "type": "resolvent",
+      "diag_logratio_vs_edge": {
+        "pearson": 0.015780194119837464,
+        "spearman": 0.04634464948370351,
+        "n": 282400,
+        "learned_std": 1.466327144175913,
+        "truth_std": 1.3919578237411465,
+        "slope": 0.016623296039309992,
+        "intercept": 1.699753556543432,
+        "pearson_per_sample": 0.015759120482861343,
+        "intercept_per_sample_std": 0.07086368450453939
+      },
+      "diag_phi_vs_edge": {
+        "pearson": 0.015780194119837464,
+        "spearman": 0.04634464948370351,
+        "n": 282400,
+        "learned_std": 1.466327144175913,
+        "truth_std": 1.3919578237411465,
+        "slope": 0.016623296039309992,
+        "intercept": 1.699753556543432,
+        "pearson_per_sample": 0.015759120482861343,
+        "intercept_per_sample_std": 0.07086368450453939
+      },
+      "sat": 0.3054886685552408
+    },
+    {
+      "layer": 3,
+      "type": "poly",
+      "tensor_halflogdet_vs_face": {
+        "pearson": -0.6960181637131492,
+        "spearman": -0.9829118708712059,
+        "n": 184944,
+        "learned_std": 1.9528298979238645,
+        "truth_std": 1.0720868501099037,
+        "slope": -1.267812471963225,
+        "intercept": -6.599408970865834,
+        "pearson_per_sample": -0.6872726700560082,
+        "intercept_per_sample_std": 0.2666774734424879
+      },
+      "tensor_logmeaneig_vs_face": {
+        "pearson": -0.6195260235373583,
+        "spearman": -0.5285347228291774,
+        "n": 184944,
+        "learned_std": 1.9531351884898447,
+        "truth_std": 1.0720868501099037,
+        "slope": -1.1286567656640498,
+        "intercept": -5.703088313659589,
+        "pearson_per_sample": -0.5932826629582704,
+        "intercept_per_sample_std": 0.24612851045070894
+      },
+      "tensor_anisotropy": {
+        "median": 15.02421184116941,
+        "p90": 190.35992699867793,
+        "max": 6854.630417900839,
+        "mean_log_ratio": 2.958663076992616
+      },
+      "tensor_logratio_vs_true": {
+        "pearson": 0.05377828780365679,
+        "spearman": 0.05926425116979763,
+        "n": 184944,
+        "learned_std": 1.5974652205946416,
+        "truth_std": 1.1884459718719897,
+        "slope": 0.07228678999529861,
+        "intercept": 2.7869321374214335,
+        "pearson_per_sample": 0.04769863412182291,
+        "intercept_per_sample_std": 0.15566248033362234
+      },
+      "tensor_action_vs_edge": {
+        "pearson": -0.5382491195751006,
+        "spearman": -0.4508205890735827,
+        "n": 282400,
+        "learned_std": 2.2075207424594274,
+        "truth_std": 1.3919578237411465,
+        "slope": -0.8536150131898841,
+        "intercept": -5.949291262931483,
+        "pearson_per_sample": -0.5060261127758366,
+        "intercept_per_sample_std": 0.3045377193320227
+      },
+      "tensor_angle_err_deg_median": 49.85290124739998
+    }
+  ],
+  "test_R2": 0.8392184669414713,
+  "fine_R2": 0.5429056065153421,
+  "seconds": 13.837575674057007
+}

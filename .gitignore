@@ -1,0 +1,29 @@
+# data (not part of the repository; see datasets/README.md)
+/datasets/*.pkl
+/datasets/v2/
+*.pt
+!/results/checkpoints/*/best.pt
+*.tar.gz
+
+# run outputs and local checkpoints
+/runs/
+/checkpoints/
+/checkpoints_v1/
+/logs/
+*.log
+
+# python caches and builds
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+.ipynb_checkpoints/
+
+# editors / OS
+.DS_Store
+.vscode/
+.idea/

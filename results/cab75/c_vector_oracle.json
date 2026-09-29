@@ -1,0 +1,144 @@
+[
+ {
+  "task": "T5",
+  "n0": 1024,
+  "n1": 3050,
+  "D": 2,
+  "N": 200,
+  "exact_fraction_of_flat": 0.82584,
+  "ls": {
+   "roundtrip": {
+    "R2": 0.58003,
+    "NRMSE": 0.00751
+   },
+   "grad_projected": {
+    "R2": -10.74274,
+    "NRMSE": 0.03971
+   },
+   "ceiling_free_edges": {
+    "R2": 1.0,
+    "NRMSE": 0.0,
+    "rank": 2048
+   },
+   "ceiling_grad": {
+    "R2": 0.67595,
+    "NRMSE": 0.0066,
+    "rank": 1023
+   }
+  },
+  "direct": {
+   "roundtrip": {
+    "R2": 0.14199,
+    "NRMSE": 0.01073
+   },
+   "grad_projected": {
+    "R2": 0.17012,
+    "NRMSE": 0.01056
+   },
+   "ceiling_free_edges": {
+    "R2": 1.0,
+    "NRMSE": 0.0,
+    "rank": 2048
+   },
+   "ceiling_grad": {
+    "R2": 1.0,
+    "NRMSE": 0.0,
+    "rank": 1023
+   }
+  },
+  "whitney": {
+   "roundtrip": {
+    "R2": -14.82064,
+    "NRMSE": 0.04609
+   },
+   "grad_projected": {
+    "R2": -23.24428,
+    "NRMSE": 0.05706
+   },
+   "ceiling_free_edges": {
+    "R2": 1.0,
+    "NRMSE": 0.0,
+    "rank": 2048
+   },
+   "ceiling_grad": {
+    "R2": 0.65735,
+    "NRMSE": 0.00678,
+    "rank": 1023
+   }
+  },
+  "physics_check": {
+   "max_rel_err_direct_of_minus_d0_phi_vs_target": 2.6507692135850594e-07,
+   "median_rel_err": 1.9366777504596847e-07
+  },
+  "seconds": 20.0
+ },
+ {
+  "task": "T3",
+  "n0": 1157,
+  "n1": 3465,
+  "D": 3,
+  "N": 200,
+  "exact_fraction_of_flat": 0.32815,
+  "ls": {
+   "roundtrip": {
+    "R2": 0.99566,
+    "NRMSE": 0.00365
+   },
+   "grad_projected": {
+    "R2": -0.34024,
+    "NRMSE": 0.06408
+   },
+   "ceiling_free_edges": {
+    "R2": 1.0,
+    "NRMSE": 0.0,
+    "rank": 2314
+   },
+   "ceiling_grad": {
+    "R2": 0.09917,
+    "NRMSE": 0.05254,
+    "rank": 1156
+   }
+  },
+  "direct": {
+   "roundtrip": {
+    "R2": 0.08053,
+    "NRMSE": 0.05308
+   },
+   "grad_projected": {
+    "R2": 0.01737,
+    "NRMSE": 0.05487
+   },
+   "ceiling_free_edges": {
+    "R2": 1.0,
+    "NRMSE": 7e-05,
+    "rank": 3465
+   },
+   "ceiling_grad": {
+    "R2": 0.20617,
+    "NRMSE": 0.04932,
+    "rank": 1156
+   }
+  },
+  "whitney": {
+   "roundtrip": {
+    "R2": 0.99846,
+    "NRMSE": 0.00217
+   },
+   "grad_projected": {
+    "R2": -0.39187,
+    "NRMSE": 0.0653
+   },
+   "ceiling_free_edges": {
+    "R2": 1.0,
+    "NRMSE": 2e-05,
+    "rank": 3465
+   },
+   "ceiling_grad": {
+    "R2": 0.07115,
+    "NRMSE": 0.05335,
+    "rank": 1156
+   }
+  },
+  "seconds": 45.0
+ }
+]

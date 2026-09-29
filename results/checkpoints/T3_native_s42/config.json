@@ -1,0 +1,162 @@
+{
+  "args": {
+    "task": "T3",
+    "native": true,
+    "root": null,
+    "out": "runs/paper/T3_native_s42",
+    "device": null,
+    "epochs": 100,
+    "seed": 42,
+    "model": "rhmp",
+    "param_budget": null,
+    "model_opts": null,
+    "C": null,
+    "layers": null,
+    "metric_type": "diag",
+    "resolvent_iters": null,
+    "resolvent_grad": null,
+    "metric_ref": null,
+    "poly": 2,
+    "log_range": 2.0,
+    "metric_hidden": 32,
+    "scaling": "dec",
+    "tie": true,
+    "no_cross": false,
+    "gate": "norm",
+    "identity_metric": false,
+    "star": "cotan",
+    "vector_mode": null,
+    "connection_odd": null,
+    "no_connection": false,
+    "no_output_map": false,
+    "batch": null,
+    "bs_meshes": null,
+    "eval_batch": null,
+    "lr": 0.001,
+    "wd": 1e-05,
+    "eta_min": 1e-05,
+    "clip": 1.0,
+    "amp": false,
+    "compile": false,
+    "compile_backend": "inductor",
+    "ckpt_layers": false,
+    "no_tf32": false,
+    "max_samples": null,
+    "max_train_batches": null,
+    "no_fine": false,
+    "abs_scale": false,
+    "data_on": "auto",
+    "no_resume": false,
+    "force": false,
+    "check_data": false,
+    "eval_v1": null,
+    "eval_ckpt": null,
+    "v1_eval_batch": 1,
+    "quiet": false,
+    "stop_after": null
+  },
+  "model": {
+    "in_dims": {
+      "0": 1
+    },
+    "even_dims": {},
+    "connection_dims": {},
+    "C": 64,
+    "n_layers": 4,
+    "poly_order": 2,
+    "metric_hidden": 32,
+    "log_range": 2.0,
+    "tie_metrics": true,
+    "scaling": "dec",
+    "cross": true,
+    "gate": "norm",
+    "identity_metric": false,
+    "readout": "node_vector",
+    "out_dim": 1,
+    "vector_mode": "ls",
+    "checkpoint_layers": false,
+    "amp": false,
+    "connection_odd": false,
+    "lift_hidden": 64,
+    "fused": true,
+    "layers": null,
+    "resolvent_iters": 20,
+    "resolvent_grad": "implicit",
+    "metric_type": "diag",
+    "metric_reference": {},
+    "resolvent_warm_start": true,
+    "learn_metric": true
+  },
+  "params": 29621,
+  "data": {
+    "name": "T3",
+    "native": true,
+    "N": 10000,
+    "cells": {
+      "0": 1157,
+      "1": 3465,
+      "2": 2310
+    },
+    "inputs": {
+      "0": [
+        10000,
+        1157,
+        1
+      ]
+    },
+    "target": [
+      10000,
+      1157,
+      3
+    ],
+    "target_degree": 0,
+    "target_kind": "node_vector",
+    "readout": "node_vector",
+    "target_readout": "node_vector",
+    "output_map": "v = n x g (rotation by +90 deg about the outward vertex normal)",
+    "in_dims": {
+      "0": 1
+    },
+    "even_dims": {},
+    "connection_dims": {},
+    "split": [
+      7000,
+      1500,
+      1500
+    ],
+    "spatial_dim": 3,
+    "x_stats": {
+      "0": {
+        "mean": [
+          0.013750082813203335
+        ],
+        "std": [
+          1.5622953176498413
+        ],
+        "kind": "v1"
+      }
+    },
+    "y_stats": {
+      "mean": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "std": [
+        2.608731269836426,
+        2.608731269836426,
+        2.608731269836426
+      ],
+      "kind": "isotropic"
+    },
+    "extra_tests": [],
+    "meta": {
+      "v1_C": 64,
+      "batch_size": 64,
+      "layers": 4,
+      "v1_name": "T3_ellipsoid_surface_flow",
+      "vector_mode": "ls"
+    }
+  },
+  "load_seconds": 2.8690500259399414
+}

@@ -1,0 +1,42 @@
+{
+  "test": {
+    "div": {
+      "mean": 1.1583649547589297e-07,
+      "max": 1.5479390690645808e-07
+    },
+    "bc": {
+      "mean": 0.0976828105522109,
+      "max": 0.13184675870948767
+    },
+    "target_div": {
+      "mean": 6.22156870759186e-08,
+      "max": 6.768747408909754e-08
+    },
+    "target_bc": {
+      "mean": 0.0,
+      "max": 0.0
+    },
+    "N": 64,
+    "definition": "div = |d2 B| / |B| (exactly 0 for the curl readout); bc = |B_bnd faces| / |B| (normal B = 0)"
+  },
+  "fine": {
+    "div": {
+      "mean": 1.5391913860796156e-07,
+      "max": 1.7920332526386332e-07
+    },
+    "bc": {
+      "mean": 0.10106296909463847,
+      "max": 0.12004889032961785
+    },
+    "target_div": {
+      "mean": 6.114496936061287e-08,
+      "max": 6.285909491044916e-08
+    },
+    "target_bc": {
+      "mean": 0.0,
+      "max": 0.0
+    },
+    "N": 16,
+    "definition": "div = |d2 B| / |B| (exactly 0 for the curl readout); bc = |B_bnd faces| / |B| (normal B = 0)"
+  }
+}

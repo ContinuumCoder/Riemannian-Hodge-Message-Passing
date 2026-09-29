@@ -1,0 +1,187 @@
+{
+  "args": {
+    "task": "T5g",
+    "native": true,
+    "root": null,
+    "out": "runs/paper/T5g_solver_learn_tensor_s42",
+    "device": null,
+    "epochs": 30,
+    "seed": 42,
+    "model": "rhmp",
+    "param_budget": null,
+    "model_opts": null,
+    "C": null,
+    "layers": null,
+    "metric_type": "tensor",
+    "resolvent_iters": null,
+    "resolvent_grad": null,
+    "latent": null,
+    "metric_ref": null,
+    "material": null,
+    "solver_mode": true,
+    "solve_iters": 128,
+    "solve_precond": "twolevel",
+    "solve_bc": "neumann",
+    "tensor_param": null,
+    "aux_pde": 0.0,
+    "no_learn_metric": false,
+    "poly": 2,
+    "log_range": 2.0,
+    "metric_hidden": 32,
+    "scaling": "dec",
+    "tie": true,
+    "no_cross": false,
+    "gate": "norm",
+    "identity_metric": false,
+    "star": "cotan",
+    "vector_mode": null,
+    "connection_odd": null,
+    "no_connection": false,
+    "no_output_map": false,
+    "batch": null,
+    "bs_meshes": null,
+    "eval_batch": null,
+    "lr": 0.001,
+    "wd": 1e-05,
+    "eta_min": 1e-05,
+    "clip": 1.0,
+    "amp": false,
+    "compile": false,
+    "compile_backend": "inductor",
+    "ckpt_layers": false,
+    "no_tf32": false,
+    "max_samples": null,
+    "max_train_batches": null,
+    "no_fine": false,
+    "abs_scale": false,
+    "data_on": "auto",
+    "no_resume": true,
+    "force": false,
+    "check_data": false,
+    "eval_v1": null,
+    "eval_ckpt": null,
+    "v1_eval_batch": 1,
+    "quiet": false,
+    "stop_after": null
+  },
+  "model": {
+    "in_dims": {
+      "0": 1
+    },
+    "even_dims": {},
+    "connection_dims": {},
+    "C": 4,
+    "n_layers": 1,
+    "poly_order": 2,
+    "metric_hidden": 32,
+    "log_range": 2.0,
+    "tie_metrics": true,
+    "scaling": "dec",
+    "cross": false,
+    "gate": "none",
+    "identity_metric": false,
+    "readout": "grad",
+    "out_dim": 1,
+    "vector_mode": "ls",
+    "checkpoint_layers": false,
+    "amp": false,
+    "connection_odd": false,
+    "lift_hidden": 64,
+    "fused": true,
+    "layers": [
+      "solve"
+    ],
+    "resolvent_iters": 20,
+    "resolvent_grad": "implicit",
+    "metric_type": "tensor",
+    "metric_reference": {},
+    "resolvent_warm_start": true,
+    "learn_metric": true,
+    "latent_dims": {},
+    "material_dims": {},
+    "lifting": "linear",
+    "resolvent_normalize": true,
+    "solve_iters": 128,
+    "solve_tol": 1e-06,
+    "solve_bc": "neumann",
+    "tensor_param": "full",
+    "solve_precond": "twolevel",
+    "readout_head": "linear"
+  },
+  "params": 2195,
+  "data": {
+    "name": "T5g",
+    "native": true,
+    "N": 5000,
+    "cells": {
+      "0": 1024,
+      "1": 3050,
+      "2": 2027
+    },
+    "inputs": {
+      "0": [
+        5000,
+        1024,
+        1
+      ]
+    },
+    "target": [
+      5000,
+      1024,
+      2
+    ],
+    "target_degree": 0,
+    "target_kind": "node_vector",
+    "readout": "grad",
+    "target_readout": "node_vector",
+    "output_map": "edge -> vertex vectors v_i = sum_e w_e t_e / deg_i (v1 average)",
+    "in_dims": {
+      "0": 1
+    },
+    "even_dims": {},
+    "connection_dims": {},
+    "split": [
+      3500,
+      750,
+      750
+    ],
+    "spatial_dim": 2,
+    "x_stats": {
+      "0": {
+        "mean": [
+          0.0
+        ],
+        "std": [
+          0.6880382299423218
+        ],
+        "kind": "solver"
+      }
+    },
+    "y_stats": {
+      "mean": [
+        0.0,
+        0.0
+      ],
+      "std": [
+        0.00248834234662354,
+        0.00248834234662354
+      ],
+      "kind": "solver"
+    },
+    "extra_tests": [],
+    "meta": {
+      "v1_C": 160,
+      "batch_size": 64,
+      "layers": 4,
+      "v1_name": "T5_maxwell_poisson",
+      "consistency": {
+        "max_rel_err_map_of_minus_d0_phi_vs_target": 2.1616501067958122e-07,
+        "samples": 4
+      },
+      "native_inputs": "node rho; readout grad (E = d0 phi on edges) + fixed v1 edge->node average"
+    }
+  },
+  "load_seconds": 1.6159160137176514,
+  "metric_reference_raw": true,
+  "raw_input_columns": {}
+}

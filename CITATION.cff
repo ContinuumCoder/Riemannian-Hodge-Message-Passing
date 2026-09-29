@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use RHMP v2 (the rhmp package), please cite the paper below."
+title: "RHMP v2: Riemannian Hodge message passing with learned DEC/Whitney metrics"
+type: software
+version: 2.0.0
+authors:
+  - family-names: Zheng
+    given-names: Denzel
+  - family-names: Allen-Blanchette
+    given-names: Christine
+keywords:
+  - discrete exterior calculus
+  - cochain complexes
+  - Hodge Laplacian
+  - equivariant neural networks
+  - physics-informed machine learning
+preferred-citation:
+  type: article
+  title: "Learning Discrete Riemannian Metrics for Physical Fields with Cochain-Frame Equivariance"
+  authors:
+    - family-names: Zheng
+      given-names: Denzel
+    - family-names: Allen-Blanchette
+      given-names: Christine
+  year: 2026
+  journal: "arXiv preprint"
+  identifiers:
+    - type: other
+      value: "arXiv:2608.14556"
+      description: arXiv identifier
+  url: "https://arxiv.org/abs/2608.14556"

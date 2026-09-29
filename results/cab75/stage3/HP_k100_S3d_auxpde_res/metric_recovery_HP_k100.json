@@ -1,0 +1,133 @@
+{
+  "run": "runs/stage3/HP_k100_S3d_auxpde_res",
+  "task": "HP_k100",
+  "metric_type": "diag",
+  "log_range": 3.0,
+  "layer_types": [
+    "poly",
+    "poly",
+    "resolvent",
+    "poly"
+  ],
+  "metric_reference": {},
+  "material_dims": {},
+  "raw_input_columns": {},
+  "solver_mode": false,
+  "tensor_set": false,
+  "n_samples": 32,
+  "params": 89937,
+  "accessor": "metric_fields",
+  "layers": [
+    {
+      "layer": 0,
+      "type": "poly",
+      "diag_logratio_vs_edge": {
+        "pearson": -0.3506134881114909,
+        "spearman": -0.3306088723143115,
+        "n": 139805,
+        "learned_std": 0.587748120461119,
+        "truth_std": 1.0855256235976296,
+        "slope": -0.18983653095436304,
+        "intercept": 0.4155778173682466,
+        "pearson_per_sample": -0.3241746084779582,
+        "intercept_per_sample_std": 0.03862230117969987
+      },
+      "diag_phi_vs_edge": {
+        "pearson": -0.3506134881114909,
+        "spearman": -0.3306088723143115,
+        "n": 139805,
+        "learned_std": 0.587748120461119,
+        "truth_std": 1.0855256235976296,
+        "slope": -0.18983653095436304,
+        "intercept": 0.4155778173682466,
+        "pearson_per_sample": -0.3241746084779582,
+        "intercept_per_sample_std": 0.03862230117969987
+      },
+      "sat": 3.576409999642359e-05
+    },
+    {
+      "layer": 1,
+      "type": "poly",
+      "diag_logratio_vs_edge": {
+        "pearson": -0.7228389526314386,
+        "spearman": -0.7787118628063633,
+        "n": 139805,
+        "learned_std": 1.3068660242819994,
+        "truth_std": 1.0855256235976296,
+        "slope": -0.8702269644182689,
+        "intercept": -1.0074070014314027,
+        "pearson_per_sample": -0.6987945916923117,
+        "intercept_per_sample_std": 0.03858825358034426
+      },
+      "diag_phi_vs_edge": {
+        "pearson": -0.7228389526314386,
+        "spearman": -0.7787118628063633,
+        "n": 139805,
+        "learned_std": 1.3068660242819994,
+        "truth_std": 1.0855256235976296,
+        "slope": -0.8702269644182689,
+        "intercept": -1.0074070014314027,
+        "pearson_per_sample": -0.6987945916923117,
+        "intercept_per_sample_std": 0.03858825358034426
+      },
+      "sat": 0.03160115875683989
+    },
+    {
+      "layer": 2,
+      "type": "resolvent",
+      "diag_logratio_vs_edge": {
+        "pearson": -0.10703127214513355,
+        "spearman": -0.10605971485976155,
+        "n": 139805,
+        "learned_std": 2.025972431850239,
+        "truth_std": 1.0855256235976296,
+        "slope": -0.19975798083259025,
+        "intercept": -0.2698834040115021,
+        "pearson_per_sample": -0.10581063765419607,
+        "intercept_per_sample_std": 0.07280945159388914
+      },
+      "diag_phi_vs_edge": {
+        "pearson": -0.10703127214513355,
+        "spearman": -0.10605971485976155,
+        "n": 139805,
+        "learned_std": 2.025972431850239,
+        "truth_std": 1.0855256235976296,
+        "slope": -0.19975798083259025,
+        "intercept": -0.2698834040115021,
+        "pearson_per_sample": -0.10581063765419607,
+        "intercept_per_sample_std": 0.07280945159388914
+      },
+      "sat": 0.14739816172526019
+    },
+    {
+      "layer": 3,
+      "type": "poly",
+      "diag_logratio_vs_edge": {
+        "pearson": 0.9848544505707203,
+        "spearman": 0.9862125654852503,
+        "n": 139805,
+        "learned_std": 1.086688986591751,
+        "truth_std": 1.0855256235976296,
+        "slope": 0.9859099237880105,
+        "intercept": -0.06779580524537136,
+        "pearson_per_sample": 0.9821065819995483,
+        "intercept_per_sample_std": 0.0061114362366341875
+      },
+      "diag_phi_vs_edge": {
+        "pearson": 0.9848544505707203,
+        "spearman": 0.9862125654852503,
+        "n": 139805,
+        "learned_std": 1.086688986591751,
+        "truth_std": 1.0855256235976296,
+        "slope": 0.9859099237880105,
+        "intercept": -0.06779580524537136,
+        "pearson_per_sample": 0.9821065819995483,
+        "intercept_per_sample_std": 0.0061114362366341875
+      },
+      "sat": 5.7222559994277744e-05
+    }
+  ],
+  "test_R2": 0.8048863250099239,
+  "fine_R2": 0.6956623432078897,
+  "seconds": 4.66155481338501
+}

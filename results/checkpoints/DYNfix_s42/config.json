@@ -1,0 +1,274 @@
+{
+  "args": {
+    "task": "DYNfix",
+    "native": true,
+    "root": null,
+    "out": "runs/suite/DYNfix_s42",
+    "device": null,
+    "epochs": 100,
+    "seed": 42,
+    "model": "rhmp",
+    "param_budget": null,
+    "model_opts": null,
+    "C": null,
+    "layers": null,
+    "metric_type": "diag",
+    "resolvent_iters": null,
+    "resolvent_grad": null,
+    "latent": null,
+    "metric_ref": null,
+    "material": null,
+    "solver_mode": false,
+    "solve_iters": null,
+    "solve_precond": null,
+    "solve_bc": null,
+    "tensor_param": null,
+    "aux_pde": 0.0,
+    "no_learn_metric": false,
+    "poly": 2,
+    "log_range": 2.0,
+    "metric_hidden": 32,
+    "scaling": "dec",
+    "tie": true,
+    "no_cross": false,
+    "gate": "norm",
+    "identity_metric": false,
+    "star": "cotan",
+    "vector_mode": null,
+    "connection_odd": null,
+    "no_connection": false,
+    "no_output_map": false,
+    "batch": null,
+    "bs_meshes": null,
+    "eval_batch": null,
+    "lr": 0.001,
+    "wd": 1e-05,
+    "eta_min": 1e-05,
+    "clip": 1.0,
+    "amp": false,
+    "compile": false,
+    "compile_backend": "inductor",
+    "ckpt_layers": false,
+    "no_tf32": false,
+    "max_samples": null,
+    "max_train_batches": null,
+    "no_fine": false,
+    "abs_scale": false,
+    "data_on": "auto",
+    "no_resume": false,
+    "force": false,
+    "check_data": false,
+    "eval_v1": null,
+    "eval_ckpt": null,
+    "v1_eval_batch": 1,
+    "quiet": false,
+    "stop_after": null
+  },
+  "model": {
+    "in_dims": {
+      "0": 1,
+      "1": 1
+    },
+    "even_dims": {},
+    "connection_dims": {},
+    "C": 128,
+    "n_layers": 4,
+    "poly_order": 2,
+    "metric_hidden": 32,
+    "log_range": 2.0,
+    "tie_metrics": true,
+    "scaling": "dec",
+    "cross": true,
+    "gate": "norm",
+    "identity_metric": false,
+    "readout": "node_scalar",
+    "out_dim": 1,
+    "vector_mode": "ls",
+    "checkpoint_layers": false,
+    "amp": false,
+    "connection_odd": false,
+    "lift_hidden": 64,
+    "fused": true,
+    "layers": null,
+    "resolvent_iters": 20,
+    "resolvent_grad": "implicit",
+    "metric_type": "diag",
+    "metric_reference": {},
+    "resolvent_warm_start": true,
+    "learn_metric": true,
+    "latent_dims": {},
+    "material_dims": {},
+    "lifting": "mlp",
+    "resolvent_normalize": true,
+    "solve_iters": 64,
+    "solve_tol": 1e-06,
+    "solve_bc": "dirichlet",
+    "tensor_param": "full",
+    "solve_precond": "none",
+    "readout_head": "mlp"
+  },
+  "params": 89749,
+  "data": {
+    "name": "DYNfix",
+    "native": true,
+    "N": 12500,
+    "cells": {
+      "0": 1500,
+      "1": 4341,
+      "2": 2842
+    },
+    "inputs": {
+      "0": [
+        12500,
+        1500,
+        1
+      ],
+      "1": [
+        12500,
+        4341,
+        1
+      ]
+    },
+    "target": [
+      12500,
+      1500,
+      1
+    ],
+    "target_degree": 0,
+    "target_kind": "node_scalar",
+    "readout": "node_scalar",
+    "target_readout": "node_scalar",
+    "output_map": null,
+    "in_dims": {
+      "0": 1,
+      "1": 1
+    },
+    "even_dims": {},
+    "connection_dims": {},
+    "split": [
+      8750,
+      1875,
+      1875
+    ],
+    "spatial_dim": 2,
+    "x_stats": {
+      "0": {
+        "mean": [
+          0.005642389878630638
+        ],
+        "std": [
+          0.2267102301120758
+        ],
+        "kind": "v1"
+      },
+      "1": {
+        "mean": [
+          0.0
+        ],
+        "std": [
+          0.008133777417242527
+        ],
+        "kind": "scale"
+      }
+    },
+    "y_stats": {
+      "mean": [
+        0.005653478670865297
+      ],
+      "std": [
+        0.22411228716373444
+      ],
+      "kind": "v1"
+    },
+    "extra_tests": [],
+    "meta": {
+      "v1_C": 128,
+      "batch_size": 64,
+      "layers": 4,
+      "source": "datasets/v2/DYNfix.pt",
+      "generator": {
+        "task": "DYN",
+        "set": "DYNfix",
+        "N": 500,
+        "seed": 2041,
+        "fixed_mesh": true,
+        "gen_seconds": 2.287303924560547,
+        "config": {
+          "n_modes": 4,
+          "spec_decay": 1.0,
+          "U": [
+            0.6,
+            1.0
+          ],
+          "nu": 0.01,
+          "dt": 0.005,
+          "substeps": 8,
+          "steps": 100,
+          "theta_cn": 0.5,
+          "upwind": 0.0,
+          "blobs": [
+            2,
+            5
+          ],
+          "blob_w": [
+            0.06,
+            0.15
+          ],
+          "blob_amp": [
+            0.5,
+            1.5
+          ],
+          "nmin": 1300,
+          "nmax": 1700,
+          "n_fix": 1500
+        },
+        "generator": "datasets/v2/gen_dyn.py",
+        "dt_stored": 0.04,
+        "edge_order": "unique src<dst pairs of the triangles, lexicographic",
+        "pde": "du/dt + v.grad u = nu Lap u on [0,1]^2, no-flux boundary, v = rot psi (psi = 0 on the boundary)",
+        "scheme": "finite volumes on the barycentric dual: stream-function dual fluxes (exactly div-free), central flux form (+ upwind*D), cotan diffusion, lumped mass, Crank-Nicolson"
+      },
+      "star": "cotan",
+      "windows_per_traj": 25,
+      "window_times": [
+        0,
+        4,
+        8,
+        12,
+        16,
+        20,
+        24,
+        28,
+        32,
+        36,
+        40,
+        44,
+        48,
+        52,
+        56,
+        60,
+        64,
+        68,
+        72,
+        76,
+        80,
+        84,
+        88,
+        92,
+        96
+      ],
+      "traj_split": [
+        350,
+        75,
+        75
+      ],
+      "rollout_steps": 100,
+      "target": "state",
+      "load_seconds": 1.0382018089294434,
+      "split_note": "sequential 70/15/15 over trajectories on one fixed mesh; task.rollout = test trajectories"
+    }
+  },
+  "load_seconds": 1.127150535583496,
+  "metric_reference_raw": true,
+  "raw_input_columns": {}
+}

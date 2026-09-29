@@ -1,0 +1,42 @@
+{
+  "test": {
+    "pde_res": {
+      "mean": 29.176881975292417,
+      "max": 80.00257846393906
+    },
+    "integral": {
+      "mean": 0.07640075052800782,
+      "max": 0.2192929994699124
+    },
+    "target_pde_res": {
+      "mean": 1.0191012265068075e-05,
+      "max": 1.9515583601943805e-05
+    },
+    "target_integral": {
+      "mean": 1.0706235921850684e-09,
+      "max": 4.817504030646427e-09
+    },
+    "N": 64,
+    "definition": "pde_res = |(M + K(S)) u - M f| / |M f|; integral = |sum M u - sum M f| / sum M|f| (exact: 0)"
+  },
+  "fine": {
+    "pde_res": {
+      "mean": 96.32440920305065,
+      "max": 191.59032110453512
+    },
+    "integral": {
+      "mean": 0.053976729147012945,
+      "max": 0.14229866790656814
+    },
+    "target_pde_res": {
+      "mean": 4.1666580732666305e-05,
+      "max": 7.38945017539167e-05
+    },
+    "target_integral": {
+      "mean": 3.7007138612924677e-10,
+      "max": 1.174252312543704e-09
+    },
+    "N": 16,
+    "definition": "pde_res = |(M + K(S)) u - M f| / |M f|; integral = |sum M u - sum M f| / sum M|f| (exact: 0)"
+  }
+}

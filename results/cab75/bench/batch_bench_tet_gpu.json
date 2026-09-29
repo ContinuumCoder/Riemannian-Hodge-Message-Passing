@@ -1,0 +1,34 @@
+{
+  "task": "TET_k100",
+  "C": 128,
+  "L": 4,
+  "amp": false,
+  "gpu": "NVIDIA RTX PRO 6000 Blackwell Workstation Edition",
+  "consistency_rel": 1.2152753141984077e-07,
+  "rows": [
+    {
+      "mode": "loop1",
+      "train_sps": 15.735254644966309,
+      "speedup": 1.0,
+      "peak_GB": 3.5373640060424805,
+      "infer_sps": 53.349688078382854,
+      "build_ms": 1.1588799476157874
+    },
+    {
+      "mode": "loop_acc8",
+      "train_sps": 15.867942103490646,
+      "speedup": 1.0084324951529644,
+      "peak_GB": 3.539452075958252,
+      "infer_sps": 58.352269072131456,
+      "build_ms": 1.1371327040251344
+    },
+    {
+      "mode": "block8",
+      "train_sps": 56.72042039870252,
+      "speedup": 3.6046712734227864,
+      "peak_GB": 9.036740779876709,
+      "infer_sps": 186.03681398250203,
+      "build_ms": 2.966140120406635
+    }
+  ]
+}

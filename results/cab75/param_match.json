@@ -1,0 +1,6487 @@
+{
+ "AHP_r100": {
+  "egnn": {
+   "cached": false,
+   "hidden": 20,
+   "option": {},
+   "params": 10281,
+   "ratio": 1.0342017905643295,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": false,
+    "even_dims": {
+     "1": 1,
+     "2": 2
+    },
+    "filter_init": "identity",
+    "geometry": "normalized",
+    "head": "node",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 2
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 9941,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn": {
+   "cached": false,
+   "hidden": 8,
+   "option": {},
+   "params": 10393,
+   "ratio": 1.0454682627502263,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 2,
+    "L": 15,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {
+     "1": 1,
+     "2": 2
+    },
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 2
+    },
+    "kind": "node_scalar",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 1,
+    "t": 0
+   },
+   "target": 9941,
+   "tol": 0.2,
+   "within_tol": true
+  }
+ },
+ "HP_k100": {
+  "clifford_smpn": {
+   "cached": false,
+   "hidden": 72,
+   "option": {},
+   "params": 96049,
+   "ratio": 1.067911186222079,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1
+    },
+    "filter_init": "identity",
+    "geometry": "normalized",
+    "head": "node",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 89941,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "cw_net": {
+   "cached": false,
+   "hidden": 56,
+   "option": {},
+   "params": 99121,
+   "ratio": 1.1020669105302365,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1
+    },
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 89941,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "deeponet": {
+   "cached": false,
+   "hidden": 184,
+   "option": {},
+   "params": 93049,
+   "ratio": 1.0345559867023937,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "even_dims": {
+     "1": 1,
+     "2": 1
+    },
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1
+    },
+    "kind": "node_scalar",
+    "native": true,
+    "nb": 64,
+    "out": 1,
+    "t": 0
+   },
+   "target": 89941,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "egnn": {
+   "cached": false,
+   "hidden": 64,
+   "option": {},
+   "params": 100417,
+   "ratio": 1.1164763567227405,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": false,
+    "even_dims": {
+     "1": 1,
+     "2": 1
+    },
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 89941,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gat": {
+   "cached": false,
+   "hidden": 172,
+   "option": {},
+   "params": 92193,
+   "ratio": 1.0250386364394437,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1
+    },
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 89941,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gauge_cnn": {
+   "cached": false,
+   "hidden": 100,
+   "option": {},
+   "params": 91405,
+   "ratio": 1.0162773373656064,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1
+    },
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 89941,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gcn": {
+   "cached": false,
+   "hidden": 172,
+   "option": {},
+   "params": 90129,
+   "ratio": 1.0020902591699004,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1
+    },
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 89941,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gem_cnn": {
+   "cached": false,
+   "hidden": 48,
+   "option": {},
+   "params": 92593,
+   "ratio": 1.0294859963754017,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1
+    },
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 89941,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn": {
+   "cached": false,
+   "hidden": 25,
+   "option": {},
+   "params": 92376,
+   "ratio": 1.0270733036101445,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 2,
+    "L": 15,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1
+    },
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1
+    },
+    "kind": "node_scalar",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 1,
+    "t": 0
+   },
+   "target": 89941,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn_fast": {
+   "cached": false,
+   "hidden": 36,
+   "option": {},
+   "params": 104689,
+   "ratio": 1.1639741608387721,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 2,
+    "L": 8,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1
+    },
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1
+    },
+    "kind": "node_scalar",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 1,
+    "t": 0
+   },
+   "target": 89941,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mpsn": {
+   "cached": false,
+   "hidden": 68,
+   "option": {},
+   "params": 95677,
+   "ratio": 1.0637751414816379,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1
+    },
+    "filter_init": "identity",
+    "geometry": "normalized",
+    "head": "node",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 89941,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "sccnn": {
+   "cached": false,
+   "hidden": 68,
+   "option": {},
+   "params": 94093,
+   "ratio": 1.0461635961352442,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1
+    },
+    "filter_init": "identity",
+    "geometry": "normalized",
+    "head": "node",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 89941,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "schnet": {
+   "cached": false,
+   "hidden": 104,
+   "option": {},
+   "params": 95785,
+   "ratio": 1.0649759286643465,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1
+    },
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 89941,
+   "tol": 0.2,
+   "within_tol": true
+  }
+ },
+ "HPflux_k100": {
+  "clifford_smpn": {
+   "cached": false,
+   "hidden": 64,
+   "option": {},
+   "params": 80321,
+   "ratio": 1.0938742713951082,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1
+    },
+    "filter_init": "identity",
+    "geometry": "normalized",
+    "head": "node",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 73428,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "cw_net": {
+   "cached": false,
+   "hidden": 48,
+   "option": {},
+   "params": 75409,
+   "ratio": 1.0269788091736123,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1
+    },
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 73428,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "egnn": {
+   "cached": false,
+   "hidden": 56,
+   "option": {},
+   "params": 83497,
+   "ratio": 1.1371275262842513,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": false,
+    "even_dims": {
+     "1": 1,
+     "2": 1
+    },
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 73428,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gat": {
+   "cached": false,
+   "hidden": 120,
+   "option": {},
+   "params": 74641,
+   "ratio": 1.0165195838099907,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1
+    },
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 73428,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gauge_cnn": {
+   "cached": false,
+   "hidden": 88,
+   "option": {},
+   "params": 78765,
+   "ratio": 1.0726834450073541,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1
+    },
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 73428,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gcn": {
+   "cached": false,
+   "hidden": 124,
+   "option": {},
+   "params": 78121,
+   "ratio": 1.0639129487389007,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1
+    },
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 73428,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gem_cnn": {
+   "cached": false,
+   "hidden": 44,
+   "option": {},
+   "params": 81797,
+   "ratio": 1.1139755951408181,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1
+    },
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 73428,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn": {
+   "cached": false,
+   "hidden": 24,
+   "option": {},
+   "params": 85297,
+   "ratio": 1.161641335730239,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 2,
+    "L": 15,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1
+    },
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1
+    },
+    "kind": "cochain",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 1,
+    "t": 1
+   },
+   "target": 73428,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn_fast": {
+   "cached": false,
+   "hidden": 32,
+   "option": {},
+   "params": 83073,
+   "ratio": 1.1313531622814186,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 2,
+    "L": 8,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1
+    },
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1
+    },
+    "kind": "cochain",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 1,
+    "t": 1
+   },
+   "target": 73428,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mpsn": {
+   "cached": false,
+   "hidden": 60,
+   "option": {},
+   "params": 78481,
+   "ratio": 1.0688157106280982,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1
+    },
+    "filter_init": "identity",
+    "geometry": "normalized",
+    "head": "node",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 73428,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "sccnn": {
+   "cached": false,
+   "hidden": 60,
+   "option": {},
+   "params": 77089,
+   "ratio": 1.0498583646565343,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1
+    },
+    "filter_init": "identity",
+    "geometry": "normalized",
+    "head": "node",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 73428,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "schnet": {
+   "cached": false,
+   "hidden": 84,
+   "option": {},
+   "params": 78205,
+   "ratio": 1.0650569265130467,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1
+    },
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 73428,
+   "tol": 0.2,
+   "within_tol": true
+  }
+ },
+ "T1": {
+  "clifford_smpn": {
+   "cached": false,
+   "hidden": 72,
+   "option": {},
+   "params": 90937,
+   "ratio": 1.0110739262405355,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "v1",
+    "geometry": "normalized",
+    "head": "v1_edge",
+    "in_dims": {
+     "0": 4
+    },
+    "kind": "even",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": false,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 89941,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "cw_net": {
+   "cached": false,
+   "hidden": 56,
+   "option": {},
+   "params": 99177,
+   "ratio": 1.1026895409212707,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 4
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 89941,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "deeponet": {
+   "cached": false,
+   "hidden": 184,
+   "option": {},
+   "params": 93233,
+   "ratio": 1.0366017722729344,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "even_dims": {},
+    "in_dims": {
+     "0": 4
+    },
+    "kind": "node_scalar",
+    "native": false,
+    "nb": 64,
+    "out": 1,
+    "t": 0
+   },
+   "target": 89941,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "egnn": {
+   "cached": false,
+   "hidden": 64,
+   "option": {},
+   "params": 100481,
+   "ratio": 1.1171879343124937,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": false,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 4
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 89941,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "fno": {
+   "cached": false,
+   "hidden": 20,
+   "option": {
+    "modes": 4
+   },
+   "params": 106997,
+   "ratio": 1.1896354276692498,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "L": 4,
+    "even_dims": {},
+    "in_dims": {
+     "0": 4
+    },
+    "kind": "node_scalar",
+    "modes": null,
+    "native": false,
+    "out": 1,
+    "t": 0
+   },
+   "target": 89941,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gat": {
+   "cached": false,
+   "hidden": 172,
+   "option": {},
+   "params": 92365,
+   "ratio": 1.0269510012119056,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 4
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 89941,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gauge_cnn": {
+   "cached": false,
+   "hidden": 100,
+   "option": {},
+   "params": 91505,
+   "ratio": 1.0173891773495958,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 4
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 89941,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gcn": {
+   "cached": false,
+   "hidden": 172,
+   "option": {},
+   "params": 90301,
+   "ratio": 1.0040026239423623,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 4
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 89941,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gem_cnn": {
+   "cached": false,
+   "hidden": 48,
+   "option": {},
+   "params": 92641,
+   "ratio": 1.0300196795677166,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 4
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 89941,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn": {
+   "cached": false,
+   "hidden": 24,
+   "option": {},
+   "params": 85369,
+   "ratio": 1.1636361158061175,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 2,
+    "L": 15,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {},
+    "in_dims": {
+     "0": 2,
+     "1": 1
+    },
+    "kind": "node_scalar",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 1,
+    "t": 0
+   },
+   "target": 73364,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn_fast": {
+   "cached": false,
+   "hidden": 32,
+   "option": {},
+   "params": 83169,
+   "ratio": 1.1336486560165748,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 2,
+    "L": 8,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {},
+    "in_dims": {
+     "0": 2,
+     "1": 1
+    },
+    "kind": "node_scalar",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 1,
+    "t": 0
+   },
+   "target": 73364,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mpsn": {
+   "cached": false,
+   "hidden": 72,
+   "option": {},
+   "params": 96769,
+   "ratio": 1.0759164341068033,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "v1",
+    "geometry": "normalized",
+    "head": "v1_edge",
+    "in_dims": {
+     "0": 4
+    },
+    "kind": "even",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": false,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 89941,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "sccnn": {
+   "cached": false,
+   "hidden": 72,
+   "option": {},
+   "params": 95089,
+   "ratio": 1.0572375223757797,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "v1",
+    "geometry": "normalized",
+    "head": "v1_edge",
+    "in_dims": {
+     "0": 4
+    },
+    "kind": "even",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": false,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 89941,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "schnet": {
+   "cached": false,
+   "hidden": 104,
+   "option": {},
+   "params": 95889,
+   "ratio": 1.0661322422476958,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 4
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 89941,
+   "tol": 0.2,
+   "within_tol": true
+  }
+ },
+ "T1q": {
+  "clifford_smpn": {
+   "cached": false,
+   "hidden": 64,
+   "option": {},
+   "params": 76289,
+   "ratio": 1.0398696908565508,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "identity",
+    "geometry": "normalized",
+    "head": "node",
+    "in_dims": {
+     "0": 2,
+     "1": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 73364,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "cw_net": {
+   "cached": false,
+   "hidden": 52,
+   "option": {},
+   "params": 85697,
+   "ratio": 1.1681069734474674,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 2,
+     "1": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 73364,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "deeponet": {
+   "cached": false,
+   "hidden": 160,
+   "option": {},
+   "params": 73569,
+   "ratio": 1.0027942860258436,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "even_dims": {},
+    "in_dims": {
+     "0": 2,
+     "1": 1
+    },
+    "kind": "node_scalar",
+    "native": true,
+    "nb": 64,
+    "out": 1,
+    "t": 0
+   },
+   "target": 73364,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "egnn": {
+   "cached": false,
+   "hidden": 56,
+   "option": {},
+   "params": 77113,
+   "ratio": 1.0511013576140886,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": false,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 2,
+     "1": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 73364,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "fno": {
+   "cached": false,
+   "hidden": 17,
+   "option": {
+    "modes": 4
+   },
+   "params": 77743,
+   "ratio": 1.0596886756447303,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "L": 4,
+    "even_dims": {},
+    "in_dims": {
+     "0": 2,
+     "1": 1
+    },
+    "kind": "node_scalar",
+    "modes": null,
+    "native": true,
+    "out": 1,
+    "t": 0
+   },
+   "target": 73364,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gat": {
+   "cached": false,
+   "hidden": 156,
+   "option": {},
+   "params": 76441,
+   "ratio": 1.0419415517147375,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 2,
+     "1": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 73364,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gauge_cnn": {
+   "cached": false,
+   "hidden": 92,
+   "option": {},
+   "params": 77653,
+   "ratio": 1.0584619159260673,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 2,
+     "1": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 73364,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gcn": {
+   "cached": false,
+   "hidden": 156,
+   "option": {},
+   "params": 74569,
+   "ratio": 1.016424949566545,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 2,
+     "1": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 73364,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gem_cnn": {
+   "cached": false,
+   "hidden": 44,
+   "option": {},
+   "params": 77925,
+   "ratio": 1.062169456409138,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 2,
+     "1": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 73364,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn": {
+   "cached": false,
+   "hidden": 24,
+   "option": {},
+   "params": 85369,
+   "ratio": 1.1636361158061175,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 2,
+    "L": 15,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {},
+    "in_dims": {
+     "0": 2,
+     "1": 1
+    },
+    "kind": "node_scalar",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 1,
+    "t": 0
+   },
+   "target": 73364,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn_fast": {
+   "cached": false,
+   "hidden": 32,
+   "option": {},
+   "params": 83169,
+   "ratio": 1.1336486560165748,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 2,
+    "L": 8,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {},
+    "in_dims": {
+     "0": 2,
+     "1": 1
+    },
+    "kind": "node_scalar",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 1,
+    "t": 0
+   },
+   "target": 73364,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mpsn": {
+   "cached": false,
+   "hidden": 60,
+   "option": {},
+   "params": 74941,
+   "ratio": 1.0214955564036858,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "identity",
+    "geometry": "normalized",
+    "head": "node",
+    "in_dims": {
+     "0": 2,
+     "1": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 73364,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "sccnn": {
+   "cached": false,
+   "hidden": 60,
+   "option": {},
+   "params": 73549,
+   "ratio": 1.0025216727550297,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "identity",
+    "geometry": "normalized",
+    "head": "node",
+    "in_dims": {
+     "0": 2,
+     "1": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 73364,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "schnet": {
+   "cached": false,
+   "hidden": 92,
+   "option": {},
+   "params": 76085,
+   "ratio": 1.037089035494248,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 2,
+     "1": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 73364,
+   "tol": 0.2,
+   "within_tol": true
+  }
+ },
+ "T2": {
+  "clifford_smpn": {
+   "cached": false,
+   "hidden": 44,
+   "option": {},
+   "params": 34497,
+   "ratio": 1.0970583558594371,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "v1",
+    "geometry": "normalized",
+    "head": "v1_edge",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "even",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": false,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 31445,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "cw_net": {
+   "cached": false,
+   "hidden": 32,
+   "option": {},
+   "params": 32769,
+   "ratio": 1.0421052631578946,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 31445,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "deeponet": {
+   "cached": false,
+   "hidden": 96,
+   "option": {},
+   "params": 31617,
+   "ratio": 1.0054698680235332,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "even_dims": {},
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_scalar",
+    "native": true,
+    "nb": 64,
+    "out": 1,
+    "t": 0
+   },
+   "target": 31445,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "egnn": {
+   "cached": false,
+   "hidden": 36,
+   "option": {},
+   "params": 32221,
+   "ratio": 1.024678009222452,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": false,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 31445,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gat": {
+   "cached": false,
+   "hidden": 100,
+   "option": {},
+   "params": 31801,
+   "ratio": 1.0113213547463826,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 31445,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gauge_cnn": {
+   "cached": false,
+   "hidden": 60,
+   "option": {},
+   "params": 33125,
+   "ratio": 1.0534266179042773,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 31445,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gcn": {
+   "cached": false,
+   "hidden": 104,
+   "option": {},
+   "params": 33073,
+   "ratio": 1.0517729368739068,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 31445,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gem_cnn": {
+   "cached": false,
+   "hidden": 28,
+   "option": {},
+   "params": 31557,
+   "ratio": 1.0035617745269518,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 31445,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn": {
+   "cached": false,
+   "hidden": 15,
+   "option": {},
+   "params": 34246,
+   "ratio": 1.089076164732072,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 3,
+    "L": 15,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {},
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_scalar",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 1,
+    "t": 0
+   },
+   "target": 31445,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn_fast": {
+   "cached": false,
+   "hidden": 20,
+   "option": {},
+   "params": 33161,
+   "ratio": 1.054571474002226,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 3,
+    "L": 8,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {},
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_scalar",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 1,
+    "t": 0
+   },
+   "target": 31445,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mpsn": {
+   "cached": false,
+   "hidden": 44,
+   "option": {},
+   "params": 36829,
+   "ratio": 1.1712195897598983,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "v1",
+    "geometry": "normalized",
+    "head": "v1_edge",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "even",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": false,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 31445,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "sccnn": {
+   "cached": false,
+   "hidden": 44,
+   "option": {},
+   "params": 35821,
+   "ratio": 1.1391636190173318,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "v1",
+    "geometry": "normalized",
+    "head": "v1_edge",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "even",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": false,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 31445,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "schnet": {
+   "cached": false,
+   "hidden": 60,
+   "option": {},
+   "params": 34021,
+   "ratio": 1.081920814119892,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 31445,
+   "tol": 0.2,
+   "within_tol": true
+  }
+ },
+ "T3": {
+  "clifford_smpn": {
+   "cached": false,
+   "hidden": 40,
+   "option": {},
+   "params": 28641,
+   "ratio": 1.0497361090749158,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "v1",
+    "geometry": "normalized",
+    "head": "v1_edge",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "even",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": false,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 27284,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "cw_net": {
+   "cached": false,
+   "hidden": 30,
+   "option": {},
+   "params": 28923,
+   "ratio": 1.0600718369740507,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_vector",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 3,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 27284,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "deeponet": {
+   "cached": false,
+   "hidden": 68,
+   "option": {},
+   "params": 27459,
+   "ratio": 1.0064140155402435,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "even_dims": {},
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_vector",
+    "native": false,
+    "nb": 64,
+    "out": 3,
+    "t": 0
+   },
+   "target": 27284,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "egnn": {
+   "cached": false,
+   "hidden": 36,
+   "option": {},
+   "params": 32295,
+   "ratio": 1.1836607535551973,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": false,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_vector",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 3,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 27284,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gat": {
+   "cached": false,
+   "hidden": 96,
+   "option": {},
+   "params": 29571,
+   "ratio": 1.0838220202316375,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_vector",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 3,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 27284,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gauge_cnn": {
+   "cached": false,
+   "hidden": 56,
+   "option": {},
+   "params": 29015,
+   "ratio": 1.0634437765723501,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_vector",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 3,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 27284,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gcn": {
+   "cached": false,
+   "hidden": 96,
+   "option": {},
+   "params": 28419,
+   "ratio": 1.0415994722181499,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_vector",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 3,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 27284,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gem_cnn": {
+   "cached": false,
+   "hidden": 28,
+   "option": {},
+   "params": 31615,
+   "ratio": 1.15873772174168,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_vector",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 3,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 27284,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn": {
+   "cached": false,
+   "hidden": 14,
+   "option": {},
+   "params": 30019,
+   "ratio": 1.0134364133553897,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 3,
+    "L": 15,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {},
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_vector",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 3,
+    "t": 0
+   },
+   "target": 29621,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn_fast": {
+   "cached": false,
+   "hidden": 20,
+   "option": {},
+   "params": 33203,
+   "ratio": 1.1209277201985077,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 3,
+    "L": 8,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {},
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_vector",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 3,
+    "t": 0
+   },
+   "target": 29621,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mpsn": {
+   "cached": false,
+   "hidden": 40,
+   "option": {},
+   "params": 30601,
+   "ratio": 1.1215730831256414,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "v1",
+    "geometry": "normalized",
+    "head": "v1_edge",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "even",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": false,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 27284,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "sccnn": {
+   "cached": false,
+   "hidden": 40,
+   "option": {},
+   "params": 29689,
+   "ratio": 1.0881468992816303,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "v1",
+    "geometry": "normalized",
+    "head": "v1_edge",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "even",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": false,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 27284,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "schnet": {
+   "cached": false,
+   "hidden": 56,
+   "option": {},
+   "params": 30075,
+   "ratio": 1.1022943849875384,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_vector",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 3,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 27284,
+   "tol": 0.2,
+   "within_tol": true
+  }
+ },
+ "T5": {
+  "clifford_smpn": {
+   "cached": false,
+   "hidden": 88,
+   "option": {},
+   "params": 134817,
+   "ratio": 1.0286505623292792,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "v1",
+    "geometry": "normalized",
+    "head": "v1_edge",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "even",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": false,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 131062,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "cw_net": {
+   "cached": false,
+   "hidden": 68,
+   "option": {},
+   "params": 145590,
+   "ratio": 1.1108483008041996,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 2,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 131062,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "deeponet": {
+   "cached": false,
+   "hidden": 212,
+   "option": {},
+   "params": 132270,
+   "ratio": 1.0092170117959438,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "even_dims": {},
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_scalar",
+    "native": false,
+    "nb": 64,
+    "out": 2,
+    "t": 0
+   },
+   "target": 131062,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "egnn": {
+   "cached": false,
+   "hidden": 76,
+   "option": {},
+   "params": 141058,
+   "ratio": 1.0762692466161055,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": false,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 2,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 131062,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gat": {
+   "cached": false,
+   "hidden": 208,
+   "option": {},
+   "params": 133746,
+   "ratio": 1.0204788573346966,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 2,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 131062,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gauge_cnn": {
+   "cached": false,
+   "hidden": 120,
+   "option": {},
+   "params": 131166,
+   "ratio": 1.0007935175718363,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 2,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 131062,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gcn": {
+   "cached": false,
+   "hidden": 208,
+   "option": {},
+   "params": 131250,
+   "ratio": 1.001434435610627,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 2,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 131062,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gem_cnn": {
+   "cached": false,
+   "hidden": 60,
+   "option": {},
+   "params": 144482,
+   "ratio": 1.1023942866734828,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 2,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 131062,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn": {
+   "cached": false,
+   "hidden": 28,
+   "option": {},
+   "params": 115250,
+   "ratio": 1.0961575042800076,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 2,
+    "L": 15,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {},
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_vector",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 2,
+    "t": 0
+   },
+   "target": 105140,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn_fast": {
+   "cached": false,
+   "hidden": 37,
+   "option": {},
+   "params": 110410,
+   "ratio": 1.0501236446642572,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 2,
+    "L": 8,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {},
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_vector",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 2,
+    "t": 0
+   },
+   "target": 105140,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mpsn": {
+   "cached": false,
+   "hidden": 88,
+   "option": {},
+   "params": 143353,
+   "ratio": 1.0937800430330684,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "v1",
+    "geometry": "normalized",
+    "head": "v1_edge",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "even",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": false,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 131062,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "sccnn": {
+   "cached": false,
+   "hidden": 88,
+   "option": {},
+   "params": 141289,
+   "ratio": 1.07803177122278,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "v1",
+    "geometry": "normalized",
+    "head": "v1_edge",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "even",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": false,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 131062,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "schnet": {
+   "cached": false,
+   "hidden": 124,
+   "option": {},
+   "params": 133922,
+   "ratio": 1.0218217332254964,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 2,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 131062,
+   "tol": 0.2,
+   "within_tol": true
+  }
+ },
+ "T6": {
+  "clifford_smpn": {
+   "cached": false,
+   "hidden": 72,
+   "option": {},
+   "params": 90865,
+   "ratio": 1.0117132263703472,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "v1",
+    "geometry": "normalized",
+    "head": "v1_edge",
+    "in_dims": {
+     "0": 3
+    },
+    "kind": "even",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": false,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 89813,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "cw_net": {
+   "cached": false,
+   "hidden": 56,
+   "option": {},
+   "params": 99121,
+   "ratio": 1.1036375580372553,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 3
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 89813,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "deeponet": {
+   "cached": false,
+   "hidden": 184,
+   "option": {},
+   "params": 93049,
+   "ratio": 1.036030418758977,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "even_dims": {},
+    "in_dims": {
+     "0": 3
+    },
+    "kind": "node_scalar",
+    "native": false,
+    "nb": 64,
+    "out": 1,
+    "t": 0
+   },
+   "target": 89813,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "egnn": {
+   "cached": false,
+   "hidden": 64,
+   "option": {},
+   "params": 100289,
+   "ratio": 1.1166423568971084,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": false,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 3
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": [
+     0
+    ],
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 89813,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gat": {
+   "cached": false,
+   "hidden": 172,
+   "option": {},
+   "params": 92193,
+   "ratio": 1.0264995045260707,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 3
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 89813,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gauge_cnn": {
+   "cached": false,
+   "hidden": 100,
+   "option": {},
+   "params": 91405,
+   "ratio": 1.0177257189939095,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 3
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 89813,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gcn": {
+   "cached": false,
+   "hidden": 172,
+   "option": {},
+   "params": 90129,
+   "ratio": 1.0035184216093438,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 3
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 89813,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gem_cnn": {
+   "cached": false,
+   "hidden": 48,
+   "option": {},
+   "params": 92593,
+   "ratio": 1.0309532027657466,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 3
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 89813,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn": {
+   "cached": false,
+   "hidden": 24,
+   "option": {},
+   "params": 85321,
+   "ratio": 1.1680767756420787,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 2,
+    "L": 15,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {},
+    "in_dims": {
+     "1": 1
+    },
+    "kind": "node_scalar",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 1,
+    "t": 0
+   },
+   "target": 73044,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn_fast": {
+   "cached": false,
+   "hidden": 32,
+   "option": {},
+   "params": 83105,
+   "ratio": 1.137738897103116,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 2,
+    "L": 8,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {},
+    "in_dims": {
+     "1": 1
+    },
+    "kind": "node_scalar",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 1,
+    "t": 0
+   },
+   "target": 73044,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mpsn": {
+   "cached": false,
+   "hidden": 72,
+   "option": {},
+   "params": 96697,
+   "ratio": 1.0766481467048201,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "v1",
+    "geometry": "normalized",
+    "head": "v1_edge",
+    "in_dims": {
+     "0": 3
+    },
+    "kind": "even",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": false,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 89813,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "sccnn": {
+   "cached": false,
+   "hidden": 72,
+   "option": {},
+   "params": 95017,
+   "ratio": 1.0579426140981818,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "v1",
+    "geometry": "normalized",
+    "head": "v1_edge",
+    "in_dims": {
+     "0": 3
+    },
+    "kind": "even",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": false,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 89813,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "schnet": {
+   "cached": false,
+   "hidden": 104,
+   "option": {},
+   "params": 95785,
+   "ratio": 1.0664937147183593,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 3
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 89813,
+   "tol": 0.2,
+   "within_tol": true
+  }
+ },
+ "T6f": {
+  "clifford_smpn": {
+   "cached": false,
+   "hidden": 64,
+   "option": {},
+   "params": 76161,
+   "ratio": 1.042672909479218,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "identity",
+    "geometry": "normalized",
+    "head": "node",
+    "in_dims": {
+     "1": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 2,
+    "v1_exact": false
+   },
+   "target": 73044,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "cw_net": {
+   "cached": false,
+   "hidden": 48,
+   "option": {},
+   "params": 73057,
+   "ratio": 1.0001779749192268,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "1": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 2,
+    "v1_exact": false
+   },
+   "target": 73044,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "egnn": {
+   "cached": false,
+   "hidden": 56,
+   "option": {},
+   "params": 80193,
+   "ratio": 1.09787251519632,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": false,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "1": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 2,
+    "v1_exact": false
+   },
+   "target": 73044,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gat": {
+   "cached": false,
+   "hidden": 136,
+   "option": {},
+   "params": 76841,
+   "ratio": 1.0519823667926183,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "1": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 2,
+    "v1_exact": false
+   },
+   "target": 73044,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gauge_cnn": {
+   "cached": false,
+   "hidden": 92,
+   "option": {},
+   "params": 77469,
+   "ratio": 1.0605799244291112,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "1": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 2,
+    "v1_exact": false
+   },
+   "target": 73044,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gcn": {
+   "cached": false,
+   "hidden": 136,
+   "option": {},
+   "params": 75209,
+   "ratio": 1.029639669240458,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "1": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 2,
+    "v1_exact": false
+   },
+   "target": 73044,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gem_cnn": {
+   "cached": false,
+   "hidden": 44,
+   "option": {},
+   "params": 79817,
+   "ratio": 1.0927249329171458,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "1": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 2,
+    "v1_exact": false
+   },
+   "target": 73044,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn": {
+   "cached": false,
+   "hidden": 24,
+   "option": {},
+   "params": 85321,
+   "ratio": 1.1680767756420787,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 2,
+    "L": 15,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {},
+    "in_dims": {
+     "1": 1
+    },
+    "kind": "cochain",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 1,
+    "t": 2
+   },
+   "target": 73044,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn_fast": {
+   "cached": false,
+   "hidden": 32,
+   "option": {},
+   "params": 83105,
+   "ratio": 1.137738897103116,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 2,
+    "L": 8,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {},
+    "in_dims": {
+     "1": 1
+    },
+    "kind": "cochain",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 1,
+    "t": 2
+   },
+   "target": 73044,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mpsn": {
+   "cached": false,
+   "hidden": 60,
+   "option": {},
+   "params": 74821,
+   "ratio": 1.024327802420459,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "identity",
+    "geometry": "normalized",
+    "head": "node",
+    "in_dims": {
+     "1": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 2,
+    "v1_exact": false
+   },
+   "target": 73044,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "sccnn": {
+   "cached": false,
+   "hidden": 60,
+   "option": {},
+   "params": 73429,
+   "ratio": 1.0052707956847928,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "identity",
+    "geometry": "normalized",
+    "head": "node",
+    "in_dims": {
+     "1": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 2,
+    "v1_exact": false
+   },
+   "target": 73044,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "schnet": {
+   "cached": false,
+   "hidden": 88,
+   "option": {},
+   "params": 77617,
+   "ratio": 1.062606100432616,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "1": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 2,
+    "v1_exact": false
+   },
+   "target": 73044,
+   "tol": 0.2,
+   "within_tol": true
+  }
+ },
+ "T7": {
+  "clifford_smpn": {
+   "cached": false,
+   "hidden": 88,
+   "option": {},
+   "params": 135521,
+   "ratio": 1.0227768427884651,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "v1",
+    "geometry": "normalized",
+    "head": "v1_edge",
+    "in_dims": {
+     "0": 9
+    },
+    "kind": "even",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": false,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 132503,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "cw_net": {
+   "cached": false,
+   "hidden": 68,
+   "option": {},
+   "params": 146203,
+   "ratio": 1.1033938854214622,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 9
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 3,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 132503,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "deeponet": {
+   "cached": false,
+   "hidden": 200,
+   "option": {},
+   "params": 134459,
+   "ratio": 1.014761929918568,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "even_dims": {},
+    "in_dims": {
+     "0": 9
+    },
+    "kind": "node_scalar",
+    "native": false,
+    "nb": 64,
+    "out": 3,
+    "t": 0
+   },
+   "target": 132503,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "egnn": {
+   "cached": false,
+   "hidden": 76,
+   "option": {},
+   "params": 141287,
+   "ratio": 1.0662928386527097,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": false,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 9
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": [
+     0,
+     1,
+     2
+    ],
+    "normalize": true,
+    "out": 3,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 132503,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gat": {
+   "cached": false,
+   "hidden": 208,
+   "option": {},
+   "params": 135619,
+   "ratio": 1.0235164486841808,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 9
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 3,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 132503,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gauge_cnn": {
+   "cached": false,
+   "hidden": 124,
+   "option": {},
+   "params": 141119,
+   "ratio": 1.065024942831483,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 9
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 3,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 132503,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gcn": {
+   "cached": false,
+   "hidden": 208,
+   "option": {},
+   "params": 133123,
+   "ratio": 1.0046791393402414,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 9
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 3,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 132503,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gem_cnn": {
+   "cached": false,
+   "hidden": 60,
+   "option": {},
+   "params": 145023,
+   "ratio": 1.0944884266771318,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 9
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 3,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 132503,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn": {
+   "cached": false,
+   "hidden": 28,
+   "option": {},
+   "params": 115671,
+   "ratio": 1.0879105376020466,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 2,
+    "L": 15,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {},
+    "in_dims": {
+     "1": 3
+    },
+    "kind": "node_scalar",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 3,
+    "t": 0
+   },
+   "target": 106324,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn_fast": {
+   "cached": false,
+   "hidden": 37,
+   "option": {},
+   "params": 110966,
+   "ratio": 1.0436590045521237,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 2,
+    "L": 8,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {},
+    "in_dims": {
+     "1": 3
+    },
+    "kind": "node_scalar",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 3,
+    "t": 0
+   },
+   "target": 106324,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mpsn": {
+   "cached": false,
+   "hidden": 88,
+   "option": {},
+   "params": 144057,
+   "ratio": 1.0871980257050784,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "v1",
+    "geometry": "normalized",
+    "head": "v1_edge",
+    "in_dims": {
+     "0": 9
+    },
+    "kind": "even",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": false,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 132503,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "sccnn": {
+   "cached": false,
+   "hidden": 88,
+   "option": {},
+   "params": 141993,
+   "ratio": 1.0716210199014362,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "v1",
+    "geometry": "normalized",
+    "head": "v1_edge",
+    "in_dims": {
+     "0": 9
+    },
+    "kind": "even",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": false,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 132503,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "schnet": {
+   "cached": false,
+   "hidden": 124,
+   "option": {},
+   "params": 135039,
+   "ratio": 1.0191391893013744,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 9
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": false,
+    "node_columns": null,
+    "normalize": true,
+    "out": 3,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 132503,
+   "tol": 0.2,
+   "within_tol": true
+  }
+ },
+ "T7f": {
+  "clifford_smpn": {
+   "cached": false,
+   "hidden": 76,
+   "option": {},
+   "params": 107467,
+   "ratio": 1.0107501598886424,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "identity",
+    "geometry": "normalized",
+    "head": "node",
+    "in_dims": {
+     "1": 3
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 3,
+    "t": 2,
+    "v1_exact": false
+   },
+   "target": 106324,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "cw_net": {
+   "cached": false,
+   "hidden": 60,
+   "option": {},
+   "params": 114123,
+   "ratio": 1.073351265941838,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "1": 3
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 3,
+    "t": 2,
+    "v1_exact": false
+   },
+   "target": 106324,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "egnn": {
+   "cached": false,
+   "hidden": 68,
+   "option": {},
+   "params": 118051,
+   "ratio": 1.1102949475189046,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": false,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "1": 3
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 3,
+    "t": 2,
+    "v1_exact": false
+   },
+   "target": 106324,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gat": {
+   "cached": false,
+   "hidden": 160,
+   "option": {},
+   "params": 107043,
+   "ratio": 1.0067623490463113,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "1": 3
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 3,
+    "t": 2,
+    "v1_exact": false
+   },
+   "target": 106324,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gauge_cnn": {
+   "cached": false,
+   "hidden": 108,
+   "option": {},
+   "params": 107359,
+   "ratio": 1.009734396749558,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "1": 3
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 3,
+    "t": 2,
+    "v1_exact": false
+   },
+   "target": 106324,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gcn": {
+   "cached": false,
+   "hidden": 164,
+   "option": {},
+   "params": 110375,
+   "ratio": 1.0381005229299123,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "1": 3
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 3,
+    "t": 2,
+    "v1_exact": false
+   },
+   "target": 106324,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gem_cnn": {
+   "cached": false,
+   "hidden": 52,
+   "option": {},
+   "params": 111803,
+   "ratio": 1.051531168880027,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "1": 3
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 3,
+    "t": 2,
+    "v1_exact": false
+   },
+   "target": 106324,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn": {
+   "cached": false,
+   "hidden": 28,
+   "option": {},
+   "params": 115671,
+   "ratio": 1.0879105376020466,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 2,
+    "L": 15,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {},
+    "in_dims": {
+     "1": 3
+    },
+    "kind": "cochain",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 3,
+    "t": 2
+   },
+   "target": 106324,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn_fast": {
+   "cached": false,
+   "hidden": 37,
+   "option": {},
+   "params": 110966,
+   "ratio": 1.0436590045521237,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 2,
+    "L": 8,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {},
+    "in_dims": {
+     "1": 3
+    },
+    "kind": "cochain",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 3,
+    "t": 2
+   },
+   "target": 106324,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mpsn": {
+   "cached": false,
+   "hidden": 72,
+   "option": {},
+   "params": 107643,
+   "ratio": 1.0124054775967797,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "identity",
+    "geometry": "normalized",
+    "head": "node",
+    "in_dims": {
+     "1": 3
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 3,
+    "t": 2,
+    "v1_exact": false
+   },
+   "target": 106324,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "sccnn": {
+   "cached": false,
+   "hidden": 76,
+   "option": {},
+   "params": 117927,
+   "ratio": 1.1091287009518076,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "identity",
+    "geometry": "normalized",
+    "head": "node",
+    "in_dims": {
+     "1": 3
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 3,
+    "t": 2,
+    "v1_exact": false
+   },
+   "target": 106324,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "schnet": {
+   "cached": false,
+   "hidden": 104,
+   "option": {},
+   "params": 107539,
+   "ratio": 1.0114273353146985,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "1": 3
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 3,
+    "t": 2,
+    "v1_exact": false
+   },
+   "target": 106324,
+   "tol": 0.2,
+   "within_tol": true
+  }
+ },
+ "T8": {
+  "clifford_smpn": {
+   "cached": false,
+   "hidden": 132,
+   "option": {},
+   "params": 318649,
+   "ratio": 1.04613308732522,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "identity",
+    "geometry": "normalized",
+    "head": "node",
+    "in_dims": {
+     "0": 3
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 304597,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "cw_net": {
+   "cached": false,
+   "hidden": 100,
+   "option": {},
+   "params": 313401,
+   "ratio": 1.0289037646464017,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 3
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 304597,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "deeponet": {
+   "cached": false,
+   "hidden": 360,
+   "option": {},
+   "params": 308649,
+   "ratio": 1.013302823074423,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "even_dims": {},
+    "in_dims": {
+     "0": 3
+    },
+    "kind": "node_scalar",
+    "native": true,
+    "nb": 64,
+    "out": 1,
+    "t": 0
+   },
+   "target": 304597,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "egnn": {
+   "cached": false,
+   "hidden": 112,
+   "option": {},
+   "params": 304753,
+   "ratio": 1.0005121521223124,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": false,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 3
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 304597,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gat": {
+   "cached": false,
+   "hidden": 316,
+   "option": {},
+   "params": 305889,
+   "ratio": 1.004241670141203,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 3
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 304597,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gauge_cnn": {
+   "cached": false,
+   "hidden": 184,
+   "option": {},
+   "params": 307285,
+   "ratio": 1.0088247750306143,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 3
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 304597,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gcn": {
+   "cached": false,
+   "hidden": 320,
+   "option": {},
+   "params": 309761,
+   "ratio": 1.0169535484591115,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 3
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 304597,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gem_cnn": {
+   "cached": false,
+   "hidden": 88,
+   "option": {},
+   "params": 310553,
+   "ratio": 1.0195537053877746,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 3
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 304597,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn": {
+   "cached": false,
+   "hidden": 48,
+   "option": {},
+   "params": 332977,
+   "ratio": 1.0931722899437617,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 2,
+    "L": 15,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {},
+    "in_dims": {
+     "0": 3
+    },
+    "kind": "node_scalar",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 1,
+    "t": 0
+   },
+   "target": 304597,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn_fast": {
+   "cached": false,
+   "hidden": 64,
+   "option": {},
+   "params": 325825,
+   "ratio": 1.0696920849515918,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 2,
+    "L": 8,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {},
+    "in_dims": {
+     "0": 3
+    },
+    "kind": "node_scalar",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 1,
+    "t": 0
+   },
+   "target": 304597,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mpsn": {
+   "cached": false,
+   "hidden": 124,
+   "option": {},
+   "params": 313349,
+   "ratio": 1.0287330472722975,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "identity",
+    "geometry": "normalized",
+    "head": "node",
+    "in_dims": {
+     "0": 3
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 304597,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "sccnn": {
+   "cached": false,
+   "hidden": 124,
+   "option": {},
+   "params": 310421,
+   "ratio": 1.019120345899664,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "filter_init": "identity",
+    "geometry": "normalized",
+    "head": "node",
+    "in_dims": {
+     "0": 3
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 304597,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "schnet": {
+   "cached": false,
+   "hidden": 192,
+   "option": {},
+   "params": 312001,
+   "ratio": 1.02430752765129,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 2,
+    "directional": true,
+    "even_dims": {},
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 3
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 304597,
+   "tol": 0.2,
+   "within_tol": true
+  }
+ },
+ "TET_k100": {
+  "clifford_smpn": {
+   "cached": false,
+   "hidden": 80,
+   "option": {},
+   "params": 118321,
+   "ratio": 1.0136384274687524,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "filter_init": "identity",
+    "geometry": "normalized",
+    "head": "node",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 116729,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "cw_net": {
+   "cached": false,
+   "hidden": 64,
+   "option": {},
+   "params": 129217,
+   "ratio": 1.1069828405965956,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 116729,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "deeponet": {
+   "cached": false,
+   "hidden": 212,
+   "option": {},
+   "params": 119485,
+   "ratio": 1.023610242527564,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "even_dims": {
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "kind": "node_scalar",
+    "native": true,
+    "nb": 64,
+    "out": 1,
+    "t": 0
+   },
+   "target": 116729,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "egnn": {
+   "cached": false,
+   "hidden": 72,
+   "option": {},
+   "params": 126865,
+   "ratio": 1.0868336060447703,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": false,
+    "even_dims": {
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 116729,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gat": {
+   "cached": false,
+   "hidden": 196,
+   "option": {},
+   "params": 119365,
+   "ratio": 1.0225822203565524,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 116729,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gcn": {
+   "cached": false,
+   "hidden": 196,
+   "option": {},
+   "params": 117013,
+   "ratio": 1.0024329858047272,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 116729,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn": {
+   "cached": false,
+   "hidden": 29,
+   "option": {},
+   "params": 123570,
+   "ratio": 1.05860583059908,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 3,
+    "L": 15,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "kind": "node_scalar",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 1,
+    "t": 0
+   },
+   "target": 116729,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn_fast": {
+   "cached": false,
+   "hidden": 40,
+   "option": {},
+   "params": 128881,
+   "ratio": 1.1041043785177633,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 3,
+    "L": 8,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "kind": "node_scalar",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 1,
+    "t": 0
+   },
+   "target": 116729,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mpsn": {
+   "cached": false,
+   "hidden": 76,
+   "option": {},
+   "params": 119169,
+   "ratio": 1.0209031174772336,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "filter_init": "identity",
+    "geometry": "normalized",
+    "head": "node",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 116729,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "sccnn": {
+   "cached": false,
+   "hidden": 76,
+   "option": {},
+   "params": 117393,
+   "ratio": 1.0056883893462636,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "filter_init": "identity",
+    "geometry": "normalized",
+    "head": "node",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 116729,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "schnet": {
+   "cached": false,
+   "hidden": 116,
+   "option": {},
+   "params": 118089,
+   "ratio": 1.0116509179381301,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "kind": "node_scalar",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 0,
+    "v1_exact": false
+   },
+   "target": 116729,
+   "tol": 0.2,
+   "within_tol": true
+  }
+ },
+ "TETflux_k100": {
+  "clifford_smpn": {
+   "cached": false,
+   "hidden": 72,
+   "option": {},
+   "params": 101377,
+   "ratio": 1.0115849764508662,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "filter_init": "identity",
+    "geometry": "normalized",
+    "head": "node",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 100216,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "cw_net": {
+   "cached": false,
+   "hidden": 56,
+   "option": {},
+   "params": 102369,
+   "ratio": 1.0214835954338628,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 100216,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "egnn": {
+   "cached": false,
+   "hidden": 64,
+   "option": {},
+   "params": 108801,
+   "ratio": 1.0856649636784546,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": false,
+    "even_dims": {
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 100216,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gat": {
+   "cached": false,
+   "hidden": 140,
+   "option": {},
+   "params": 101221,
+   "ratio": 1.0100283387882174,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 100216,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "gcn": {
+   "cached": false,
+   "hidden": 144,
+   "option": {},
+   "params": 105265,
+   "ratio": 1.050381176658418,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 100216,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn": {
+   "cached": false,
+   "hidden": 28,
+   "option": {},
+   "params": 115361,
+   "ratio": 1.1511235730821425,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 3,
+    "L": 15,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "kind": "cochain",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 1,
+    "t": 1
+   },
+   "target": 100216,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mgn_fast": {
+   "cached": false,
+   "hidden": 36,
+   "option": {},
+   "params": 104761,
+   "ratio": 1.045352039594476,
+   "refine": true,
+   "refine_step": [
+    4,
+    1
+   ],
+   "scan": [
+    8,
+    800,
+    8
+   ],
+   "signature": {
+    "D": 3,
+    "L": 8,
+    "act": "relu",
+    "directional_edges": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "kind": "cochain",
+    "mlp_layers": 2,
+    "native": true,
+    "node_edge_encoding": true,
+    "normalized_geometry": true,
+    "out": 1,
+    "t": 1
+   },
+   "target": 100216,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "mpsn": {
+   "cached": false,
+   "hidden": 68,
+   "option": {},
+   "params": 100437,
+   "ratio": 1.0022052366887524,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "filter_init": "identity",
+    "geometry": "normalized",
+    "head": "node",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 100216,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "sccnn": {
+   "cached": false,
+   "hidden": 72,
+   "option": {},
+   "params": 110713,
+   "ratio": 1.1047437534924562,
+   "refine": true,
+   "refine_step": [
+    1
+   ],
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "filter_init": "identity",
+    "geometry": "normalized",
+    "head": "node",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 100216,
+   "tol": 0.2,
+   "within_tol": true
+  },
+  "schnet": {
+   "cached": false,
+   "hidden": 96,
+   "option": {},
+   "params": 100993,
+   "ratio": 1.007753252973577,
+   "refine": true,
+   "scan": [
+    16,
+    800,
+    4
+   ],
+   "signature": {
+    "D": 3,
+    "directional": true,
+    "even_dims": {
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "geometry": "normalized",
+    "in_dims": {
+     "0": 1,
+     "1": 1,
+     "2": 1,
+     "3": 1
+    },
+    "kind": "cochain",
+    "n_layers": 4,
+    "native": true,
+    "node_columns": null,
+    "normalize": true,
+    "out": 1,
+    "t": 1,
+    "v1_exact": false
+   },
+   "target": 100216,
+   "tol": 0.2,
+   "within_tol": true
+  }
+ }
+}

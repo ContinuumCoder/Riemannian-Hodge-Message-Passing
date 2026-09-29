@@ -1,0 +1,49 @@
+{
+  "run": "runs/aniso/AHP_r100_diag-solver_s42",
+  "task": "AHP_r100",
+  "metric_type": "diag",
+  "log_range": 5.0,
+  "layer_types": [
+    "solve"
+  ],
+  "metric_reference": {},
+  "material_dims": {},
+  "raw_input_columns": {},
+  "solver_mode": true,
+  "tensor_set": false,
+  "n_samples": 32,
+  "params": 1233,
+  "accessor": "metric_fields",
+  "layers": [
+    {
+      "layer": 0,
+      "type": "solve",
+      "diag_logratio_vs_edge": {
+        "pearson": 0.9176558525586348,
+        "spearman": 0.8996732906389101,
+        "n": 138148,
+        "learned_std": 1.6928306987460997,
+        "truth_std": 1.4591476218636765,
+        "slope": 1.0646188054031003,
+        "intercept": -1.3790619666373056,
+        "pearson_per_sample": 0.9140833900668052,
+        "intercept_per_sample_std": 0.013105475817289028
+      },
+      "diag_phi_vs_edge": {
+        "pearson": 0.9176558525586348,
+        "spearman": 0.8996732906389101,
+        "n": 138148,
+        "learned_std": 1.6928306987460997,
+        "truth_std": 1.4591476218636765,
+        "slope": 1.0646188054031003,
+        "intercept": -1.3790619666373056,
+        "pearson_per_sample": 0.9140833900668052,
+        "intercept_per_sample_std": 0.013105475817289028
+      },
+      "sat": 7.2386136607117e-06
+    }
+  ],
+  "test_R2": 0.8317636051900945,
+  "fine_R2": 0.6988926746023759,
+  "seconds": 3.255662202835083
+}

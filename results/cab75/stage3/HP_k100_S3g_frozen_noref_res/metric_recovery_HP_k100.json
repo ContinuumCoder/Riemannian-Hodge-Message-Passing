@@ -1,0 +1,133 @@
+{
+  "run": "runs/stage3/HP_k100_S3g_frozen_noref_res",
+  "task": "HP_k100",
+  "metric_type": "diag",
+  "log_range": 3.0,
+  "layer_types": [
+    "poly",
+    "poly",
+    "resolvent",
+    "poly"
+  ],
+  "metric_reference": {},
+  "material_dims": {},
+  "raw_input_columns": {},
+  "solver_mode": false,
+  "tensor_set": false,
+  "n_samples": 32,
+  "params": 85317,
+  "accessor": "metric_fields",
+  "layers": [
+    {
+      "layer": 0,
+      "type": "poly",
+      "diag_logratio_vs_edge": {
+        "pearson": NaN,
+        "spearman": NaN,
+        "n": 139805,
+        "learned_std": 0.0,
+        "truth_std": 1.0855256235976296,
+        "slope": 0.0,
+        "intercept": 0.0,
+        "pearson_per_sample": NaN,
+        "intercept_per_sample_std": 0.0
+      },
+      "diag_phi_vs_edge": {
+        "pearson": NaN,
+        "spearman": NaN,
+        "n": 139805,
+        "learned_std": 0.0,
+        "truth_std": 1.0855256235976296,
+        "slope": 0.0,
+        "intercept": 0.0,
+        "pearson_per_sample": NaN,
+        "intercept_per_sample_std": 0.0
+      },
+      "sat": 0.0
+    },
+    {
+      "layer": 1,
+      "type": "poly",
+      "diag_logratio_vs_edge": {
+        "pearson": NaN,
+        "spearman": NaN,
+        "n": 139805,
+        "learned_std": 0.0,
+        "truth_std": 1.0855256235976296,
+        "slope": 0.0,
+        "intercept": 0.0,
+        "pearson_per_sample": NaN,
+        "intercept_per_sample_std": 0.0
+      },
+      "diag_phi_vs_edge": {
+        "pearson": NaN,
+        "spearman": NaN,
+        "n": 139805,
+        "learned_std": 0.0,
+        "truth_std": 1.0855256235976296,
+        "slope": 0.0,
+        "intercept": 0.0,
+        "pearson_per_sample": NaN,
+        "intercept_per_sample_std": 0.0
+      },
+      "sat": 0.0
+    },
+    {
+      "layer": 2,
+      "type": "resolvent",
+      "diag_logratio_vs_edge": {
+        "pearson": NaN,
+        "spearman": NaN,
+        "n": 139805,
+        "learned_std": 0.0,
+        "truth_std": 1.0855256235976296,
+        "slope": 0.0,
+        "intercept": 0.0,
+        "pearson_per_sample": NaN,
+        "intercept_per_sample_std": 0.0
+      },
+      "diag_phi_vs_edge": {
+        "pearson": NaN,
+        "spearman": NaN,
+        "n": 139805,
+        "learned_std": 0.0,
+        "truth_std": 1.0855256235976296,
+        "slope": 0.0,
+        "intercept": 0.0,
+        "pearson_per_sample": NaN,
+        "intercept_per_sample_std": 0.0
+      },
+      "sat": 0.0
+    },
+    {
+      "layer": 3,
+      "type": "poly",
+      "diag_logratio_vs_edge": {
+        "pearson": NaN,
+        "spearman": NaN,
+        "n": 139805,
+        "learned_std": 0.0,
+        "truth_std": 1.0855256235976296,
+        "slope": 0.0,
+        "intercept": 0.0,
+        "pearson_per_sample": NaN,
+        "intercept_per_sample_std": 0.0
+      },
+      "diag_phi_vs_edge": {
+        "pearson": NaN,
+        "spearman": NaN,
+        "n": 139805,
+        "learned_std": 0.0,
+        "truth_std": 1.0855256235976296,
+        "slope": 0.0,
+        "intercept": 0.0,
+        "pearson_per_sample": NaN,
+        "intercept_per_sample_std": 0.0
+      },
+      "sat": 0.0
+    }
+  ],
+  "test_R2": 0.7966562483863735,
+  "fine_R2": 0.7163582286143091,
+  "seconds": 3.8185219764709473
+}

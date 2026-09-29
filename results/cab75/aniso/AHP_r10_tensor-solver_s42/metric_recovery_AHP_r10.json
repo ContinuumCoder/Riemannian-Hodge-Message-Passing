@@ -1,0 +1,65 @@
+{
+  "run": "runs/aniso/AHP_r10_tensor-solver_s42",
+  "task": "AHP_r10",
+  "metric_type": "tensor",
+  "log_range": 3.0,
+  "layer_types": [
+    "solve"
+  ],
+  "metric_reference": {},
+  "material_dims": {},
+  "raw_input_columns": {},
+  "solver_mode": true,
+  "tensor_set": false,
+  "n_samples": 32,
+  "params": 2451,
+  "accessor": "metric_fields",
+  "layers": [
+    {
+      "layer": 0,
+      "type": "solve",
+      "tensor_halflogdet_vs_face": {
+        "pearson": 0.7409039007169808,
+        "spearman": 0.7548741643078419,
+        "n": 90460,
+        "learned_std": 0.9631691769219284,
+        "truth_std": 1.511552466642763,
+        "slope": 0.4721078599519593,
+        "intercept": 0.10119979742828475,
+        "pearson_per_sample": 0.7047795796470471,
+        "intercept_per_sample_std": 0.01030145113568173
+      },
+      "tensor_logmeaneig_vs_face": {
+        "pearson": 0.7469266073269631,
+        "spearman": 0.7758093814652121,
+        "n": 90460,
+        "learned_std": 0.9943455387771283,
+        "truth_std": 1.511552466642763,
+        "slope": 0.49135121418516386,
+        "intercept": 0.7303132939250399,
+        "pearson_per_sample": 0.7121862373779461,
+        "intercept_per_sample_std": 0.02238676618892201
+      },
+      "tensor_anisotropy": {
+        "median": 11.149712677817412,
+        "p90": 35.83115784658469,
+        "max": 980.6156756847985,
+        "mean_log_ratio": 2.3986707028659873
+      },
+      "tensor_action_vs_edge": {
+        "pearson": 0.9299058093147435,
+        "spearman": 0.9323816116015992,
+        "n": 138148,
+        "learned_std": 1.5018230557052714,
+        "truth_std": 1.0432368535882388,
+        "slope": 1.3386739351276455,
+        "intercept": 0.10643231458702197,
+        "pearson_per_sample": 0.9269810577965898,
+        "intercept_per_sample_std": 0.06444521231466128
+      }
+    }
+  ],
+  "test_R2": 0.9922199516353716,
+  "fine_R2": 0.9275248091159598,
+  "seconds": 2.9554433822631836
+}

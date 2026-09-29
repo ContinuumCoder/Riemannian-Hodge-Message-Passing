@@ -1,0 +1,11 @@
+mgn            T6/native        exit=0 val_R2(ep100)=0.9878 test_R2=0.9857 s/epoch=28.2 peak=7.84GB params=0.452M width=56
+gat            T6/legacy        exit=0 val_R2(ep100)=0.6529 test_R2=0.6359 s/epoch=12.4 peak=7.06GB params=0.432M width=376
+egnn           T6/legacy        exit=0 val_R2(ep100)=0.8511 test_R2=0.8414 s/epoch=8.8 peak=3.48GB params=0.448M width=136
+schnet         T6/legacy        exit=0 val_R2(ep100)=0.9544 test_R2=0.9486 s/epoch=6.7 peak=3.97GB params=0.436M width=228
+cw_net         T6/legacy        exit=0 val_R2(ep100)=0.9433 test_R2=0.9413 s/epoch=8.3 peak=3.14GB params=0.450M width=120
+gauge_cnn      T6/legacy        exit=0 val_R2(ep100)=0.9877 test_R2=0.9866 s/epoch=18.5 peak=4.67GB params=0.439M width=220
+mgn            HP_k100/native   exit=0 val_R2(ep100)=0.9256 test_R2=0.9269 fine_R2=0.4345 s/epoch=30.0 peak=1.93GB params=0.452M width=56
+egnn           HP_k100/native   exit=0 val_R2(ep100)=0.8280 test_R2=0.8248 fine_R2=0.6614 s/epoch=19.3 peak=2.33GB params=0.448M width=136
+gat            HP_k100/native   exit=0 val_R2(ep100)=0.6946 test_R2=0.6969 fine_R2=0.6337 s/epoch=23.6 peak=3.08GB params=0.432M width=376
+schnet         HP_k100/native   exit=0 val_R2(ep100)=0.7825 test_R2=0.7809 fine_R2=0.6872 s/epoch=33.1 peak=3.32GB params=0.436M width=228
+cw_net         HP_k100/native   exit=0 val_R2(ep100)=0.8062 test_R2=0.8039 fine_R2=0.6583 s/epoch=25.9 peak=2.24GB params=0.450M width=120

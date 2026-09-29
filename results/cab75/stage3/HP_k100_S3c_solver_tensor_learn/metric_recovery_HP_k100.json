@@ -1,0 +1,75 @@
+{
+  "run": "runs/stage3/HP_k100_S3c_solver_tensor_learn",
+  "task": "HP_k100",
+  "metric_type": "tensor",
+  "log_range": 3.0,
+  "layer_types": [
+    "solve"
+  ],
+  "metric_reference": {},
+  "material_dims": {
+    "1": 1,
+    "2": 1
+  },
+  "raw_input_columns": {
+    "1": [
+      0
+    ],
+    "2": [
+      0
+    ]
+  },
+  "solver_mode": true,
+  "tensor_set": false,
+  "n_samples": 32,
+  "params": 2355,
+  "accessor": "metric_fields",
+  "layers": [
+    {
+      "layer": 0,
+      "type": "solve",
+      "tensor_halflogdet_vs_face": {
+        "pearson": 0.9961230724445147,
+        "spearman": 0.9976185694480918,
+        "n": 91550,
+        "learned_std": 1.1314025903694513,
+        "truth_std": 1.08484594092052,
+        "slope": 1.0388721402544931,
+        "intercept": 0.005252398310029032,
+        "pearson_per_sample": 0.9956678258517946,
+        "intercept_per_sample_std": 0.005967985480030677
+      },
+      "tensor_logmeaneig_vs_face": {
+        "pearson": 0.9947873308068728,
+        "spearman": 0.9970420324231699,
+        "n": 91550,
+        "learned_std": 1.1483516725212048,
+        "truth_std": 1.08484594092052,
+        "slope": 1.0530211268206893,
+        "intercept": 0.028067374540875455,
+        "pearson_per_sample": 0.9941898359678628,
+        "intercept_per_sample_std": 0.004632258302583344
+      },
+      "tensor_anisotropy": {
+        "median": 1.185695882937083,
+        "p90": 1.9997940225156383,
+        "max": 44.658559084200476,
+        "mean_log_ratio": 0.28731005051207154
+      },
+      "tensor_action_vs_edge": {
+        "pearson": 0.9933407042699154,
+        "spearman": 0.9963523829873876,
+        "n": 139805,
+        "learned_std": 1.215233965228581,
+        "truth_std": 1.0855256240294613,
+        "slope": 1.112033964147233,
+        "intercept": 0.05881845148948573,
+        "pearson_per_sample": 0.9925762321128322,
+        "intercept_per_sample_std": 0.006118349442499192
+      }
+    }
+  ],
+  "test_R2": 0.9999496590927762,
+  "fine_R2": 0.9999652674103873,
+  "seconds": 4.494612455368042
+}

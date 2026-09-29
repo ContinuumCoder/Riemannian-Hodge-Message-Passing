@@ -1,0 +1,55 @@
+{
+  "run": "runs/stage3/HP_k100_S3e_dec_frozen_diag_edgeref",
+  "task": "HP_k100",
+  "metric_type": "diag",
+  "log_range": 3.0,
+  "layer_types": [
+    "solve"
+  ],
+  "metric_reference": {
+    "1": 0
+  },
+  "material_dims": {},
+  "raw_input_columns": {
+    "1": [
+      0
+    ]
+  },
+  "solver_mode": true,
+  "tensor_set": false,
+  "n_samples": 32,
+  "params": 46,
+  "accessor": "metric_fields",
+  "layers": [
+    {
+      "layer": 0,
+      "type": "solve",
+      "diag_logratio_vs_edge": {
+        "pearson": 0.9999999999999991,
+        "spearman": 0.9999999999997717,
+        "n": 139805,
+        "learned_std": 1.0855256240033944,
+        "truth_std": 1.0855256240294613,
+        "slope": 0.9999999999759861,
+        "intercept": 7.123867718816067e-11,
+        "pearson_per_sample": 0.9999999999999988,
+        "intercept_per_sample_std": 8.379018091284957e-10
+      },
+      "diag_phi_vs_edge": {
+        "pearson": -0.0005255429651842097,
+        "spearman": -0.00308217201991932,
+        "n": 139805,
+        "learned_std": 4.9601866799789413e-08,
+        "truth_std": 1.0855256240294613,
+        "slope": -2.4014091956548613e-11,
+        "intercept": 7.12389043838741e-11,
+        "pearson_per_sample": 0.000494502871970149,
+        "intercept_per_sample_std": 8.379017999887504e-10
+      },
+      "sat": 0.0
+    }
+  ],
+  "test_R2": 0.9999875728165685,
+  "fine_R2": 0.9999938962655314,
+  "seconds": 4.66780948638916
+}

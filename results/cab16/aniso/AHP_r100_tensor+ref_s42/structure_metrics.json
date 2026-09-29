@@ -1,0 +1,42 @@
+{
+  "test": {
+    "pde_res": {
+      "mean": 259.7785814100651,
+      "max": 916.8881481495735
+    },
+    "bc": {
+      "mean": 0.006727863961900651,
+      "max": 0.017226153593759695
+    },
+    "target_pde_res": {
+      "mean": 3.04889958854254e-05,
+      "max": 0.00011162621629498699
+    },
+    "target_bc": {
+      "mean": 0.0,
+      "max": 0.0
+    },
+    "N": 64,
+    "definition": "pde_res = |K(S) u - M f|_I / |M f|_I (interior nodes, M = star0 = lumped mass); bc = |u_bnd| / |u|"
+  },
+  "fine": {
+    "pde_res": {
+      "mean": 1616.154901319579,
+      "max": 8031.746401327298
+    },
+    "bc": {
+      "mean": 0.003933288593219908,
+      "max": 0.008699379707929378
+    },
+    "target_pde_res": {
+      "mean": 0.00016091321106587132,
+      "max": 0.0007727924675528245
+    },
+    "target_bc": {
+      "mean": 0.0,
+      "max": 0.0
+    },
+    "N": 16,
+    "definition": "pde_res = |K(S) u - M f|_I / |M f|_I (interior nodes, M = star0 = lumped mass); bc = |u_bnd| / |u|"
+  }
+}

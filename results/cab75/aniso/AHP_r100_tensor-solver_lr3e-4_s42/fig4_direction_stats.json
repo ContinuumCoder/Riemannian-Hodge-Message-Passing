@@ -1,0 +1,14 @@
+{
+  "run": "results/checkpoints/AHP_r100_tensor-solver_lr3e-4_s42",
+  "task": "AHP_r100",
+  "test_index": 20,
+  "sample_id": 4250,
+  "n_vertices": 1288,
+  "n_triangles": 2430,
+  "n_strong": 2430,
+  "median_direction_error_deg_true_ratio_gt_10": 8.94785069676501,
+  "mean_direction_error_deg_true_ratio_gt_10": 11.030974313490457,
+  "median_ratio_learned": 186.12908144889053,
+  "median_ratio_true": 96.86725723297138,
+  "note": "one AHP_r100 test mesh (first test sample); written by scripts/make_figures.py (figure 4)"
+}

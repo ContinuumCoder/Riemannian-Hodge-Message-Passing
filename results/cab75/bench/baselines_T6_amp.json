@@ -1,0 +1,50 @@
+[
+ {
+  "model": "rhmp",
+  "task": "T6",
+  "mode": "native",
+  "params": 73044,
+  "hidden": 128,
+  "n_layers": 4,
+  "batch": 64,
+  "train_ms": 59.63037724723108,
+  "infer_ms": 18.094016599934548,
+  "peak_GB": 4.914198398590088,
+  "first_step_s": 0.3044378840131685,
+  "amp": true,
+  "compile": false,
+  "exclusive": true
+ },
+ {
+  "model": "mgn",
+  "task": "T6",
+  "mode": "native",
+  "params": 85249,
+  "hidden": 24,
+  "n_layers": 15,
+  "batch": 64,
+  "train_ms": 27.919203299097717,
+  "infer_ms": 9.135680895997211,
+  "peak_GB": 2.6076745986938477,
+  "first_step_s": 0.049926182022318244,
+  "amp": true,
+  "compile": false,
+  "exclusive": false
+ },
+ {
+  "model": "mgn_fast",
+  "task": "T6",
+  "mode": "native",
+  "params": 83009,
+  "hidden": 32,
+  "n_layers": 8,
+  "batch": 64,
+  "train_ms": 19.43902904749848,
+  "infer_ms": 5.574143602279946,
+  "peak_GB": 2.00747013092041,
+  "first_step_s": 0.030483722919598222,
+  "amp": true,
+  "compile": false,
+  "exclusive": true
+ }
+]

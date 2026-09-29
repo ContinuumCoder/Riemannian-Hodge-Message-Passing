@@ -1,0 +1,80 @@
+mgn            T3 skipped: applicability check failed
+egnn           T3 skipped: applicability check failed
+gat            T3 skipped: applicability check failed
+gcn            T3 skipped: applicability check failed
+schnet         T3 skipped: applicability check failed
+cw_net         T3 skipped: applicability check failed
+sccnn          T3 skipped: applicability check failed
+mpsn           T3 skipped: applicability check failed
+gauge_cnn      T3 skipped: applicability check failed
+gem_cnn        T3 skipped: applicability check failed
+clifford_smpn  T3 skipped: applicability check failed
+ours_v1        T3 skipped: applicability check failed
+mgn            T6/native        exit=0 val_R2(ep100)=0.9758 test_R2=0.9728 s/epoch=14.6 peak=3.50GB params=0.085M width=24
+egnn           T6/legacy        exit=0 val_R2(ep100)=0.7743 test_R2=0.7594 s/epoch=3.1 peak=1.74GB params=0.100M width=64
+gat            T6/legacy        exit=0 val_R2(ep100)=0.5330 test_R2=0.5134 s/epoch=4.5 peak=3.40GB params=0.092M width=172
+gcn            T6/legacy        exit=0 val_R2(ep100)=0.0418 test_R2=0.0338 s/epoch=0.7 peak=0.56GB params=0.090M width=172
+mgn            T3/native        exit=0 val_R2(ep100)=0.9889 test_R2=0.9890 s/epoch=26.1 peak=2.34GB params=0.030M width=14
+schnet         T6/legacy        exit=0 val_R2(ep100)=0.8822 test_R2=0.8716 s/epoch=2.3 peak=1.90GB params=0.096M width=104
+egnn           T3/legacy        exit=0 val_R2(ep100)=-0.0006 test_R2=-0.0009 s/epoch=2.9 peak=1.19GB params=0.032M width=36
+cw_net         T6/legacy        exit=0 val_R2(ep100)=0.8687 test_R2=0.8610 s/epoch=3.0 peak=1.56GB params=0.099M width=56
+gat            T3/legacy        exit=0 val_R2(ep100)=-0.0005 test_R2=-0.0009 s/epoch=4.3 peak=2.31GB params=0.030M width=96
+gcn            T3/legacy        exit=0 val_R2(ep100)=-0.0005 test_R2=-0.0007 s/epoch=0.6 peak=0.50GB params=0.028M width=96
+schnet         T3/legacy        exit=0 val_R2(ep100)=-0.0006 test_R2=-0.0011 s/epoch=2.1 peak=1.25GB params=0.030M width=56
+sccnn          T6/legacy        exit=0 val_R2(ep100)=-0.0004 test_R2=-0.0007 s/epoch=7.6 peak=3.09GB params=0.094M width=68
+cw_net         T3/legacy        exit=0 val_R2(ep100)=0.4093 test_R2=0.4063 s/epoch=4.4 peak=1.04GB params=0.029M width=30
+mpsn           T6/legacy        exit=0 val_R2(ep100)=0.4958 test_R2=0.4672 s/epoch=4.6 peak=1.90GB params=0.096M width=68
+sccnn          T3/legacy        exit=0 val_R2(ep100)=-0.0005 test_R2=-0.0007 s/epoch=9.5 peak=1.99GB params=0.028M width=37
+gauge_cnn      T6/legacy        exit=0 val_R2(ep100)=0.9673 test_R2=0.9652 s/epoch=9.3 peak=2.22GB params=0.091M width=100
+mpsn           T3/legacy        exit=0 val_R2(ep100)=-0.0004 test_R2=-0.0007 s/epoch=3.6 peak=1.47GB params=0.031M width=40
+gauge_cnn      T3/legacy        exit=0 val_R2(ep100)=0.9558 test_R2=0.9562 s/epoch=5.8 peak=1.51GB params=0.029M width=56
+gem_cnn        T3/legacy        exit=0 val_R2(ep100)=0.9534 test_R2=0.9538 s/epoch=5.7 peak=2.53GB params=0.032M width=28
+gem_cnn        T6/legacy        exit=0 val_R2(ep100)=0.9894 test_R2=0.9886 s/epoch=18.1 peak=3.70GB params=0.093M width=48
+sccnn          T6/legacy        exit=0 val_R2(ep100)=0.3532 test_R2=0.3558 s/epoch=17.7 peak=3.33GB params=0.095M width=72
+clifford_smpn  T3/legacy        exit=0 val_R2(ep100)=0.0092 test_R2=0.0099 s/epoch=10.1 peak=1.16GB params=0.029M width=40
+mpsn           T6/legacy        exit=0 val_R2(ep100)=0.2103 test_R2=0.1856 s/epoch=8.3 peak=2.11GB params=0.097M width=72
+sccnn          T3/legacy        exit=0 val_R2(ep100)=0.0055 test_R2=0.0041 s/epoch=8.3 peak=2.24GB params=0.030M width=40
+clifford_smpn  T6/legacy        exit=0 val_R2(ep100)=0.6123 test_R2=0.5926 s/epoch=26.1 peak=1.62GB params=0.091M width=72
+ours_v1        T3/legacy        exit=0 val_R2(ep100)=0.9723 test_R2=0.9727 s/epoch=57.0 peak=4.59GB params=0.372M width=64
+dec_fixed      T3/native        exit=0 val_R2(ep100)=0.9928 test_R2=0.9929 s/epoch=25.7 peak=3.02GB params=0.025M width=64
+mgn            HP_k100/native   exit=0 val_R2(ep100)=0.9488 test_R2=0.9488 fine_R2=0.2581 s/epoch=44.8 peak=0.98GB params=0.092M width=25
+egnn           HP_k100/native   exit=0 val_R2(ep100)=0.8552 test_R2=0.8547 fine_R2=0.6320 s/epoch=19.1 peak=2.02GB params=0.100M width=64
+gat            HP_k100/native   exit=0 val_R2(ep100)=0.6789 test_R2=0.6820 fine_R2=0.6226 s/epoch=18.9 peak=2.26GB params=0.092M width=172
+gcn            HP_k100/native   exit=0 val_R2(ep100)=0.6856 test_R2=0.6836 fine_R2=0.6725 s/epoch=17.3 peak=2.04GB params=0.090M width=172
+schnet         HP_k100/native   exit=0 val_R2(ep100)=0.7847 test_R2=0.7822 fine_R2=0.6884 s/epoch=19.9 peak=2.36GB params=0.096M width=104
+cw_net         HP_k100/native   exit=0 val_R2(ep100)=0.8029 test_R2=0.8012 fine_R2=0.6605 s/epoch=10.2 peak=1.85GB params=0.099M width=56
+sccnn          HP_k100/native   exit=0 val_R2(ep100)=0.8694 test_R2=0.8677 fine_R2=0.6202 s/epoch=16.4 peak=1.04GB params=0.094M width=68
+mpsn           HP_k100/native   exit=0 val_R2(ep100)=0.7929 test_R2=0.7920 fine_R2=0.6840 s/epoch=12.2 peak=2.09GB params=0.096M width=68
+gauge_cnn      HP_k100/native   exit=0 val_R2(ep100)=0.7582 test_R2=0.7562 fine_R2=0.6931 s/epoch=7.3 peak=2.08GB params=0.091M width=100
+gem_cnn        HP_k100/native   exit=0 val_R2(ep100)=0.8436 test_R2=0.8409 fine_R2=0.6274 s/epoch=6.8 peak=2.42GB params=0.093M width=48
+ours_v1        T6/legacy        exit=0 val_R2(ep100)=0.9656 test_R2=0.9628 s/epoch=110.0 peak=7.32GB params=0.433M width=128
+clifford_smpn  HP_k100/native   exit=0 val_R2(ep100)=0.7926 test_R2=0.7897 fine_R2=0.6623 s/epoch=11.7 peak=2.08GB params=0.096M width=72
+ours_v1        HP_k100 skipped: ours_v1 has per-cell parameters (n_k x 8 metric bases): shared-mesh tasks only
+dec_fixed      HP_k100/native   exit=0 val_R2(ep100)=0.8090 test_R2=0.8088 fine_R2=0.7060 s/epoch=34.8 peak=1.24GB params=0.085M width=128
+dec_fixed      T6/native        exit=0 val_R2(ep100)=1.0000 test_R2=1.0000 s/epoch=46.0 peak=4.51GB params=0.069M width=128
+mgn            SURF/native      exit=0 val_R2(ep100)=0.9997 test_R2=0.9997 s/epoch=78.3 peak=3.81GB params=0.092M width=25
+egnn           SURF/native      exit=0 val_R2(ep100)=0.9930 test_R2=0.9930 s/epoch=14.8 peak=4.02GB params=0.100M width=64
+gat            SURF/native      exit=0 val_R2(ep100)=0.9741 test_R2=0.9739 s/epoch=17.8 peak=4.54GB params=0.092M width=172
+gcn            SURF/native      exit=0 val_R2(ep100)=0.9385 test_R2=0.9371 s/epoch=9.9 peak=4.04GB params=0.090M width=172
+schnet         SURF/native      exit=0 val_R2(ep100)=0.9854 test_R2=0.9854 s/epoch=18.1 peak=4.65GB params=0.096M width=104
+cw_net         SURF/native      exit=0 val_R2(ep100)=0.9814 test_R2=0.9815 s/epoch=16.1 peak=3.67GB params=0.099M width=56
+sccnn          SURF/native      exit=0 val_R2(ep100)=0.9906 test_R2=0.9908 s/epoch=52.3 peak=3.16GB params=0.094M width=68
+mpsn           SURF/native      exit=0 val_R2(ep100)=0.9834 test_R2=0.9835 s/epoch=36.7 peak=3.91GB params=0.096M width=68
+gauge_cnn      SURF/native      exit=0 val_R2(ep100)=0.9759 test_R2=0.9759 s/epoch=11.2 peak=4.12GB params=0.091M width=100
+gem_cnn        SURF/native      exit=0 val_R2(ep100)=0.9879 test_R2=0.9881 s/epoch=10.4 peak=4.68GB params=0.092M width=48
+clifford_smpn  SURF/native      exit=0 val_R2(ep100)=0.9813 test_R2=0.9813 s/epoch=20.0 peak=3.91GB params=0.096M width=72
+ours_v1        SURF skipped: ours_v1 has per-cell parameters (n_k x 8 metric bases): shared-mesh tasks only
+dec_fixed      SURF/native      exit=0 val_R2(ep100)=0.9934 test_R2=0.9933 s/epoch=49.6 peak=2.12GB params=0.085M width=128
+mgn            T8/native        exit=0 val_R2(ep100)=0.9095 test_R2=0.6527 s/epoch=3.7 peak=3.76GB params=0.333M width=48
+egnn           T8/native        exit=0 val_R2(ep100)=0.4479 test_R2=0.3725 s/epoch=1.4 peak=2.80GB params=0.305M width=112
+gat            T8/native        exit=0 val_R2(ep100)=0.2095 test_R2=0.0145 s/epoch=1.8 peak=3.56GB params=0.306M width=316
+gcn            T8/native        exit=0 val_R2(ep100)=0.2997 test_R2=0.1877 s/epoch=0.6 peak=2.32GB params=0.310M width=320
+schnet         T8/native        exit=0 val_R2(ep100)=0.4832 test_R2=0.3117 s/epoch=1.9 peak=3.72GB params=0.312M width=192
+cw_net         T8/native        exit=0 val_R2(ep100)=0.4206 test_R2=0.3949 s/epoch=1.4 peak=2.74GB params=0.313M width=100
+sccnn          T8/native        exit=0 val_R2(ep100)=0.3791 test_R2=0.1511 s/epoch=3.8 peak=3.49GB params=0.310M width=124
+mpsn           T8/native        exit=0 val_R2(ep100)=0.4645 test_R2=0.3270 s/epoch=2.5 peak=2.96GB params=0.313M width=124
+gauge_cnn      T8/native        exit=0 val_R2(ep100)=0.6680 test_R2=0.5815 s/epoch=2.4 peak=3.08GB params=0.307M width=184
+gem_cnn        T8/native        exit=0 val_R2(ep100)=0.7485 test_R2=0.6950 s/epoch=2.2 peak=3.72GB params=0.311M width=88
+clifford_smpn  T8/native        exit=0 val_R2(ep100)=0.3531 test_R2=0.2877 s/epoch=4.3 peak=2.71GB params=0.319M width=132
+ours_v1        T8 skipped: ours_v1 has per-cell parameters (n_k x 8 metric bases): shared-mesh tasks only
+dec_fixed      T8/native        exit=0 val_R2(ep100)=0.4589 test_R2=0.4155 s/epoch=9.6 peak=4.26GB params=0.300M width=256

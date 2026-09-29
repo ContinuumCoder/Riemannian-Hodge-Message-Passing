@@ -1,0 +1,59 @@
+{
+  "run": "runs/stage3/HP_k100_S3c_solver_diag_learn",
+  "task": "HP_k100",
+  "metric_type": "diag",
+  "log_range": 3.0,
+  "layer_types": [
+    "solve"
+  ],
+  "metric_reference": {},
+  "material_dims": {
+    "1": 1,
+    "2": 1
+  },
+  "raw_input_columns": {
+    "1": [
+      0
+    ],
+    "2": [
+      0
+    ]
+  },
+  "solver_mode": true,
+  "tensor_set": false,
+  "n_samples": 32,
+  "params": 1201,
+  "accessor": "metric_fields",
+  "layers": [
+    {
+      "layer": 0,
+      "type": "solve",
+      "diag_logratio_vs_edge": {
+        "pearson": 0.9980294410938655,
+        "spearman": 0.9996997027816749,
+        "n": 139805,
+        "learned_std": 1.0713143153765237,
+        "truth_std": 1.0855256240294613,
+        "slope": 0.9849636008058624,
+        "intercept": 0.06994902949513732,
+        "pearson_per_sample": 0.9979479418395523,
+        "intercept_per_sample_std": 0.012758403070534285
+      },
+      "diag_phi_vs_edge": {
+        "pearson": 0.9980294410938655,
+        "spearman": 0.9996997027816749,
+        "n": 139805,
+        "learned_std": 1.0713143153765237,
+        "truth_std": 1.0855256240294613,
+        "slope": 0.9849636008058624,
+        "intercept": 0.06994902949513732,
+        "pearson_per_sample": 0.9979479418395523,
+        "intercept_per_sample_std": 0.012758403070534285
+      },
+      "sat": 0.0
+    }
+  ],
+  "test_R2": 0.9995908195955554,
+  "fine_R2": 0.9996183582148109,
+  "seconds": 3.766744613647461
+}
