@@ -10,9 +10,8 @@ That single choice buys four things that ordinary mesh networks lack: models tha
 were never trained on, exact conservation laws and symmetries, correct treatment of anisotropic materials, and a model
 whose learned metric can be read off as the physical material.
 
-This is version 2 (v2) of the code of *Learning Discrete Riemannian Metrics for Physical Fields with Cochain-Frame
-Equivariance* (Zheng & Allen-Blanchette, arXiv:2608.14556).  Compared with the paper's original code (v1), the
-implementation, the algorithms and the benchmark tasks are new.  Every number below is documented in the technical
+This is the code base (release 2.0) of *Learning Discrete Riemannian Metrics for Physical Fields with Cochain-Frame
+Equivariance* (Zheng & Allen-Blanchette, **NeurIPS 2026, spotlight**; arXiv:2608.14556).  Every number below is documented in the technical
 report [REPORT.md](REPORT.md); the per-run tables are in [results/RESULTS.md](results/RESULTS.md).
 
 ## Two kinds of models
@@ -52,10 +51,9 @@ On the first task, MeshGraphNet reaches 0.665 / 0.400 with 92K parameters; the t
 **2. Trained models transfer to new meshes and resolutions.**  The model has no parameters attached to individual
 cells: the metric is a function of local, scale-free geometric quantities, and every operator is normalised per
 sample.  A gauge-field model trained on a single mesh (edge connection in, face flux out) keeps R2 0.9961 and 0.9999
-on two random meshes it has never seen, 0.9999 on a 4x finer mesh and 0.9997 on a 4x coarser one; the paper's v1 model
-cannot be evaluated on another mesh at all.  On heterogeneous diffusion (conductivity varying by a factor of 100 across
+on two random meshes it has never seen, 0.9999 on a 4x finer mesh and 0.9997 on a 4x coarser one.  On heterogeneous diffusion (conductivity varying by a factor of 100 across
 the domain), the physics-solver model keeps **R2 1.0000 at 4x resolution**, while MeshGraphNet drops from 0.949 to
-0.258 (at the same parameter budget) or from 0.927 to 0.4345 (at the paper's five-times larger budget).
+0.258 (at the same parameter budget) or from 0.927 to 0.4345 (with five times more parameters).
 
 ![resolution transfer on heterogeneous diffusion](docs/figures/fig1_hp_k100_transfer.png)
 
@@ -78,7 +76,7 @@ model is not automatically an interpretable one.
 ![metric recovery](docs/figures/fig2_metric_recovery.png)
 
 The report also documents what did not work ([REPORT.md](REPORT.md) sections 8 and 9): on the paper's airfoil-pressure
-task the v2 model (0.51) trails the v1 checkpoint (0.62) and GEM-CNN (0.70); the closed-surface diffusion task does not
+task this model (0.51) trails GEM-CNN (0.70) and the checkpoint of the original paper release (0.62); the closed-surface diffusion task does not
 separate methods (MeshGraphNet 0.9997, v2 0.9967, both transfer without loss); tensor metrics on the 3000-sample
 tetrahedral data sets need about 137 GB of host memory; and the exactly mass-conserving variant of the time-stepping
 model is unstable over long rollouts.
@@ -182,7 +180,7 @@ python3 scripts/metric_recovery.py runs/hp_solver                         # lear
 ```
 
 Every option of `RHMPConfig` has a flag (`--layers poly,resolvent,poly`, `--metric-ref 1:0`, `--latent 1:8`,
-`--aux-pde 1.0`, ...).  The full `--help`, the list of tasks and the list of models (the v2 controls, the v1 model,
+`--aux-pde 1.0`, ...).  The full `--help`, the list of tasks and the list of models (structural controls and the baselines
 MeshGraphNet, GCN, GAT, SchNet, EGNN, GaugeEquivCNN, GEM-CNN, MPSN, SCCNN, CW Net, Clifford-SMPN, FNO and DeepONet,
 all trained by the same trainer) are documented in [docs/API.md](docs/API.md).  The scripts that produce the reported
 results are in [scripts/](scripts); REPORT.md section 11 lists the command of each table.
@@ -218,40 +216,51 @@ model = RHMP.from_checkpoint("results/checkpoints/HP_k100_solver_tensor_learn/be
 re-evaluates a checkpoint on its task; [results/checkpoints/README.md](results/checkpoints/README.md) lists all
 fifteen, and `results/checkpoints/load_example.py` applies one to a new mesh without any data set.
 
-## What changed compared with the paper code (v1)
+## Engineering and capabilities
 
-The core idea is unchanged: the mesh topology is fixed and exact, and geometry and material enter only through a
-positive-definite learned metric, with the paper's symmetries (channel-frame equivariance, Euclidean invariance,
-gauge invariance).  The implementation is new ([CHANGELOG.md](CHANGELOG.md) lists every change):
+**Performance.**  The sparse operators of a mesh are built once, stored in CSR form with their transposes, and shared
+by every layer; fields use a `(cells, samples, channels)` layout that needs no copies; the small per-layer networks
+run as fused kernels; and different meshes are batched block-diagonally.  On one GPU, a 4-layer, 128-channel model on
+a 1024-vertex mesh trains at 63.4 ms per step of 64 samples (inference 17.6 ms, peak memory 4.27 GB), and a 4-layer,
+16-channel model on a one-million-triangle mesh trains at 131 ms per step (inference 38 ms, 8.06 GB, or 3.84 GB with
+mixed precision and activation checkpointing).  The calculus of a 100K-face mesh is built and verified in 8 ms, that
+of a 1M-face mesh in 16 ms.  Batches of different meshes train 6 to 14 times faster than looping over the meshes.
+The benchmarks and their results are in [bench/](bench).
 
-| | v1 (paper code) | v2 (`rhmp`) |
-|---|---|---|
-| metric | free parameters for every cell of one fixed mesh (`n_k x 8` bases), modulated by a global mean | a function of local geometry (plus known material); full tensor metric; nothing tied to a particular mesh |
-| batches | the metric was computed from the batch mean, so a prediction depended on the other samples in the batch | per-sample metrics; outputs independent of the batch |
-| operators | unbounded metric, un-normalised operators, a LayerNorm that broke the channel symmetry | bounded metric, operators normalised to norm at most 1 per sample, symmetry-preserving gates |
-| layers | polynomial message passing only | plus resolvent and solve layers (learned Green's functions) and the physics-solver model |
-| geometry | one variant used absolute coordinates | intrinsic geometry only; 2-D, surfaces and 3-D |
-| inputs / outputs | vertices only; edge fields hand-encoded onto vertices | any degree; exact gauge-invariant handling of connection fields; exactly constrained outputs |
-| meshes | triangles; a dense consistency check (20 GB and 4.4 s at 100K faces) | triangles, surfaces, polygons, tetrahedra, grids, batches of different meshes; a 100K-face mesh is built and checked in 8 ms |
-| speed | sparse products recomputed at every call, per-sample loops for varying meshes | cached sparse operators and fused kernels: 1.65-1.74x faster training, 2.8-2.9x faster inference, 40 % less memory; 6-14x faster for varying meshes |
+**Robust numerics.**  The learned metric is bounded above and below, every operator is normalised per sample to norm
+at most 1, and predictions are independent of which samples share a batch.  Meshes are validated on construction
+(degenerate and duplicate cells are reported), outputs stay finite on sliver meshes with aspect ratio 1e4 and on
+extreme inputs, and the trainer supports mixed precision, activation checkpointing, resuming and checkpoint round trips.
 
-**Targets that are not invariant.**  The v1 targets of the vorticity, gauge-field and ellipsoid tasks flip sign under
-a reflection or under a change of the face-orientation convention (they are pseudo-scalars).  An exactly invariant
-model cannot output them from the fields themselves; v1 fitted them because its per-cell parameters memorised the
-mesh frame.  v2 predicts the field on its natural cochain and applies a fixed, parameter-free orientation map, which
-reproduces the v1 targets exactly (to 7e-8).  With this map, v2 outperforms the re-evaluated v1 checkpoints on the
-U(1) gauge field (1.000 vs 0.955 R2 on the first 100 test samples), the SU(2) gauge field (0.879 vs 0.653), the
-ellipsoid flow (0.996 vs 0.971) and electrostatics (1.000 with the physics-solver model vs 0.676).
+**Capabilities.**
 
-The v1 model and baselines are vendored in `rhmp.baselines.v1` (from
-[ContinuumCoder/Riemannian-Hodge-Message-Passing](https://github.com/ContinuumCoder/Riemannian-Hodge-Message-Passing)),
-so that the v1 model (`ours_v1`), these baselines and `--eval-v1` work without a copy of the original repository.
+* Inputs and outputs on any degree: vertex values, edge fields (fluxes, gauge connections), face fluxes, cell
+  densities; an exactly gauge-invariant mode for connection fields; output layers that are exactly curl-free,
+  divergence-free or mass-conserving.
+* Diagonal and full tensor metrics; a known material can be supplied as a reference and only the correction is
+  learned; resolvent and solve layers (learned Green's functions); the physics-solver model with an
+  operator-identification loss for material recovery.
+* Triangle meshes, polygons and quadrilaterals, curved surfaces, tetrahedral volumes and regular grids, and training
+  with a different mesh in every sample.
+* A discrete-calculus toolkit: Hodge Laplacians, Hodge decomposition, Betti numbers and harmonic bases, a batched
+  conjugate-gradient solver with implicit gradients, and sharp / flat maps between edge fields and vectors.
+* One trainer for the library model and for MeshGraphNet, GCN, GAT, SchNet, EGNN, GaugeEquivCNN, GEM-CNN, MPSN, SCCNN,
+  CW Net, Clifford-SMPN, FNO and DeepONet, with parameter matching, so that every comparison uses the same data, split,
+  loss and protocol.
+* Evaluation scripts for symmetry and robustness tables, transfer to new meshes and resolutions, metric recovery and
+  long rollouts, and a task suite with generators: the paper's tasks, heterogeneous and anisotropic diffusion in 2-D,
+  on surfaces and in 3-D, time stepping, and mesh-quality shifts.
+
+**Orientation-dependent targets.**  Some published targets (vorticity, gauge-field and ellipsoid-flow tasks) flip
+sign under a reflection or under a change of the face-orientation convention.  An exactly invariant model cannot
+output them from the fields themselves, so the library predicts the field on its natural cochain and applies a fixed,
+parameter-free orientation map, which reproduces such targets exactly (to 7e-8).
 
 ## Repository layout
 
 | path | contents |
 |---|---|
-| `rhmp/` | the package: mesh calculus, discrete-calculus toolkit, metrics, layers, model, output layers, trainer, tasks, baselines (`rhmp/baselines/v1`: vendored v1 code) |
+| `rhmp/` | the package: mesh calculus, discrete-calculus toolkit, metrics, layers, model, output layers, trainer, tasks, baselines (`rhmp/baselines/v1`: the original implementation, vendored for the baseline comparisons) |
 | `tests/` | the test suite (`python -m pytest tests -q`) |
 | `examples/` | six runnable examples (CPU) |
 | `docs/` | [TUTORIAL](docs/TUTORIAL.md), [MATH](docs/MATH.md), [THEORY](docs/THEORY.md), [API](docs/API.md) (generated by `docs/gen_api.py`), [DESIGN](docs/DESIGN.md), [TASK_SUITE](docs/TASK_SUITE.md), [TASK_SUITE_DETAILS](docs/TASK_SUITE_DETAILS.md), [ANISO_TASKS](docs/ANISO_TASKS.md), [BASELINES](docs/BASELINES.md), [DATASETS](docs/DATASETS.md), [REPORT_zh](docs/REPORT_zh.md) (Chinese report), `figures/` and `figures_zh/` |
@@ -268,7 +277,7 @@ Please cite the paper (metadata in [CITATION.cff](CITATION.cff)):
 
 ```
 Zheng and Allen-Blanchette, "Learning Discrete Riemannian Metrics for Physical Fields with Cochain-Frame
-Equivariance", arXiv:2608.14556, 2026.
+Equivariance", Advances in Neural Information Processing Systems (NeurIPS), 2026 (spotlight).  arXiv:2608.14556.
 ```
 
 Licence: to be decided by the authors; see [LICENSE_NOTE.md](LICENSE_NOTE.md).

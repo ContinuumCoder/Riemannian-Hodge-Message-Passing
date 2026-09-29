@@ -15,7 +15,7 @@ keywords:
   - equivariant neural networks
   - physics-informed machine learning
 preferred-citation:
-  type: article
+  type: conference-paper
   title: "Learning Discrete Riemannian Metrics for Physical Fields with Cochain-Frame Equivariance"
   authors:
     - family-names: Zheng
@@ -23,7 +23,8 @@ preferred-citation:
     - family-names: Allen-Blanchette
       given-names: Christine
   year: 2026
-  journal: "arXiv preprint"
+  collection-title: "Advances in Neural Information Processing Systems (NeurIPS 2026)"
+  notes: "Spotlight"
   identifiers:
     - type: other
       value: "arXiv:2608.14556"
