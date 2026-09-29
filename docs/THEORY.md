@@ -1,9 +1,9 @@
 # Theory notes: when is the learned cochain metric the material?
 
 These notes state precisely what the RHMP v2 operator family can represent, what is identifiable from data, and why
-the stage-1/2 models learned accurate solvers whose metrics were *not* the material (measured in
-[../REPORT.md](../REPORT.md) §1.4 and §6.3). They motivate the stage-3
-changes (`material_dims`, `layer_type='solve'`, the operator-identification loss).
+models of the general stack (the nonlinear message-passing network) learn accurate solvers whose metrics are *not*
+the material (measured in [../REPORT.md](../REPORT.md) §1.4 and §6.3). They motivate the material-identification
+features (`material_dims`, `layer_type='solve'`, the operator-identification loss).
 
 Notation: complex `K` with coboundaries `d_k`, reference diagonal Hodge stars `star_k > 0`, learned metrics `H_k`
 (diagonal `h_k > 0`, or the Whitney tensor metric of DESIGN §9.1). `M_k = diag(star_k)` is the lumped mass.
@@ -26,11 +26,11 @@ diagonal metric (`h_1 > 0`) represents `K` iff all `w_e > 0`, i.e. iff `K` is an
 obtuse angles produce `w_e <= 0`, which no SPD diagonal `H_1` can represent; the tensor metric can (positive
 combination of PSD element blocks). This is the first place where the tensor metric is *necessary*.
 
-**Metrics on 1-forms and 2-forms are where diagonality really fails.** The Whitney mass matrix of 1-forms couples the
+**Metrics on 1-forms and 2-forms are where diagonal metrics fail structurally.** The Whitney mass matrix of 1-forms couples the
 edges of every face (tets: of every tet), and the Nédélec curl–curl operator `d_1^T M_2(nu) d_1` couples faces
 within each tet. A diagonal `H_1` (`H_2`) has no such coupling, whatever its values, so Hodge-Laplacian, curl–curl
 and Darcy face-flux problems with tensor coefficients are outside the diagonal family (not just outside its
-positivity cone). Tasks `ACURL*`, `ADARCY*`, `ASURF*` (docs/ANISO_TASKS.md) are built to expose this.
+positivity cone). The tasks `ACURL*`, `ADARCY*` and `ASURF*` (docs/ANISO_TASKS.md) are built to expose this.
 
 ## 2. Identifiability (what data can pin down)
 
@@ -48,16 +48,16 @@ coefficients.
 
 **From data pairs `(f, u)`.** For the diagonal metric the discrete PDE `d_0^T diag(w) d_0 u = M f` is *linear* in
 `w`: `n_0` equations per sample, `n_1` unknowns, so three or more generic samples determine `w` (least squares over
-the training set). This is the operator-identification loss of stage 3 (`--aux-pde`): a convex problem in `w`
-whose solution is the material, obtained without any label on `sigma`.
+the training set). This is the operator-identification loss of the material-identification experiments
+(`--aux-pde`): a convex problem in `w` whose solution is the material, obtained without any label on `sigma`.
 
 **Scale gauge.** The normalised operator `L_hat` is invariant under `H -> c H` (per sample), so the global magnitude of
-the material is *not* identifiable from `L_hat`; only its spatial pattern is. A solver layer must therefore use the
+the material is *not* identifiable from `L_hat`; only its spatial pattern is. A solve layer must therefore use the
 un-normalised operator (with `H = star exp(ref) exp(phi)`), or a separate scalar channel must carry the scale.
 
-## 3. Why stage-1/2 metrics were not the material
+## 3. Why the metrics of the general stack are not the material
 
-1. **Route redundancy.** Material inputs (e.g. `log sigma_e`) entered the metric heads *and* the lifting gates and
+1. **Route redundancy.** Material inputs (e.g. `log sigma_e`) enter the metric heads *and* the lifting gates and
    feature norms. With a scalar target and MSE, nothing prefers the metric route; the optimiser takes the easier
    feature route, and `H` is free to serve another purpose.
 2. **Polynomial layers prefer preconditioners.** A layer `sum_p c_p L_hat^p x` approximates the *inverse* operator.

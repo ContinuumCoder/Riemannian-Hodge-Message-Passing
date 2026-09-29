@@ -27,7 +27,7 @@ from rhmp import RHMP, CochainComplex
 
 
 def main() -> None:
-    ckpt = ROOT / "results" / "checkpoints" / "HP_k100_S3c_solver_tensor_learn" / "best.pt"
+    ckpt = ROOT / "results" / "checkpoints" / "HP_k100_solver_tensor_learn" / "best.pt"
     model = RHMP.from_checkpoint(ckpt, map_location="cpu").eval()
     cfg = model.cfg
     print(f"loaded {ckpt.parent.name}: layers {cfg.layer_types}, metric {cfg.metric_type} ({cfg.tensor_param}), "

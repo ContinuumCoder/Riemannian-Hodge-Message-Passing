@@ -1,22 +1,26 @@
-"""Evaluate a finished v2 run on any task (transfer / quality-shift sets) or roll it out autoregressively (DYN).
+"""Evaluate a trained v2 run on the test sets of any task, or roll it out autoregressively (DYN tasks).
 
-    # accuracy of an HP_k100 model on the mesh-quality shift sets (one result per quality level)
-    python3 scripts/eval_on.py --run runs/hp_k100 --task HP_qual_sliver
+The script needs the run directory (``config.json``, ``best.pt``) and the data set of the evaluated task, and uses a
+GPU when one is available.  It writes ``<out>/eval_<task>.json``, or ``<out>/rollout_<task>.json`` for rollouts
+(``--out`` defaults to the run directory).
+
+    # an HP_k100 model on a mesh-quality shift set (one result per quality level)
     python3 scripts/eval_on.py --run runs/hp_k100 --task HP_qual_graded_ref
-    # SURF model on the geometry / topology transfer sets (also reported by the trainer as geo_* / topo_*)
-    python3 scripts/eval_on.py --run runs/surf --task SURF_topo
-    # autoregressive rollouts of a DYN / DYNfix model on the full 100-step test trajectories
+    # autoregressive rollouts of a DYN / DYNfix model over the full 100-step test trajectories
     python3 scripts/eval_on.py --run runs/dyn --task DYN --rollout [--steps 100] [--project-mass]
 
 Tasks are loaded with ``rhmp.tasks.load_task`` when the name is registered there, otherwise from
-``rhmp.tasks.suite.SUITE_TASKS``.  Node-scalar tasks also report the mesh-density-independent relative L2 error with
-the lumped mass (``relL2M_*``, ``rhmp.tasks.suite.mass_weighted_errors``), which is what to compare across the graded
-QUAL levels (node-pooled R2 / NRMSE depend on where the nodes are).  Inputs/targets are re-expressed in the normalisation of the training run
-(``rhmp.train._renormalize``) and the complexes use the run's reference star.  Results are written to
-``<out>/eval_<task>.json`` or ``<out>/rollout_<task>.json`` (``--out`` defaults to the run directory).
+``rhmp.tasks.suite.SUITE_TASKS``.  This includes the transfer and quality-shift sets, e.g. ``SURF_geo`` /
+``SURF_topo`` (the geometry and topology transfer of SURF, which the trainer also reports as ``geo_*`` / ``topo_*``)
+and ``HP_qual_sliver`` / ``HP_qual_graded`` (with ``_ref``: targets from the 4x finer reference solution).  Inputs and
+targets are re-expressed in the normalisation of the training run (``rhmp.train._renormalize``), and the complexes use
+the run's reference star.  Node-scalar tasks also report the relative L2 error weighted with the lumped mass
+(``relL2M_*``, ``rhmp.tasks.suite.mass_weighted_errors``), which does not depend on the mesh density and is the
+quantity to compare across the levels of the graded meshes (the node-pooled R2 and NRMSE depend on where the nodes
+are).
 
-Runs of ``DYN_cons`` / ``DYNfix_cons`` trained with the first conservative convention (target = mass change ``M du``,
-readout ``div:1``, no ``cons_convention`` tag in the run's data summary) are evaluated with that convention
+Runs of ``DYN_cons`` / ``DYNfix_cons`` trained with the first conservative convention (target: the mass change
+``M du``, readout ``div:1``; no ``cons_convention`` tag in the run's data summary) are evaluated with that convention
 (tasks ``DYN_cons_mass`` / ``DYNfix_cons_mass``).  ``--project-mass`` restores ``sum M u`` after every rollout step
 (post-hoc exact conservation, reported as ``rollout_<task>_proj.json``).
 """

@@ -212,7 +212,7 @@
     "task": "DYNfix_cons",
     "native": true,
     "root": null,
-    "out": "runs/e_val_dynfix_cons_u",
+    "out": "runs/conservative_rollouts_u",
     "device": null,
     "epochs": 8,
     "seed": 42,

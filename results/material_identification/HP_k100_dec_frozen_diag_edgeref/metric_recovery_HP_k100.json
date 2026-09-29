@@ -1,5 +1,5 @@
 {
-  "run": "runs/stage3/HP_k100_S3e_dec_frozen_diag_edgeref",
+  "run": "runs/material_identification/HP_k100_dec_frozen_diag_edgeref",
   "task": "HP_k100",
   "metric_type": "diag",
   "log_range": 3.0,

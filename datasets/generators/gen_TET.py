@@ -20,8 +20,8 @@ lexicographic):
 Packed with offsets ptr0..ptr3.  ``*_fine.pt``: first ``n_fine`` test-split samples re-solved on meshes with
 ``fine_factor`` x the nodes (same fields).
 
-Usage (server):  python3 -u datasets/generators/gen_TET.py --kappa 100 [--n 3000] [--n-fine 200] [--workers 32]
-                 python3 -u datasets/generators/gen_TET.py --selftest
+Usage:  python3 -u datasets/generators/gen_TET.py --kappa 100 [--n 3000] [--n-fine 200] [--workers 32]
+        python3 -u datasets/generators/gen_TET.py --selftest
 """
 from __future__ import annotations
 

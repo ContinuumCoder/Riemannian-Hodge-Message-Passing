@@ -123,7 +123,7 @@
     "task": "ADARCYp_r100_n1500",
     "native": true,
     "root": null,
-    "out": "runs/aniso/ADARCYp_r100_n1500_diag-solver_s42",
+    "out": "runs/anisotropy_3d/ADARCYp_r100_n1500_diag-solver_s42",
     "device": null,
     "epochs": 30,
     "seed": 42,

@@ -110,7 +110,7 @@
     "task": "T6",
     "native": false,
     "root": null,
-    "out": "runs/d_debug/T6_mpsn",
+    "out": "runs/baseline_diagnostics/T6_mpsn",
     "device": null,
     "epochs": 3,
     "seed": 42,

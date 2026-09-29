@@ -584,7 +584,7 @@ def test_anisotropy_recovery(device):
 
 
 # ----------------------------------------------------------------------------------------------------------------
-# stage 3: material columns, solve layers, operator identification
+# material columns, solve layers and operator identification
 # ----------------------------------------------------------------------------------------------------------------
 def _fem_problem(K, sigma_e=None, sigma_f=None, B=2, seed=0):
     """Reference FEM data on a triangle complex (fp64): Dirichlet u = 0 on K.boundary[0], lumped mass M = star_0.
@@ -634,7 +634,7 @@ def _set_solver_identity(m):
 
 
 def test_solver_mode_reproduces_fem_diag(device):
-    """ACCEPTANCE: solver preset + true sigma as metric reference (learn_metric=False) reproduces the absolute FEM
+    """Solver preset + true sigma as metric reference (learn_metric=False) reproduces the absolute FEM
     solution of d0^T diag(star1 sigma) d0 u = M f (Dirichlet) to <= 1e-4."""
     from rhmp import RHMP, RHMPConfig
     K = make_complex("grid", device, nx=9, ny=8, jitter=0.2).to(dtype=F64)
@@ -655,7 +655,7 @@ def test_solver_mode_reproduces_fem_diag(device):
 
 
 def test_solver_mode_reproduces_p1_fem_tensor(device):
-    """ACCEPTANCE (FEEC): tensor metric with b_f = sigma_f (face material as reference) reproduces the absolute P1
+    """FEEC: tensor metric with b_f = sigma_f (face material as reference) reproduces the absolute P1
     FEM solution with element-wise sigma, assembled independently, to <= 1e-4."""
     from rhmp import RHMP, RHMPConfig
     K = make_complex("grid", device, nx=9, ny=8, jitter=0.2).to(dtype=F64)
@@ -736,7 +736,7 @@ def _hp_task_name():
 
 
 def test_trainer_metric_ref_raw_on_loaded_hp(tmp_path):
-    """--metric-ref columns arrive RAW in every mode: on a loaded HP task with --metric-ref 1:0 the frozen/zero-init
+    """--metric-ref columns arrive raw in every mode: on a loaded HP task with --metric-ref 1:0 the frozen/zero-init
     metric is exactly H/star = exp(log sigma_raw) (physical log conductivity, not the loader-normalised column), and
     config.json records metric_reference_raw."""
     import json
@@ -776,7 +776,8 @@ def test_trainer_metric_ref_raw_on_loaded_hp(tmp_path):
 
 
 def _hp_like_complex(n_tot, seed, device):
-    """HP-style mesh: random Delaunay mesh of the unit square with jittered boundary nodes (as datasets/generators/gen_HP.py)."""
+    """HP-style mesh: random Delaunay mesh of the unit square with jittered boundary nodes (as
+    ``datasets/generators/gen_HP.py``)."""
     import numpy as np
     from scipy.spatial import Delaunay
     rng = np.random.default_rng(seed)
@@ -879,7 +880,7 @@ def test_twolevel_preconditioner_is_per_sample_and_per_graph(device):
 def test_trainer_solver_frozen_tensor_faceref_reproduces_real_hp(tmp_path):
     """Real HP samples (P1 FEM with element-wise sigma, lumped mass, u = 0 on the boundary): the trainer's
     --solver-mode with the frozen tensor metric and the face conductivity as reference (--metric-ref 2:0, two-level
-    PCG) reproduces the FEM targets to <= 1e-3 relative WITHOUT training (least-squares readout from the first
+    PCG) reproduces the FEM targets to <= 1e-3 relative without training (least-squares readout from the first
     training batch, lr 0) and logs the CG iterations / residual per epoch."""
     import json
     import os

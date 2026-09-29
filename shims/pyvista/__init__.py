@@ -1,8 +1,10 @@
-"""Unpickling shim for machines without pyvista.
+"""Unpickling shim for datasets that were pickled with pyvista, for use on machines without pyvista.
 
-Some v1 datasets (T3/T4 ellipsoid meshes) were pickled with pyvista objects inside. The loaders only use the
-numpy arrays next to them, so on a machine without pyvista we expose dummy classes that absorb the pickled state.
-Enable with PYTHONPATH=<repo>/shims (never on machines where the real pyvista is installed).
+Some datasets (for example the T3 ellipsoid pickle of the v1 paper) contain pyvista objects next to plain numpy
+arrays.  The loaders only use the numpy arrays, so this package stands in for every ``pyvista`` module and class:
+array subclasses are reconstructed as ndarrays and all other objects as inert placeholders that absorb their
+pickled state.  Enable it with ``PYTHONPATH=<repo>/shims``, and only on machines where pyvista is not installed
+(the shim would otherwise shadow the real package).
 """
 import sys as _sys
 
@@ -18,6 +20,8 @@ def _pick(name):
 
 
 class _Dummy:
+    """Inert placeholder for any other pyvista class; it keeps the unpickled state as attributes."""
+
     def __init__(self, *a, **k):
         pass
 
@@ -38,13 +42,15 @@ def __getattr__(name):
 
 
 class _ShimModule(type(_sys)):
+    """Module object whose attributes resolve to the stand-in classes."""
+
     def __getattr__(self, name):
         if name.startswith("__"):
             raise AttributeError(name)
         return _pick(name)
 
 
-# make every submodule import (pyvista.core.pointset, ...) resolve to a shim module
+# Every import of pyvista or one of its submodules (pyvista.core.pointset, ...) resolves to a shim module.
 class _Finder:
     @staticmethod
     def find_spec(fullname, path=None, target=None):

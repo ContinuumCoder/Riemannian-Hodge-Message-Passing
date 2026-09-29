@@ -145,7 +145,7 @@
     "task": "T1q",
     "native": true,
     "root": null,
-    "out": "runs/new/T1q_s42",
+    "out": "runs/new_tasks/T1q_s42",
     "device": null,
     "epochs": 100,
     "seed": 42,

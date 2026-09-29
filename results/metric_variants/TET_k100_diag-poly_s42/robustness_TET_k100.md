@@ -1,4 +1,4 @@
-# robustness: TET_k100 -> TET_k100 (runs/stage2/TET_k100_diag-poly_s42); R2 centred (v1)
+# robustness: TET_k100 -> TET_k100 (runs/metric_variants/TET_k100_diag-poly_s42); R2 centred (v1)
 
 | condition | R2 | dR2 | NRMSE | SSIM | Pearson | N | max abs dpred |
 |---|---:|---:|---:|---:|---:|---:|---:|

@@ -3,7 +3,7 @@
     "task": "AHP_r100",
     "native": true,
     "root": null,
-    "out": "runs/aniso/AHP_r100_mgn_s42",
+    "out": "runs/anisotropy_general/AHP_r100_mgn_s42",
     "device": null,
     "epochs": 50,
     "seed": 42,
@@ -264,7 +264,7 @@
       "v1_C": 128,
       "batch_size": 8,
       "layers": 4,
-      "source": "/home/dzheng/RHMP-v2/datasets/v2/AHP_r100.pt",
+      "source": "datasets/v2/AHP_r100.pt",
       "generator": {
         "task": "AHP",
         "ratio": 100.0,

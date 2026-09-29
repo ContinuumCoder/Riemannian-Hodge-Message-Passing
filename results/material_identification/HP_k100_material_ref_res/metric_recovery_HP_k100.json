@@ -1,5 +1,5 @@
 {
-  "run": "runs/stage3/HP_k100_S3b_material_ref_res",
+  "run": "runs/material_identification/HP_k100_material_ref_res",
   "task": "HP_k100",
   "metric_type": "diag",
   "log_range": 3.0,

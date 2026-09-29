@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
-# Generate the v2 datasets (outputs in datasets/v2/, git-ignored; see datasets/README.md).
-#   bash scripts/gen_datasets.sh                              # core: T6/T7 native, HP_*, TET_k100
-#   SUITE=1 ANISO=1 bash scripts/gen_datasets.sh              # + SURF / DYN / HP_qual_* and AHP / ASURF / ACURL / ADARCY
-#   SKIP_CORE=1 ANISO=1 bash scripts/gen_datasets.sh          # only the anisotropy suite
-#   tools/remote.sh '(setsid nohup bash scripts/gen_datasets.sh > runs/logs/gen_datasets.log 2>&1 < /dev/null &)'
-# T6/T7 native regeneration uses the CUDA RNG (must run on a GPU to reproduce the v1 samples) and reads the v1 pickles
-# (python3 datasets/download_v1.py); everything else is CPU only (multiprocessing, WORKERS processes).  The core sets
-# take about 6 minutes, the suite about 1 minute, the anisotropy suite (3-D Nedelec / RT0 solves) several hours.
+# Generates the v2 data sets in datasets/v2/ (git-ignored; see datasets/README.md): the core sets (T6/T7 native, HP_*,
+# TET_k100), with SUITE=1 also the extension suite (SURF, DYN, HP_qual_*) and with ANISO=1 the anisotropy suite (AHP,
+# ASURF, ACURL, ADARCY); SKIP_CORE=1 skips the core sets, SKIP_NATIVE=1 only the T6/T7 native sets.  The T6/T7 native
+# sets are regenerated from the v1 pickles (python3 datasets/download_v1.py) with the CUDA random number generator and
+# need a GPU to reproduce the v1 samples; all other sets are generated on the CPU with WORKERS processes (default 32).
+# The core sets take about 6 minutes, the extension suite about 1 minute and the anisotropy suite (3-D Nedelec / RT0
+# solves) several hours.
+#   bash scripts/gen_datasets.sh                              # core sets
+#   SUITE=1 ANISO=1 bash scripts/gen_datasets.sh              # core sets, extension suite and anisotropy suite
+#   HOST=<ssh host> NAME=gen_datasets tools/run_bg.sh bash scripts/gen_datasets.sh    # detached on a remote host
 set -euo pipefail
 cd "$(dirname "$0")/.."
 W="${WORKERS:-32}"
@@ -18,11 +20,11 @@ if [[ "${SKIP_CORE:-0}" != "1" ]]; then
   for k in 10 100 1000; do
     python3 -u datasets/generators/gen_HP.py --kappa "$k" --n 5000 --n-fine 500 --workers "$W"
   done
-  python3 -u datasets/generators/gen_HP.py --kappa 100 --aniso --n 5000 --n-fine 500 --workers "$W"        # legacy aniso
-  for r in 10 100; do                                                                                 # tensor aniso
+  python3 -u datasets/generators/gen_HP.py --kappa 100 --aniso --n 5000 --n-fine 500 --workers "$W"   # HP_k100_aniso
+  for r in 10 100; do                                                                                 # HP_k100_aniso<r>
     python3 -u datasets/generators/gen_HP.py --kappa 100 --aniso-max "$r" --n 5000 --n-fine 500 --workers "$W"
   done
-  # heterogeneity robustness sweep (test-size set; same fields/meshes as HP_k* for the first 1000 ids)
+  # HP_k10000 for the contrast sweep: 1000 samples, the fields and meshes of the first 1000 samples of the HP_k* sets
   python3 -u datasets/generators/gen_HP.py --kappa 10000 --n 1000 --n-fine 0 --workers "$W"
   python3 -u datasets/generators/gen_TET.py --kappa 100 --n 3000 --n-fine 200 --workers "$W"
 fi

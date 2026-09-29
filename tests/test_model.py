@@ -464,7 +464,7 @@ def test_tensor_config_errors(device):
 
 
 def test_config_backward_compatible():
-    """Stage-2 config keys have defaults: dicts saved before they existed still load (diag metric, all poly)."""
+    """Later-added configuration keys have defaults: dicts saved without them still load (diag metric, all poly)."""
     d = RHMPConfig(in_dims={0: 3}, C=16).to_dict()
     for key in ("layers", "resolvent_iters", "resolvent_grad", "metric_type"):
         d.pop(key)

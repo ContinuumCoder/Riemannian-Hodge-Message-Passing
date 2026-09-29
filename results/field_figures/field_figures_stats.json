@@ -8,7 +8,7 @@
     "n0": 1425,
     "n0_fine": 5700,
     "runs": {
-      "solver": "results/checkpoints/HP_k100_S3c_solver_tensor_learn",
+      "solver": "results/checkpoints/HP_k100_solver_tensor_learn",
       "general": "results/checkpoints/HP_k100_general_s42",
       "mgn": "results/checkpoints/HP_k100_mgn_s42"
     },

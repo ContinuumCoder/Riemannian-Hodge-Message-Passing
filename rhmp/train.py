@@ -6,9 +6,9 @@
                              --out runs/v1_t6                                             # v1 model, same split/metrics
     python3 -u -m rhmp.train --task HP_k100 --check-data                                  # load + print the data summary
 
-Protocol (the v1 training script ``formal_benchmark.py``): Adam(lr 1e-3, weight decay 1e-5), cosine annealing per epoch to
-1e-5 over ``--epochs``, grad-norm clipping 1.0, batch 64 (shared meshes) / 8 meshes (variable meshes), MSE on
-normalised targets, model selection by validation R2 (v1 formula), test metrics of the best model: R2/MSE/MAE
+Protocol (the v1 training script ``formal_benchmark.py``): Adam(lr 1e-3, weight decay 1e-5), cosine annealing per
+epoch to 1e-5 over ``--epochs``, grad-norm clipping 1.0, batch 64 (shared meshes) / 8 meshes (variable meshes), MSE
+on normalised targets, model selection by validation R2 (v1 formula), test metrics of the best model: R2/MSE/MAE
 (normalised), NRMSE/SSIM/Pearson (unnormalised), on the full test split, on the first 100 test samples (the v1
 paper tables, ``test100_*``) and on extra test sets (``fine_*``: zero-shot 4x resolution for HP/TET).
 
@@ -99,8 +99,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                    help="solve layers: fixed boundary cells (K.boundary / K.meta['dirichlet']), none, or neumann (no "
                         "fixed cells, zero-mean vertex solution of the pure Neumann problem, e.g. T5/T5g)")
     p.add_argument("--tensor-param", default=None, choices=["full", "cone"],
-                   help="tensor metrics: full SPD tensors b expm(sum s t t^T) (default for new runs) or the old edge "
-                        "cone b I + sum a t t^T")
+                   help="tensor metrics: full SPD tensors b expm(sum s t t^T) (default) or the edge cone "
+                        "b I + sum a t t^T with a >= 0 (the parameterisation of runs saved without this option)")
     p.add_argument("--aux-pde", type=float, default=0.0, metavar="W",
                    help="add W * model.operator_residual(u, f) (relative weak-form residual of the task's PDE with the "
                         "learned metric, true u and f) to the loss; tasks with TaskData.meta['pde'] only (HP/TET "
@@ -456,7 +456,8 @@ def _cond_summary(diag: dict, suffix: str | None = None) -> dict:
     """Max over layers of a per-metric diagnostic keyed by metric name, e.g. ``{'H1.cond_total': 12.3}``.
 
     ``suffix`` selects the statistic: ``.cond_total`` (max H / min H incl. star and metric reference; the default,
-    ``.cond`` for older model versions), ``.cond_learned`` (learned part only), ``.clamp_fraction``, ``.sat``."""
+    ``.cond`` in the diagnostics of earlier versions), ``.cond_learned`` (learned part only), ``.clamp_fraction``,
+    ``.sat``."""
     if suffix is None:
         suffix = ".cond_total" if any(k.endswith(".cond_total") for k in diag) else ".cond"
     out: dict[str, float] = {}
@@ -499,8 +500,8 @@ def _run_signature(args: argparse.Namespace) -> dict:
             "metric_type", "resolvent_iters", "resolvent_grad", "metric_ref", "abs_scale", "latent")
     sig = {k: getattr(args, k) for k in keys}
     for k, default in (("material", None), ("solver_mode", False), ("solve_iters", None), ("solve_bc", None),
-                       ("tensor_param", None), ("aux_pde", 0.0), ("solve_precond", None)):   # later flags: only
-        v = getattr(args, k, default)                                                      # when set (old runs resume)
+                       ("tensor_param", None), ("aux_pde", 0.0), ("solve_precond", None)):   # only when set, so that
+        v = getattr(args, k, default)                                                      # runs without them resume
         if v != default:
             sig[k] = v
     if getattr(args, "metric_ref", None) or getattr(args, "material", None):
@@ -624,7 +625,7 @@ def run(args: argparse.Namespace, task: TaskData | None = None) -> dict:
     last0 = os.path.join(out, "last.pt")
     if model_name == "rhmp" and getattr(args, "metric_type", "diag") == "tensor" and \
             getattr(args, "tensor_param", None) is None and os.path.exists(last0) and not args.no_resume:
-        try:                                    # runs started before tensor_param existed resume as 'cone'
+        try:                                    # a saved config without tensor_param resumes as 'cone'
             args._resume_tensor_param = RHMPConfig.from_dict(
                 torch.load(last0, map_location="cpu", weights_only=False)["model"]["cfg"]).tensor_param
         except Exception:  # noqa: BLE001 - unreadable last.pt: the resume below reports it
@@ -688,9 +689,9 @@ def run(args: argparse.Namespace, task: TaskData | None = None) -> dict:
         history, best_r2, best_ep, start_ep = ck["history"], ck["best_r2"], ck["best_epoch"], ck["epoch"] + 1
         _log(f"  resumed from epoch {ck['epoch']} (best val R2 {best_r2:.4f} @ {best_ep})", q)
 
-    # eval batches of variable meshes are fixed -> memoise their block-diagonal complexes when on the GPU
-    # (no memoised validation batches: they duplicated ~15 % of a GPU-resident variable-mesh data set, while
-    #  re-batching on the GPU costs ~2.5 ms per batch)
+    # the validation batches of variable meshes are fixed, but their block-diagonal complexes are not memoised: that
+    # would duplicate ~15 % of a GPU-resident variable-mesh data set, while re-batching on the GPU costs ~2.5 ms per
+    # batch
     val_cache = None
     use_pde = (getattr(args, "aux_pde", 0.0) or 0.0) > 0 and model_name == "rhmp"
     if use_pde and not (isinstance(task.meta, dict) and task.meta.get("pde")):
@@ -987,9 +988,9 @@ def eval_v1(args: argparse.Namespace, task: TaskData, device, out: str) -> dict:
     """Evaluate a v1 ``GaugeHodgeNetwork`` checkpoint on the legacy data of ``task`` with the v2 metrics.
 
     The v1 model (vendored in ``rhmp.baselines.v1``) is rebuilt exactly as the v1 evaluation script
-    ``compute_all_metrics.py`` does; predictions are made per
-    sample (``--v1-eval-batch 1``, as the v1 paper tables) because v1's ``forward_batch`` couples the samples of a
-    batch through the metric.  Writes ``result_v1.json``.
+    ``compute_all_metrics.py`` does; predictions are made per sample (``--v1-eval-batch 1``, as for the v1 paper
+    tables) because v1's ``forward_batch`` couples the samples of a batch through the metric.  Writes
+    ``result_v1.json``.
     """
     from rhmp.baselines.v1.gauge_hodge_mp.cell_complex import CellComplex
     from rhmp.baselines.v1.gauge_hodge_mp.network import GaugeHodgeNetwork

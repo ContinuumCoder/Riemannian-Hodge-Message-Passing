@@ -1,4 +1,4 @@
-# robustness: HP_k100 -> HP_k100 (runs/stage2/HP_k100_diag-poly_s42)
+# robustness: HP_k100 -> HP_k100 (runs/metric_variants/HP_k100_diag-poly_s42)
 
 | condition | R2 | dR2 | NRMSE | SSIM | Pearson | N | max abs dpred |
 |---|---:|---:|---:|---:|---:|---:|---:|

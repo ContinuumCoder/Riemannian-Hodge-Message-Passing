@@ -28,7 +28,7 @@ sigma_edge, logsigma_face, flux, flux_fem) + ``u_ref``: the P1 solution on the 4
 ``|u - u_ref|``, stored per sample) + per-sample ``level`` codes and mesh-quality statistics (angles, aspect ratios
 R/(2r), edge-length ratio) in ``sample_stats``.
 
-Usage (server):
+Usage:
   python3 -u datasets/generators/gen_qual.py [--n-base 100] [--workers 32]
   -> datasets/v2/HP_qual_graded.pt, datasets/v2/HP_qual_sliver.pt (+ .json summaries)
 """
@@ -207,7 +207,7 @@ def interpolate_p1(pts_f: np.ndarray, u_f: np.ndarray, q: np.ndarray, bnd_q: np.
     I = np.where(~bnd_q)[0]
     s = tri.find_simplex(q[I], tol=1e-12)
     miss = s < 0
-    if miss.any():                                   # should not happen for interior nodes: nearest-vertex fallback
+    if miss.any():                                   # not expected for interior nodes: nearest-vertex fallback
         d = ((q[I][miss][:, None, :] - pts_f[None]) ** 2).sum(-1)
         out[I[miss]] = u_f[d.argmin(1)]
     ok = ~miss

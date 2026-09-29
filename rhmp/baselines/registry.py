@@ -194,7 +194,7 @@ def _finish(model: nn.Module, td: Any, name: str, match: dict, target_params: in
     return model
 
 
-# dec_fixed / unit_fixed freeze the metric heads at their zero initialisation (H = star exactly, tested);
+# dec_fixed / unit_fixed freeze the metric heads at their zero initialisation (H = star exactly; see the tests);
 # RHMPConfig(learn_metric=False) is the same operator with the metric heads removed instead of frozen.
 def _build_rhmp_family(name: str):
     def build(td, target_params=None, *, args=None, amp=None, cache_path=None, tol=None, **cfg_overrides):
@@ -224,7 +224,7 @@ def _build_v1(name: str):
             raise ValueError(f"{name}: the v1 edge protocol needs the edge-averaged target; call "
                              f"rhmp.baselines.registry.prepare_task('{name}', task, opts) first (rhmp.train does)")
         # SCCNN: v1's raw Laplacians under the v1 protocol; normalised Laplacians with identity-initialised filters
-        # otherwise (raw ones explode ~1e2 per layer, normalised ones with v1's init collapse to a constant)
+        # otherwise (raw ones grow by ~1e2 per layer; normalised ones with v1's init collapse to a constant)
         if normalize is None:
             normalize = head_mode != "v1_edge"
         if filter_init is None:
@@ -499,7 +499,7 @@ MAX_WAIT_S = [1800.0]      # --max-wait (0: measure on a shared GPU without wait
 
 
 def _wait_exclusive(max_wait_s: float | None = None, poll_s: float = 10.0) -> bool:
-    """Block until no other process computes on our GPU (as ``bench/step_bench.py``); False after ``max_wait_s``."""
+    """Block until the GPU runs no other compute process (as ``bench/step_bench.py``); False after ``max_wait_s``."""
     max_wait_s = MAX_WAIT_S[0] if max_wait_s is None else max_wait_s
     t0 = time.time()
     while True:
@@ -684,6 +684,7 @@ def _bench_v1_original(task: str, models: list[str], device, batch: int, steps: 
 
 
 def main(argv: list[str] | None = None) -> None:
+    """CLI entry point (``python3 -m rhmp.baselines.registry``; see the module docstring)."""
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--applicable", default=None, metavar="TASK",
                    help="print '<model> <mode> <yes|no> <reason>' per model for TASK (used by run_baselines.sh)")

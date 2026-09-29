@@ -1,5 +1,5 @@
 {
-  "run": "runs/aniso/AHP_r10_diag-solver_s42",
+  "run": "runs/anisotropy/AHP_r10_diag-solver_s42",
   "task": "AHP_r10",
   "metric_type": "diag",
   "log_range": 3.0,

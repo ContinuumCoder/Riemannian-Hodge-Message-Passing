@@ -1,7 +1,8 @@
 """Regenerate T6 (U(1) Wilson loop with vortex defects) together with its raw edge cochain.
 
-Reproduces ``datasets/gen_T6_wilson_loop.py`` (same mesh seed, same torch RNG call sequence on CUDA; the per-edge
-Python loops are vectorised with identical per-element arithmetic) and dumps what v1 did not save:
+Reproduces the v1 generator ``datasets/gen_T6_wilson_loop.py`` of the original repository (same mesh seed, same
+torch RNG call sequence on CUDA; the per-edge Python loops are vectorised with identical per-element arithmetic) and
+dumps what v1 did not save:
 
     theta_edges (N, n1) float32   U(1) connection per edge, canonical orientation src < dst, edges sorted
                                   lexicographically (= generator order); ``edges`` is stored alongside
@@ -11,7 +12,7 @@ The mesh (``points``, ``faces``) is taken from ``datasets/T6_wilson_loop.pkl`` (
 regeneration).  Consistency check: the v1 node encodings recomputed from ``theta_edges`` / ``plaq`` are compared
 with the stored ``X_data`` / ``Y_data`` (max abs and relative error printed and saved in the output ``meta``).
 
-Usage (server):  python3 -u datasets/generators/gen_T6_native.py            -> datasets/v2/T6_native.pt
+Usage (CUDA GPU):  python3 -u datasets/generators/gen_T6_native.py            -> datasets/v2/T6_native.pt
 """
 from __future__ import annotations
 
@@ -56,7 +57,7 @@ def main(out_path: str = os.path.join(ROOT, "datasets", "v2", "T6_native.pt")):
     fei = torch.tensor(face_edge_idx, device=device)
     fes = torch.tensor(face_edge_sign, device=device)
 
-    # ---------------- identical RNG call sequence to datasets/gen_T6_wilson_loop.py ----------------
+    # ---------------- identical RNG call sequence to the v1 generator gen_T6_wilson_loop.py ----------------
     N = 10000
     torch.manual_seed(42)
     theta_edges = torch.zeros(N, n_edges, device=device)

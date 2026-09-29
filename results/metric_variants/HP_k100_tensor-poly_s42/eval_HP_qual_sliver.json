@@ -1,5 +1,5 @@
 {
-  "run": "runs/stage2/HP_k100_tensor-poly_s42",
+  "run": "runs/metric_variants/HP_k100_tensor-poly_s42",
   "train_task": "HP_k100",
   "eval_task": "HP_qual_sliver",
   "load_seconds": 11.307594060897827,

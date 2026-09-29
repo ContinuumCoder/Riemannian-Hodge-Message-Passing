@@ -110,7 +110,8 @@ class CochainLifting(nn.Module):
     """Lift raw inputs on any degree to hidden cochains ``x_k`` ``(n_k, B, C)`` (see module docstring).
 
     Args:
-        cfg: ``RHMPConfig`` (uses ``in_dims, even_dims, connection_dims, connection_odd, C, lift_hidden``).
+        cfg: ``RHMPConfig`` (uses ``in_dims, even_dims, material_dims, connection_dims, connection_odd, lifting, C,
+            lift_hidden``).
         geo_dims: ``{k: G_k}``.
     """
 

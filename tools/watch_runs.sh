@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Print one line per newly finished run on one or more hosts: the "exit" / "=== done" / "##### all done" lines that
-# the scripts in scripts/ write into runs/logs/*.log.  Polls every POLL seconds (default 300).
+# Print one line per newly finished run on one or more remote hosts: the "exit" / "=== done" / "##### all done"
+# lines that the scripts in scripts/ write into runs/logs/*.log.  Polls every POLL seconds (default 300).
 #   HOSTS="gpu1 gpu2" tools/watch_runs.sh          (REMOTE_DIR as in tools/ssh_opts.sh; default rhmp)
 set -uo pipefail
 HOSTS="${HOSTS:-${HOST:?set HOST or HOSTS}}"

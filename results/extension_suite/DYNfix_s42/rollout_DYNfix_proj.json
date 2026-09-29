@@ -1,5 +1,5 @@
 {
-  "run": "runs/suite/DYNfix_s42",
+  "run": "runs/extension_suite/DYNfix_s42",
   "train_task": "DYNfix",
   "eval_task": "DYNfix",
   "loaded_task": "DYNfix",

@@ -1,12 +1,13 @@
 # Anisotropy task suite: AHP, ASURF, ACURL, ADARCY
 
-Goal: tasks whose operator is the Whitney/Galerkin (FEEC) Hodge star of a **misaligned** SPD material tensor, for
-0-forms (scalar diffusion), 1-forms (curl–curl) and 2-forms (Darcy fluxes). They are built so that:
+The anisotropy suite consists of tasks whose operator is the Whitney/Galerkin (FEEC) Hodge star of a **misaligned**
+SPD material tensor, for 0-forms (scalar diffusion), 1-forms (curl–curl) and 2-forms (Darcy fluxes). They are built so
+that:
 
 * the targets are exact FEEC solutions from the model's own operator family (`d_k^T H_{k+1}(sigma) d_k` with the
   Whitney Galerkin star of a per-cell tensor);
-* a diagonal cochain metric provably cannot represent the operator, and neither can the old tensor cone
-  (`tensor_param='cone'`), while the full parameterisation (`tensor_param='full'`) can;
+* a diagonal cochain metric provably cannot represent the operator, and neither can the cone parameterisation of the
+  tensor metric (`tensor_param='cone'`), while the full parameterisation (`tensor_param='full'`) can;
 * the learned metric can be compared with the true material tensor (metric recovery), up to what is identifiable.
 
 Files: `datasets/generators/gen_aniso.py` (generator), `datasets/generators/aniso_fields.py` (fields, FEEC element matrices,
@@ -29,7 +30,7 @@ representability statements is in `docs/THEORY.md` §1–2.
 
 `R ∈ {10, 100}` is the maximal eigenvalue ratio. The two ratios share meshes, fields and sources (sample i of
 `X_r10.pt` and `X_r100.pt` differ only in the ratio). `_n1500` variants of the tet tasks (for example
-`ACURLb_r100_n1500`) use the first 1500 samples with the standard split; see §7 for why.
+`ACURLb_r100_n1500`) use the first 1500 samples with the standard split; §7 explains why.
 
 ## 2. Material fields
 
@@ -57,8 +58,8 @@ representability statements is in `docs/THEORY.md` §1–2.
     starts from exact line integrals `∫_e J·dl` (closed form for random Fourier features), and the load is
     `b = M1 j` (Whitney interpolant of J). The Whitney interpolant of a divergence-free field is not weakly
     divergence-free, because its normal component jumps across faces. The gradient residue is only 7–10 % of j in
-    the M1 norm, but ε damps gradients far less than the curl-curl term damps everything else, so it made up about
-    40 % of A (measured before the fix). The generator therefore removes it with a discrete Helmholtz projection,
+    the M1 norm, but ε damps gradients far less than the curl-curl term damps everything else, so without a correction
+    it makes up about 40 % of A. The generator therefore removes it with a discrete Helmholtz projection,
     `j ← j − d0χ` with `(d0ᵀM1d0)χ = d0ᵀM1j` on the interior nodes. Then `d0ᵀ M1 j = 0` exactly, and the solution is
     weakly divergence-free (`d0ᵀ M1 A = 0`, the `gauge` structure metric): pure curl-curl physics. `j` is the
     projected cochain, exactly consistent with `b = M1 j`.
@@ -98,7 +99,7 @@ while staying E(n)-invariant. Constants: ASURF ε = 0.05 (as SURF: the screening
   `max|d2J − F|/max|F|` is ≤ 1e-11. Positions are rounded to float32 **before** the solve, so the stored meshes
   reproduce the operators exactly.
 
-## 4. Why a diagonal metric (and the old tensor cone) cannot represent these operators
+## 4. Why a diagonal metric and the tensor cone cannot represent these operators
 
 **Scalar problems, 2-D and surfaces.** `d0ᵀ diag(h) d0` is the graph Laplacian with edge weights `h_e > 0`, an
 M-matrix. The anisotropic P1 stiffness has the edge weights `w_e = −Σ_T |T| ∇λ_iᵀ Σ_T ∇λ_j`, and these are
@@ -112,7 +113,7 @@ which is negative as soon as σ_∥/σ_⊥ > 3. No positive diagonal edge star p
 `d0ᵀ diag(h) d0` is fixed by the mesh and its sign by `h > 0`. Anisotropy along a non-edge direction needs the
 Whitney coupling of the edges of each cell.
 
-The old cone `σ = b I + Σ_j a_j t_j t_jᵀ` (a ≥ 0) is no better. `a_j t_j t_jᵀ` only adds the positive weight
+The cone `σ = b I + Σ_j a_j t_j t_jᵀ` (a ≥ 0) is no better. `a_j t_j t_jᵀ` only adds the positive weight
 `a_j |T|/|e_j|²` to edge j, and `b I` adds `b · cotan`, so it also produces only M-matrices: essentially the diagonal
 class. A cell tensor lies in the cone iff it is acute in the σ⁻¹ metric. That holds for 20 % of the cells at R = 10
 and 2 % at R = 100 (§6). The full family `σ = b expm(Σ_j s_j t_j t_jᵀ)` reaches every SPD tensor because the edge
@@ -148,7 +149,7 @@ tets at R = 10 and 0 % at R = 100 (§6).
   * `meta['representability']` holds the dataset-wide diagnostics;
   * `meta['pde']` (AHP and ADARCYp: `K u = M f` with M = `star0`) enables `--aux-pde` and `--solver-mode`.
 * Options:
-  * `fine=False`, `max_samples=` (smoke), `keep_on=`, `n_samples=` (subset, as `_n<N>`), `fine_max=`;
+  * `fine=False`, `max_samples=` (quick tests), `keep_on=`, `n_samples=` (subset, as `_n<N>`), `fine_max=`;
   * `abs_scale=True` via `load_task`: absolute mesh scale. It is relevant for ACURL, whose screening length is fixed
     while n0 varies ±20 %, so h varies ±7 %; ASURF has a fixed physical resolution;
   * legacy mode is not defined, because the tasks are cochain tasks.
@@ -168,7 +169,7 @@ Oracle errors: relative L2 error (mass-weighted for node fields) of the exact so
 
 * cone: the Frobenius-nearest cone member per cell (NNLS);
 * diag ref: the diagonal star `star_k · (projected material input)`, i.e. the model's reference star times the
-  material reference, the TPFA prior of `diag + --metric-ref` (in physical scaling);
+  metric reference, the TPFA prior of `diag + --metric-ref` (in physical scaling);
 * diag w⁺: positive-part P1 weights `max(w_e, 0)`, the operator-closest M-matrix (scalar problems);
 * iso: the isotropic part `det(T)^{1/d} I`;
 * edge recon: the tensor rebuilt per cell from the model's own edge inputs. The edge-averaged projections
@@ -215,7 +216,7 @@ through depth and nonlinearity. `gen_aniso.py --analyse 12` evaluates 12 test sa
 
 Reading the tables:
 
-* **The old cone is the diagonal class.** In 2-D the cone projection and the diagonal TPFA prior have the same error
+* **The cone is the diagonal class.** In 2-D the cone projection and the diagonal TPFA prior have the same error
   (AHP_r10 0.20 vs 0.24, AHP_r100 0.45 vs 0.44, ASURF_r100 0.26 vs 0.29). The full family with |s| ≤ 3–5 is within
   0–6 %.
 * **2-form problems.**
@@ -223,8 +224,8 @@ Reading the tables:
     isotropic part.
   * ADARCY_r100: the diagonal (TPFA) 2-form star gives 76 % flux error.
   * In both cases the full family reaches 6–14 % with |s| ≤ 5, and exactly 0 without clipping.
-* **Log-range.** The full family's clipped errors set the `--log-range` needed. It is 3 (R = 10) and 5 (2-D R = 100);
-  3-D R = 100 still loses 6–14 % at 5, so `run_aniso.sh` uses 6 there. The skinny cells of the HP Delaunay meshes
+* **Log-range.** The clipped errors of the full family set the required `--log-range`: 3 (R = 10) and 5 (2-D R = 100);
+  3-D R = 100 loses 6–14 % even at 5, so `run_aniso.sh` uses 6 there. The skinny cells of the HP Delaunay meshes
   need larger |s| than the smoothed SURF meshes.
 * **Input information.**
   * 2-D: the edge inputs determine the cell tensors well (edge recon 0.6–4 % on ASURF, 1.6 % / 11 % on AHP).
@@ -238,12 +239,12 @@ Reading the tables:
     1e-12.
   * Hence, for the 3-D R = 100 sets a model that sees only edge/face/tet scalars is information-limited, whatever its
     metric family. The per-cell truth is stored (`nu_tet`, `K_tet`; `rhmp.tasks.aniso.cell_tensors`).
-  * Model-side recommendation: an E(n)-equivariant per-cell tensor input (a world-frame tensor per top cell,
-    projected by the model onto the cell's own edges, `t_jᵀ T t_j`, which is invariant). A tensorial
-    `metric_reference` built from it would make the fixed full-tensor prior exact, while the diagonal prior stays
-    TPFA. The R = 10 sets and all 2-D sets are not affected.
+  * Limitation: the model has no E(n)-equivariant per-cell tensor input, i.e. a world-frame tensor per top cell that
+    the model projects onto the cell's own edges (`t_jᵀ T t_j`, which is invariant). A tensorial `metric_reference`
+    built from such an input would make the fixed full-tensor prior exact, while the diagonal prior stays TPFA. The
+    R = 10 sets and all 2-D sets are not affected.
 
-## 7. Data inventory (generated 2026-09-27, 24 CPU workers)
+## 7. Data inventory (24 CPU workers)
 
 | file | samples | n0 (mean, min–max) | size | gen time | max residual | notes |
 |---|---:|---|---:|---:|---:|---|
@@ -264,7 +265,7 @@ Reading the tables:
 | `ADARCY_r100.pt` | 3000 | 2495, 2000–3000 | 3.61 GB | 2429 s (24 workers) | 4.4e-12 | conservation ≤ 3e-13 |
 | `ADARCY_r100_fine.pt` | 200 | 10084, 8068–11980 | 1.07 GB | 3710 s (8 workers) | 2.9e-12 | conservation ≤ 3e-13 |
 
-Generation times are wall-clock times with 24 worker processes (fine 3-D sets: 8, for memory) on a shared CPU (load 25–60 from other jobs), excluding packing. Each file has a `.json` summary. The oracle report is `datasets/v2/ANISO_representability.json` (`--analyse 12`; a copy is `results/cab75/aniso_analysis/all.json`).
+Generation times are wall-clock times with 24 worker processes (fine 3-D sets: 8, for memory) on a CPU shared with other jobs (load 25–60), excluding packing. Each file has a `.json` summary. The oracle report is `datasets/v2/ANISO_representability.json` (`--analyse 12`; a copy is `results/anisotropy_oracle/all.json`).
 
 Memory of the loaded complexes (host RAM; `--data-on cpu` batches are moved per step):
 
@@ -277,7 +278,7 @@ Memory of the loaded complexes (host RAM; `--data-on cpu` batches are moved per 
 
 The 3000-sample tet sets therefore need about 140 GB for tensor-metric runs. `run_aniso.sh` uses the `_n1500`
 variants by default (about 70 GB with the blocks). Diagonal-metric runs load without the blocks:
-`load_task(..., whitney=False)`, which the trainer requests for diagonal metrics, drops them per complex while
+`load_task(..., whitney=False)`, which the trainer uses for diagonal metrics, drops them per complex while
 building. Measured: `ACURLb_r100_n1500` loads in 122 s with 21.4 GB of host RAM; `AHP_r100` with the blocks loads in
 49 s (13.5 GB). `N3D=""` selects all 3000 tet samples. The full-tensor path does not read the fp32 `G0`/`Gk` blocks
 (22 MB of the 46 MB); the cone and fixed-star paths do.
@@ -337,7 +338,7 @@ metric is the only route from the material to the output.
 
 Sequential runs, 50 epochs, seed 42. `--log-range` is 3 (R = 10), 5 (2-D R = 100) or 6 (tet R = 100), which
 covers the s-range of §6.
-`--metric-ref` is the task's material reference (§5). After each run the script writes `metric_recovery_<task>.json`
+`--metric-ref` is the metric reference of the task (§5). After each run the script writes `metric_recovery_<task>.json`
 (+ PNG) and `structure_metrics.json` (test + fine). `SUMMARY.md` collects test R², fine R², s/epoch, peak
 GB, parameters, structure residuals and last-layer recovery.
 
@@ -345,11 +346,11 @@ GB, parameters, structure residuals and last-layer recovery.
 |---|---|---|
 | `diag` / `diag+ref` | `--metric-type diag [--metric-ref K:0]` | diagonal metric (the M-matrix / TPFA family) |
 | `tensor` / `tensor+ref` | `--metric-type tensor --tensor-param full [...]` | full Galerkin tensor metric |
-| `cone+ref` | `--metric-type tensor --tensor-param cone --metric-ref ...` | the old cone family (≈ diagonal class) |
+| `cone+ref` | `--metric-type tensor --tensor-param cone --metric-ref ...` | the cone family (≈ diagonal class) |
 | `diagfixed+ref` | `--metric-type diag --no-learn-metric --metric-ref ...` | fixed DEC/TPFA prior (`learn_metric=False`) |
 | `tensorfixed+ref` | `--metric-type tensor --no-learn-metric --metric-ref ...` | fixed isotropic Galerkin prior (`learn_metric=False`) |
 | `diag-solver+ref` / `tensor-solver+ref` | `--solver-mode` (AHP, ADARCYp) | one physical solve layer: the model *is* the FEM solution map of its metric, so accuracy measures representability directly |
-| baselines | `--model mgn` / `egnn` / `dec_fixed` | param-matched non-Hodge baselines and the frozen DEC metric |
+| baselines | `--model mgn` / `egnn` / `dec_fixed` | parameter-matched non-Hodge baselines and the frozen DEC metric |
 
 Presets:
 
@@ -360,27 +361,27 @@ Presets:
 Exact commands:
 
 ```
-GPU=1 NAME=aniso tools/run_bg.sh bash scripts/run_aniso.sh                     # core preset, runs/aniso/
+GPU=1 NAME=aniso tools/run_bg.sh bash scripts/run_aniso.sh                     # core preset, runs/anisotropy/
 PRESET=full GPU=1 NAME=aniso_full tools/run_bg.sh bash scripts/run_aniso.sh     # everything
 TASKS="AHP_r100 AHP_r10" VARIANTS="diag-solver+ref tensor-solver+ref" MODELS="" bash scripts/run_aniso.sh
 EXTRA="--abs-scale" TASKS="ACURLb_r100_n1500" bash scripts/run_aniso.sh      # absolute mesh scale (ACURL)
-python3 scripts/metric_recovery.py runs/aniso/AHP_r100_tensor+ref_s42 --n 32
+python3 scripts/metric_recovery.py runs/anisotropy/AHP_r100_tensor+ref_s42 --n 32
 ```
 
-The script was validated end to end on the CPU: all 9 variants and 3 baselines on AHP_r100 with tiny sizes
-(`EPOCHS=1 EXTRA="--max-samples 60 --max-train-batches 3 --device cpu --C 16"`). All exited 0, with recovery,
-structure metrics and SUMMARY.md written.
+The script runs end to end on the CPU: all 9 variants and 3 baselines on AHP_r100 with tiny sizes
+(`EPOCHS=1 EXTRA="--max-samples 60 --max-train-batches 3 --device cpu --C 16"`) exit with status 0 and write the
+recovery, the structure metrics and SUMMARY.md.
 
-Expected cost on a shared GPU, extrapolated from HP/TET runs: AHP about 1–1.5 h per 50-epoch run, ASURF about 2 h,
-tet `_n1500` tasks about 2–3 h. The core preset is about 40 runs, i.e. several GPU-days sequentially; split it across
-GPUs with `TASKS=`.
+Estimated cost on a GPU shared with other jobs, extrapolated from the HP/TET runs: AHP about 1–1.5 h per 50-epoch run,
+ASURF about 2 h, and the tet `_n1500` tasks about 2–3 h. The core preset comprises about 40 runs, i.e. several GPU-days
+when run sequentially; `TASKS=` splits it across GPUs.
 
-What the numbers should show if the theory holds:
+What the theory predicts:
 
 * scalar problems, `solver` variants: the diagonal metric plateaus at the diag oracle error (it can reach at best the
   M-matrix closest to the truth), while the full tensor can reach the exact operator;
 * 2-form problems (ACURLb, ADARCY): the diagonal and cone metrics have a large irreducible operator error;
-* recovery: the operator action error of the full tensor metric falls far below that of diag/cone, and its principal
+* recovery: the operator action error of the full tensor metric falls far below that of the diagonal and cone metrics, and its principal
   directions align with the fibres (small angle errors, also for out-of-cone cells);
 * structure: exactly zero `div` for ACURLb (curl readout) for every rhmp variant; conservation and irrotationality
   residuals of the flux predictions.
@@ -400,7 +401,7 @@ What the numbers should show if the theory holds:
 * structure metrics (oracle predictions at the float32 floor; random model finite; `div = 0` with the curl readout);
 * one trainer epoch with the full tensor metric and the metric reference on AHP, ASURF, ACURLb and ADARCY.
 
-## 12. Smoke runs (20 CPU steps, full tensor metric, C = 32, 4 layers, 1 mesh per step, 21 samples per split part)
+## 12. Short pipeline runs (20 CPU steps, full tensor metric, C = 32, 4 layers, 1 mesh per step, 21 samples per split part)
 
 | task | load (63 samples) | 20 steps | val R² | test R² | fine R² | params | MB / complex |
 |---|---:|---:|---:|---:|---:|---:|---:|
@@ -422,8 +423,8 @@ metric and the task's metric reference, and is evaluated on the test and 4x-fine
 
 Two further CPU checks:
 
-* The comparison script ran end to end on AHP_r100 (§10).
+* The comparison script runs end to end on AHP_r100 (§10).
 * Solver mode on AHP_r100 with 100 training samples and 10 epochs (130 steps): `diag-solver+ref` test R² 0.423,
-  `tensor-solver+ref` 0.421. This is inconclusive at that size. The tensor metric had learned
-  anisotropic tensors (median ratio 8.9 vs the true 95) whose directions were not yet aligned (median angle error
-  56°); the real comparison needs the full runs.
+  `tensor-solver+ref` 0.421. This is inconclusive at that size: the tensor metric learns anisotropic tensors (median
+  ratio 8.9 vs the true 95) whose directions are not aligned with the fibres after so few steps (median angle error
+  56°); the comparison requires the full runs.

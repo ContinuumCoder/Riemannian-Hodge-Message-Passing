@@ -135,7 +135,7 @@
     "task": "HP_k100",
     "native": true,
     "root": null,
-    "out": "runs/baselines_v1budget/HP_k100_native/cw_net_s42",
+    "out": "runs/baselines_v1_budget/HP_k100_native/cw_net_s42",
     "device": null,
     "epochs": 100,
     "seed": 42,

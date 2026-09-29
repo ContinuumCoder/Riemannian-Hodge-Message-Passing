@@ -110,7 +110,7 @@
     "task": "T6",
     "native": false,
     "root": null,
-    "out": "runs/d_debug/T6_gat",
+    "out": "runs/baseline_diagnostics/T6_gat",
     "device": null,
     "epochs": 3,
     "seed": 42,

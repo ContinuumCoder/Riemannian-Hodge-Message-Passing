@@ -1,11 +1,14 @@
-"""Zero-shot mesh / resolution transfer for a trained T6f model (edge U(1) connection -> face flux).
+"""Zero-shot mesh and resolution transfer of a trained T6f model (edge U(1) connection -> face flux).
 
-The Wilson-loop physics of ``datasets/generators/gen_T6_native.py`` (smooth pure-gauge bumps + 1..3 vortices) is regenerated
-on NEW random Delaunay meshes (different mesh seed; optionally more nodes) and a finished run is evaluated with the
-trainer's ``eval_ckpt`` machinery (the training run's normalisation is used).  v1 cannot be evaluated on a new mesh
-at all: its metric has per-cell parameters tied to the training mesh.
+The Wilson-loop physics of ``datasets/generators/gen_T6_native.py`` (smooth pure-gauge bumps and 1 to 3 vortices) is
+regenerated on new random Delaunay meshes (a different mesh seed and, optionally, a different number of vertices), and
+the trained run is evaluated there with the trainer's ``eval_ckpt`` code path, in the normalisation of the training
+run.  The script needs only the run directory (``config.json``, ``best.pt``), no data set, and uses a GPU when one is
+available; it writes ``transfer_T6f_mesh<seed>_n<vertices>.json`` and the trainer's ``result_eval_*.json`` to
+``--out`` (default ``runs/transfer/<run name>/``).  The v1 model cannot be evaluated on a new mesh at all: its metric
+has per-cell parameters tied to the training mesh.
 
-usage: python3 scripts/t6_mesh_transfer.py --run runs/new/T6f_s42 --mesh-seed 7 --n-pts 1024 --n 500
+usage: python3 scripts/t6_mesh_transfer.py --run runs/new_tasks/T6f_s42 --mesh-seed 7 --n-pts 1024 --n 500
 """
 from __future__ import annotations
 

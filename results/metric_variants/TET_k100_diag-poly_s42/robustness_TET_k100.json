@@ -1,5 +1,5 @@
 {
-  "run": "runs/stage2/TET_k100_diag-poly_s42",
+  "run": "runs/metric_variants/TET_k100_diag-poly_s42",
   "train_task": "TET_k100",
   "eval_task": "TET_k100",
   "native": true,

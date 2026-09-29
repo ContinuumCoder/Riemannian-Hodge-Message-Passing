@@ -201,7 +201,7 @@
     "task": "T5",
     "native": false,
     "root": null,
-    "out": "runs/paper/T5_legacy_s42",
+    "out": "runs/paper_tasks/T5_legacy_s42",
     "device": null,
     "epochs": 100,
     "seed": 42,

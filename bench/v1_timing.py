@@ -1,4 +1,8 @@
-"""Baseline timing + batch-coupling check for the ORIGINAL (v1) implementation (vendored in rhmp.baselines.v1)."""
+"""Train-step / inference timing and batch-coupling check of the original v1 implementation (vendored in
+``rhmp.baselines.v1``) on the T6, T7 and T6_100K meshes.
+
+    python3 bench/v1_timing.py        # CUDA GPU; needs the v1 pickles in datasets/
+"""
 import sys, os, time, pickle
 import numpy as np, torch, torch.nn.functional as F
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

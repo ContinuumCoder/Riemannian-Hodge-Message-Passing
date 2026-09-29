@@ -467,8 +467,9 @@ class CochainComplex:
         complex are pinned once, in place (pinned CPU tensors behave like pageable ones, so later moves of the same
         complex reuse them), and every copy is issued with ``non_blocking=True`` on the current CUDA stream.  No
         device synchronisation is needed: kernels on that stream run after the copies, and PyTorch's caching host
-        allocator keeps the pinned buffers alive until the copies have completed.  Pageable blocking copies stalled
-        the host behind the queued GPU work (~5 ms per tensor on a busy GPU).  All other directions are unchanged.
+        allocator keeps the pinned buffers alive until the copies have completed.  (Pageable blocking copies would
+        stall the host behind the queued GPU work, about 5 ms per tensor on a busy GPU.)  Moves in all other directions
+        use plain copies.
 
         Args:
             device: target device (default: current).

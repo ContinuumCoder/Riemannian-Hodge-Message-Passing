@@ -9,8 +9,8 @@
   object (weak references: shared-mesh tasks build it once, variable-mesh batches once per batch).
 * :class:`NodeInputEncoder` - fixed (parameter-free) map from v2 per-degree inputs to node features for node-based
   baselines: node inputs pass through, even edge/face/tet inputs become incident-cell means, odd edge inputs become
-  v1's directional encoding ``(avg, avg*dx, avg*dy[, avg*dz])`` (``datasets/gen_T6_wilson_loop.py::
-  encode_edges_to_nodes``).  Optional fixed standardisation (buffers fitted on training samples, never trained).
+  v1's directional encoding ``(avg, avg*dx, avg*dy[, avg*dz])`` (``encode_edges_to_nodes`` of the v1 generator
+  ``gen_T6_wilson_loop.py``).  Optional fixed standardisation (buffers fitted on training samples, never trained).
 * :class:`EdgeInputEncoder` - per-directed-edge features for MeshGraphNet.
 * Output heads (:class:`NodeHead`, :class:`PairEdgeHead`, :class:`FaceHead`, :class:`CellHead`,
   :class:`ComplexHead`) that map hidden baseline features to the task's target cells.
@@ -462,7 +462,7 @@ class NodeInputEncoder(nn.Module):
     * odd edge inputs ``v`` (value on the canonical orientation ``src -> dst``): v1 encoding, per node the mean
       over incident edges of ``(v, v*t_x, v*t_y[, v*t_z])`` with ``t`` the unit edge vector ``src -> dst``; the edge
       contributes the *same* ``+v`` (and ``+v t``) to both endpoints, exactly as ``encode_edges_to_nodes``
-      (``datasets/gen_T6_wilson_loop.py``).  ``v*t`` is independent of the orientation convention (a 1-form times
+      (v1 generator ``gen_T6_wilson_loop.py``).  ``v*t`` is independent of the orientation convention (a 1-form times
       its direction is a vector); the ``avg`` column changes sign with it, as in v1.  Order ``[avg(c), avg*dx(c),
       avg*dy(c)(, avg*dz(c))]``.  ``directional=False`` keeps only the ``avg`` columns (v1's rule for EGNN);
       ``odd_avg=False`` drops them and keeps only the orientation-independent ``avg*t`` columns (the one-ring vector
@@ -737,8 +737,8 @@ class ComplexHead(nn.Module):
     Input for target degree ``t`` (every maintained degree is used; other degrees are brought to the target cells by
     incidence means, fixed and parameter-free):
 
-    * ``t = 0``: ``[x_0, mean_{e ni v} x_1, mean_{f ni v} x_2]``
-    * ``t = 1``: ``[x_1, x_a + x_b, x_b - x_a, l_e, mean_{f ni e} x_2]`` (``x_b - x_a`` gives access to the edge
+    * ``t = 0``: ``[x_0, mean_{e ∋ v} x_1, mean_{f ∋ v} x_2]``
+    * ``t = 1``: ``[x_1, x_a + x_b, x_b - x_a, l_e, mean_{f ∋ e} x_2]`` (``x_b - x_a`` gives access to the edge
       orientation; the internal edge features of these baselines have no definite parity)
     * ``t = 2``: ``[x_2, mean_{v in f} x_0, mean_{e in f} x_1]``, times ``sigma_f`` for odd targets on planar complexes
       (the models' face features are built from unsigned face aggregates or have no parity, as for node models)

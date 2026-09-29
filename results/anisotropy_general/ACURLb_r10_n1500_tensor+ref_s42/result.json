@@ -298,7 +298,7 @@
     "task": "ACURLb_r10_n1500",
     "native": true,
     "root": null,
-    "out": "runs/aniso/ACURLb_r10_n1500_tensor+ref_s42",
+    "out": "runs/anisotropy_general/ACURLb_r10_n1500_tensor+ref_s42",
     "device": null,
     "epochs": 50,
     "seed": 42,

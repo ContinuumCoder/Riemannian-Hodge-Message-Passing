@@ -27,8 +27,8 @@ Representability diagnostics of a per-cell tensor ``S`` against the model's tens
   * ``dyad_coeffs``: the unique coefficients ``S = sum_j alpha_j t_j t_j^T``;
   * ``cone_membership``: ``S`` is in the cone ``{b I + sum_j a_j t_j t_j^T : b > 0, a >= 0}`` (the ``tensor_param='cone'``
     family) iff an interval of ``b > 0`` with ``alpha - b gamma >= 0`` exists (``I = sum_j gamma_j t_j t_j^T``);
-  * ``full_param_range``: the smallest ``max_j |s_j|`` with ``S = b expm(sum_j s_j t_j t_j^T)`` (the
-    ``tensor_param='full'`` family; ``b`` absorbs the isotropic part);
+  * ``full_param_coeffs``: the coordinates of ``S = b expm(sum_j s_j t_j t_j^T)`` with the smallest ``max_j |s_j|``
+    (the ``tensor_param='full'`` family; ``b`` absorbs the isotropic part);
   * ``cone_project``: Frobenius-nearest cone member (NNLS per cell; analysis only).
 """
 from __future__ import annotations

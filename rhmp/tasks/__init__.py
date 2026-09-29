@@ -36,14 +36,15 @@ equivariant under relabelling of cell orientations and reflection invariant.  Th
 with an orientation-free readout and applies a fixed ``rhmp.data.OutputMap`` that supplies the physical orientation:
 T1/T1q/T6/T7 -> ``cochain:2`` + oriented face->node mean (sigma_f = +1 for CCW faces); T3 -> ``node_vector`` for the
 true vector g, reported as v = n x g.  Targets and metrics stay exactly v1's.  ``load_task(..., output_map=False)``
-disables it (ablation).  Legacy modes keep v1-like readouts (T1/T5 legacy feed/predict frame components, which an
-isotropic equivariant model cannot relate to directions: expect R2 ~ 0 there; this is structural).
+disables it (ablation).  Legacy modes keep v1-like readouts (T1/T5 legacy inputs/targets are frame components, which
+an isotropic equivariant model cannot relate to directions, so R2 stays near 0 there by construction).
 
-Extension suite (``rhmp/tasks/suite.py``): SURF / SURF_heat (+ _geo / _topo transfer sets), DYN / DYNfix (+ _delta),
-HP_qual_graded / HP_qual_sliver (+ _ref) resolve through ``load_task`` as well (hook below; the paper tasks do not
-depend on that module).
+Extension suite (``rhmp/tasks/suite.py``): SURF / SURF_heat (+ _geo / _topo transfer sets), DYN / DYNfix (+ _delta,
+_cons, _cons_mass), HP_qual_graded / HP_qual_sliver (+ _ref) and the anisotropy tasks of ``rhmp/tasks/aniso.py``
+(AHP, ASURF, ACURL, ADARCY) resolve through ``load_task`` as well (hook below; the paper tasks do not depend on those
+modules).
 
-New synthetic tasks (``datasets/v2/*.pt``, generators in ``datasets/generators/gen_*.py``), variable meshes:
+Synthetic tasks (``datasets/v2/*.pt``, generators in ``datasets/generators/gen_*.py``), variable meshes:
 
 * ``HP[<target>][_k<kappa>][_aniso[<R>]]`` (default kappa=100): 2-D hetero(-anisotropic) Poisson on variable meshes.
   Inputs: f (nodes); on edges (even) log sigma, or for anisotropic sets the log of the projected conductivity
@@ -112,7 +113,7 @@ def _suite():
 
 def list_tasks() -> list[str]:
     """Canonical task names (HP/TET accept further ``_k<kappa>`` / ``_aniso`` suffixes; extension-suite names
-    (SURF*, DYN*, HP_qual_*) are appended when ``rhmp.tasks.suite`` is importable)."""
+    (SURF*, DYN*, HP_qual_*, anisotropy tasks) are appended when ``rhmp.tasks.suite`` is importable)."""
     suite, _ = _suite()
     extra = sorted(suite) if suite else []
     return list(_PAPER) + ["HP", "HPflux", "HPfluxd", "HPfluxfem", "HPgrad", "HP_aniso10", "HP_aniso100",

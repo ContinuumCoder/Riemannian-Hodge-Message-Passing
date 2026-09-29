@@ -3,7 +3,7 @@
     "task": "HP_k100",
     "native": true,
     "root": null,
-    "out": "runs/new/HP_k100_s42",
+    "out": "runs/new_tasks/HP_k100_s42",
     "device": null,
     "epochs": 100,
     "seed": 42,
@@ -218,7 +218,7 @@
       "v1_C": 128,
       "batch_size": 8,
       "layers": 4,
-      "source": "/home/dzheng/RHMP-v2/datasets/v2/HP_k100.pt",
+      "source": "datasets/v2/HP_k100.pt",
       "generator": {
         "task": "HP",
         "kappa": 100.0,

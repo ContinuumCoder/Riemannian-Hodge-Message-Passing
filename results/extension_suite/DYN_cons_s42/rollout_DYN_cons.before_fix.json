@@ -1,5 +1,5 @@
 {
-  "run": "runs/suite/DYN_cons_s42",
+  "run": "runs/extension_suite/DYN_cons_s42",
   "train_task": "DYN_cons",
   "eval_task": "DYN_cons",
   "load_seconds": 6.351208209991455,

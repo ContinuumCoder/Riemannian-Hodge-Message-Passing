@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Launch a detached long-running job on $HOST (returns immediately); log in ~/$REMOTE_DIR/runs/logs/<NAME>.log
+# Launch a detached long-running job on the remote host $HOST and return immediately; its output is written to
+# ~/$REMOTE_DIR/runs/logs/<NAME>.log (NAME defaults to a time stamp).  Settings: tools/ssh_opts.sh.
 #   HOST=mygpu NAME=paper GPU=0 tools/run_bg.sh 'bash scripts/run_paper_tasks.sh'   # the command is run by bash -c
 set -euo pipefail
 source "$(dirname "$0")/ssh_opts.sh"

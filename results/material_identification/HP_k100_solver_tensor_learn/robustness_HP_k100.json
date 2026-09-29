@@ -1,5 +1,5 @@
 {
-  "run": "runs/stage3/HP_k100_S3c_solver_tensor_learn",
+  "run": "runs/material_identification/HP_k100_solver_tensor_learn",
   "train_task": "HP_k100",
   "eval_task": "HP_k100",
   "native": true,

@@ -1,4 +1,4 @@
-# robustness: T1q -> T1q (runs/new/T1q_s42); R2 centred (v1)
+# robustness: T1q -> T1q (runs/new_tasks/T1q_s42); R2 centred (v1)
 
 | condition | R2 | dR2 | NRMSE | SSIM | Pearson | N | max abs dpred |
 |---|---:|---:|---:|---:|---:|---:|---:|

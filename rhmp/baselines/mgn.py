@@ -19,7 +19,7 @@ leaves edge inputs to the edge features only);
 edge features per directed edge = ``[odd edge inputs (+v forward, -v reverse), v * t (t the unit vector of the
 directed edge), even edge inputs, (x_recv - x_send) / s, |x_recv - x_send| / s]`` with ``s`` the mesh's mean edge
 length (``EdgeInputEncoder``).  No absolute positions (translation invariant, as MGN).  T6, 10 epochs: MGN with raw
-edge values only stays at val R2 ~ 0; with ``v * t`` edge features it takes off after 6 epochs (0.57 at epoch 10);
+edge values only stays at val R2 ~ 0; with ``v * t`` edge features it improves from epoch 6 on (0.57 at epoch 10);
 with v1's node encoding (legacy inputs) it reaches 0.83 - the node encoding hands every node its one-ring vector
 field, which the edge MLPs otherwise have to assemble.
 
@@ -101,6 +101,8 @@ class MeshGraphNet(BaselineModel):
         mlp_layers: hidden layers per MLP.
         act: ``'relu'`` (paper) or ``'silu'``.
         normalized_geometry: edge geometry divided by the mesh's mean edge length.
+        directional_edges: append ``v * t`` for the odd edge inputs to the edge features (:class:`EdgeInputEncoder`).
+        node_edge_encoding: also encode the edge inputs into the node features (orientation-independent part only).
         amp: bf16 autocast for the MLPs on CUDA.
         name: registry name (``mgn`` / ``mgn_fast``).
     """

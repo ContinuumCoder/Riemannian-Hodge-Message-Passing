@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-# Push the local checkout to $HOST:~/$REMOTE_DIR (additive; never deletes remote files).
+# Push the local checkout to the remote host ($HOST:~/$REMOTE_DIR); additive, never deletes remote files.
 #   HOST=mygpu tools/sync.sh
-# Data (datasets/*.pkl, datasets/v2/*.pt), run outputs (runs/) and checkpoints are not pushed; server-written result
-# files (bench/RESULTS_*.md, bench/*.json) are not overwritten either: pull them with tools/fetch.sh.
+# Data (datasets/*.pkl, datasets/v2/*.pt), run outputs (runs/) and checkpoints are not pushed; result files written
+# on the remote host (bench/RESULTS_*.md, bench/*.json) are not overwritten either: fetch them with tools/fetch.sh.
+# Settings: tools/ssh_opts.sh.
 set -euo pipefail
 source "$(dirname "$0")/ssh_opts.sh"
 LOCAL="$(cd "$(dirname "$0")/.." && pwd)"

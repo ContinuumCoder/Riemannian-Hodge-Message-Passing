@@ -1,25 +1,25 @@
-"""E4 robustness table of a trained v2 run (CLI around :mod:`rhmp.robustness`).
+"""Symmetry and robustness table of a trained v2 run (a command-line interface to :mod:`rhmp.robustness`).
 
-    python3 scripts/eval_robustness.py runs/paper/T6f_native_s42 --all
-    python3 scripts/eval_robustness.py RUN --task HP_k1000 --batch-sizes 1,8          # + contrast transfer
+The script needs the run directory (``config.json``, ``best.pt``) and the data set of the evaluated task, and uses a
+GPU when one is available.  It writes ``<out>/robustness_<task>.json`` and ``.md`` (``<out>`` defaults to the run
+directory).  ``scripts/eval_on.py`` evaluates a run on transfer and quality-shift sets and computes DYN rollouts.
+
+    python3 scripts/eval_robustness.py runs/new_tasks/T6f_s42 --all
     python3 scripts/eval_robustness.py RUN --all --max-test 300 --also-tasks HP_qual_graded,HP_qual_sliver
 
-(``scripts/eval_on.py`` evaluates a run on transfer / quality-shift sets and DYN rollouts; this script produces the
-symmetry/robustness rows of experiment E4.)
-
-Rows (test split of ``--task``, default = the run's task; data re-normalised with the run's statistics):
+Rows (test split of ``--task``, by default the run's task, e.g. ``--task HP_k1000`` for the contrast transfer of an
+HP_k100 run; data re-normalised with the run's statistics):
   base              best.pt as trained, plus every extra test set of the task (``fine`` = zero-shot 4x resolution,
                     quality-shift splits, ...)
-  batch=<b>         evaluation batch size b (batch independence: identical metrics, max|dpred| at round-off)
+  batch=<b>         evaluation batch size b (batch independence: identical metrics, max|dpred| at round-off level)
   relabel           random vertex permutation, complexes rebuilt, data of every degree remapped with orientation signs
-  flip-orient       orientation of a random half of the faces reversed (odd face data flip sign)
-  rotate / reflect  random proper rotation (+ translation) / reflection of the positions (reflect: tasks without an
-                    orientation output map only)
+  flip-orient       orientation of a random half of the faces reversed (odd face data change sign)
+  rotate / reflect  random proper rotation (+ translation) / reflection of the positions (reflect: only tasks without
+                    an orientation output map)
   gauge=<s>         theta -> theta + d0 lambda, lambda ~ N(0, s^2), on the connection inputs (T6/T6f/T7)
-  noise=<s>         Gaussian noise of std s on the normalised inputs
-  task:<name>       ``--also-tasks``: test split (+ extra sets) of further tasks (e.g. HP_qual_graded, HP_k1000)
-R2 of orientation-odd cochain targets is uncentred (``rhmp.metrics``).  Outputs: ``<out>/robustness_<task>.json`` and
-``.md`` (``<out>`` defaults to the run directory).
+  noise=<s>         Gaussian noise of standard deviation s on the normalised inputs
+  task:<name>       ``--also-tasks``: test split (and extra sets) of further tasks (e.g. HP_qual_graded, HP_k1000)
+The R2 of orientation-odd cochain targets is uncentred (``rhmp.metrics``).
 """
 from __future__ import annotations
 
@@ -35,7 +35,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-# the transforms live in rhmp.robustness; re-exported for code that imported them from this script
+# the transforms are defined in rhmp.robustness and re-exported here for code that imports them from this script
 from rhmp.robustness import (gauge_task, noise_task, random_rotation, remap_complex,  # noqa: E402,F401
                              robustness_table, transformed_task)
 
@@ -46,9 +46,9 @@ def main(argv=None) -> dict:
     ap.add_argument("--task", default=None, help="evaluation task (default: the run's task)")
     ap.add_argument("--root", default=None)
     ap.add_argument("--device", default=None)
-    ap.add_argument("--batch-sizes", default=None, help="comma list (default: 1,<train batch>)")
-    ap.add_argument("--gauge-noise", default=None, help="comma list of lambda std (connection tasks)")
-    ap.add_argument("--noise", default=None, help="comma list of input-noise std (normalised units)")
+    ap.add_argument("--batch-sizes", default=None, help="comma-separated batch sizes (default: 1,<train batch>)")
+    ap.add_argument("--gauge-noise", default=None, help="comma-separated lambda std values (connection tasks)")
+    ap.add_argument("--noise", default=None, help="comma-separated input-noise std values (normalised units)")
     ap.add_argument("--relabel", action="store_true")
     ap.add_argument("--flip-orient", action="store_true")
     ap.add_argument("--rotate", action="store_true")
@@ -56,7 +56,7 @@ def main(argv=None) -> dict:
     ap.add_argument("--all", action="store_true", help="relabel + flip-orient + rotate (+ reflect when valid) + "
                                                          "gauge 0.1,1,10 on connection tasks + noise 0.01,0.1")
     ap.add_argument("--max-test", type=int, default=None, help="evaluate only the first N test samples")
-    ap.add_argument("--also-tasks", default=None, help="comma list of further evaluation tasks")
+    ap.add_argument("--also-tasks", default=None, help="comma-separated further evaluation tasks")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--out", default=None)
     a = ap.parse_args(argv)

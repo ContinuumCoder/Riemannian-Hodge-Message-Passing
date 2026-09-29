@@ -3,7 +3,7 @@
     "task": "T5g",
     "native": true,
     "root": null,
-    "out": "runs/paper/T5g_solver_learn_tensor_s42",
+    "out": "runs/paper_tasks/T5g_solver_learn_tensor_s42",
     "device": null,
     "epochs": 30,
     "seed": 42,

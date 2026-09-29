@@ -22,14 +22,15 @@ Deliberate deviations from v1 (all switchable, defaults = the stronger/fairer va
 * GEM-CNN: v1 aggregated only along canonical edges ``src -> dst`` (``src < dst``: information flowed from lower
   to higher vertex ids only) and had no nonlinearity (a linear model); the default aggregates over both directions
   (reverse direction = angle + pi) and inserts SiLU between convolutions, as the original GEM-CNN does.
-* SCCNN keeps v1's raw combinatorial Laplacians by default (activations grow by ~1e2 per layer, as in v1).
-  ``normalize=True`` (Laplacians divided per mesh by their Gershgorin bound) must be combined with
-  ``filter_init='identity'``: with v1's ``N(0, 0.1)`` coefficient initialisation the identity term shrinks the
-  signal ~10x per layer and the network collapses to a constant (bias-only) predictor (T6: prediction spread 1e-6,
-  gradients 1e-10, val R2 -0.0004 after 100 epochs).
+* SCCNN: :func:`make_v1_baseline` keeps v1's raw combinatorial Laplacians by default (activations grow by ~1e2 per
+  layer, as in v1); the registry uses them only under the v1 edge protocol and otherwise sets ``normalize=True``
+  (Laplacians divided per mesh by their Gershgorin bound), which must be combined with ``filter_init='identity'``:
+  with v1's ``N(0, 0.1)`` coefficient initialisation the identity term shrinks the signal ~10x per layer and the
+  network collapses to a constant (bias-only) predictor (T6: prediction spread 1e-6, gradients 1e-10,
+  val R2 -0.0004 after 100 epochs).
 * heads: v1 trained MPSN / SCCNN / Clifford-SMPN with a 1-channel edge readout on edge-averaged node targets
-  ``0.5 (y_src + y_dst)`` and scored them in edge space (first target component only;
-  the v1 evaluation script ``compute_all_metrics.py``).  On the v1 paper tasks this *v1 edge protocol* is the default
+  ``0.5 (y_src + y_dst)`` and scored them in edge space (first target component only; v1 evaluation script
+  ``compute_all_metrics.py``).  On the v1 paper tasks this *v1 edge protocol* is the default
   (``head='v1_edge'``, the task target is transformed by ``rhmp.baselines.registry.prepare_task``); elsewhere, or
   with ``head='node'``, they predict the task target with the multi-degree ``ComplexHead``.
 * EGNN on legacy T7: v1 meant to strip the directional columns (``avg*dx, avg*dy``) but selected columns
@@ -471,7 +472,8 @@ class V1OursCore(nn.Module):
 
     It has per-cell parameters (metric bases of size ``n_k x 8``), so it only runs on the mesh it was built for.
     Training uses v1's ``forward_batch`` (its batch-mean metric couples the samples of a batch, as when v1 was
-    trained); evaluation is per sample (``eval_per_sample=True``, as the v1 evaluation script ``compute_all_metrics.py``).
+    trained); evaluation is per sample (``eval_per_sample=True``, as in the v1 evaluation script
+    ``compute_all_metrics.py``).
     """
 
     def __init__(self, v1: nn.Module, n: tuple[int, int, int], eval_per_sample: bool = True) -> None:

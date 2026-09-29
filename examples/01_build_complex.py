@@ -2,7 +2,7 @@
 
 Covers triangle meshes (planar and surfaces), quads and mixed polygons, tetrahedra and regular grids; the exact
 coboundaries ``d_k`` (``d_{k+1} d_k = 0``); reference Hodge stars; E(n)-invariant descriptors; boundary flags;
-applying ``d_k`` / ``d_k^T`` to ``(n_k, B, C)`` cochains; validation of dirty input; dtype/device moves; and
+applying ``d_k`` / ``d_k^T`` to ``(n_k, B, C)`` cochains; validation of invalid faces; dtype/device moves; and
 block-diagonal batches of several meshes.
 
 Run (CPU, a few seconds):  python examples/01_build_complex.py
@@ -66,7 +66,7 @@ def main() -> None:
 
     # ------------------------------------------------------------------ 1. a planar triangle mesh
     pts = square_points(60, seed=0)
-    tri = Delaunay(pts).simplices                      # numpy int32 is fine; orientation is kept as given
+    tri = Delaunay(pts).simplices                      # numpy int32 is accepted; orientation is kept as given
     K = CochainComplex.from_triangles(pts, tri)        # star='cotan' (default), validate=True
     describe("planar Delaunay mesh", K)
     print(f"  K.geo_dims = {K.geo_dims}   <- pass this to RHMP(cfg, geo_dims)")
@@ -106,7 +106,7 @@ def main() -> None:
     describe("tetrahedral mesh of the unit cube", Ktet)
     print(f"  precomputed Whitney (Galerkin) metric blocks for degrees {sorted(Ktet.whitney)}")
 
-    # ------------------------------------------------------------------ 5. dirty input is validated
+    # ------------------------------------------------------------------ 5. invalid faces are dropped by validation
     bad = np.concatenate([tri, tri[:2, ::-1], [[0, 0, 1]]])   # 2 duplicates (reversed) + 1 repeated vertex
     clean, stats = validate_triangles(pts, bad)
     print(f"\n[validation] kept {stats['n_kept']} of {stats['n_input']} faces "

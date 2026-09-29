@@ -1,4 +1,4 @@
-# robustness: HP_k100 -> HP_k100 (runs/stage3/HP_k100_S3c_solver_diag_learn); R2 centred (v1)
+# robustness: HP_k100 -> HP_k100 (runs/material_identification/HP_k100_solver_diag_learn); R2 centred (v1)
 
 | condition | R2 | dR2 | NRMSE | SSIM | Pearson | N | max abs dpred |
 |---|---:|---:|---:|---:|---:|---:|---:|

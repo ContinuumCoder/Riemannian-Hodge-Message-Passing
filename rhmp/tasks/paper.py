@@ -1,8 +1,8 @@
 """Adapters for the v1 paper tasks T1, T2, T3, T5, T6, T7, T8 (+ T1q, T6f, T7f, T6_100K).
 
-Legacy mode (``native=False``) reproduces v1's inputs/outputs and normalisation exactly
-(the v1 training script ``formal_benchmark.py``): node inputs ``X (N, n0, F)``, targets ``Y (N, n0, O)``, per-feature
-mean/std of the first 70 % (torch unbiased std; numpy biased std for T8), sequential 70/15/15 split.
+Legacy mode (``native=False``) reproduces v1's inputs/outputs and normalisation exactly (the v1 training script
+``formal_benchmark.py``): node inputs ``X (N, n0, F)``, targets ``Y (N, n0, O)``, per-feature mean/std of the first
+70 % (torch unbiased std; numpy biased std for T8), sequential 70/15/15 split.
 Native mode puts inputs/outputs on the cells where the physics lives (see ``rhmp/tasks/__init__.py``).
 """
 from __future__ import annotations
@@ -94,7 +94,7 @@ def _edge_one_form(V: Tensor, pos: Tensor, edges: Tensor) -> Tensor:
 
 
 def oriented_face_to_node(K, out_dim: int) -> OutputMap:
-    """Oriented face -> node average ``y_i = mean_{f ni i} sigma_f x_f`` for a planar 2-D complex.
+    """Oriented face -> node average ``y_i = mean_{f ∋ i} sigma_f x_f`` for a planar 2-D complex.
 
     ``sigma_f = sign(signed area)`` (+1 for counter-clockwise faces): the physical orientation of the plane, which
     turns an odd face 2-cochain (flux / vorticity in the face's own orientation) into the node pseudo-scalar field of
@@ -126,7 +126,7 @@ def oriented_face_to_node(K, out_dim: int) -> OutputMap:
 
 
 def direct_vector_map(K, model_readout: str = "grad") -> OutputMap:
-    """Fixed edge -> vertex vector map ``v_i = sum_{e ni i} w_e t_e / deg_i`` (``t_e`` = unit vector src->dst, the same
+    """Fixed edge -> vertex vector map ``v_i = sum_{e ∋ i} w_e t_e / deg_i`` (``t_e`` = unit vector src->dst, the same
     for both endpoints): the v1 edge-to-node average that *defines* the T5 targets (``w_e = -(d0 phi)_e``, the raw
     potential differences).  Composed with the ``grad`` readout (``w = d0 phi``) it represents the T5 targets exactly.
     """
@@ -254,7 +254,7 @@ def load_T1(droot, *, native, device, star, quad=False, output_map=None, **_):
     name = "T1q" if quad else "T1"
     if quad:
         K = CochainComplex.from_grid((gs, gs), 1.0 / (gs - 1), cell="quad", star=star, device=device)
-        # vertex id i*ny+j at (i h, j h) == v1 ordering (meshgrid indexing='ij'); verify
+        # vertex id i*ny+j at (i h, j h) is the v1 ordering (meshgrid indexing='ij'); checked here
         if not torch.allclose(K.pos.double().cpu(), torch.as_tensor(pts), atol=1e-6):
             raise RuntimeError("from_grid vertex order does not match the T1 points")
     else:
@@ -338,7 +338,7 @@ def load_T5(droot, *, native, device, star, grad=False, name="T5", **_):
         return _finish("T5", K, {0: X}, Y, target_degree=0, target_kind="node_scalar", in_dims={0: 1},
                        even_dims={}, connection_dims={}, x_kinds={0: "v1"}, y_kind="v1", spatial_dim=2,
                        native=False, device=device, meta=meta)
-    # the generator defines E_i = mean_{e ni i} E_e t_e  ==  the 'direct' vector readout
+    # the generator defines E_i = mean_{e ∋ i} E_e t_e, i.e. the 'direct' vector readout
     meta["vector_mode"] = "direct"
     return _finish("T5", K, {0: X}, Y, target_degree=0, target_kind="node_vector", in_dims={0: 1}, even_dims={},
                    connection_dims={}, x_kinds={0: "v1"}, y_kind="isotropic", spatial_dim=2, native=True,

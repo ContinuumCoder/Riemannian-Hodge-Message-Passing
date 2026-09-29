@@ -158,7 +158,7 @@
     "task": "T1",
     "native": true,
     "root": null,
-    "out": "runs/paper/T1_native_s42",
+    "out": "runs/paper_tasks/T1_native_s42",
     "device": null,
     "epochs": 100,
     "seed": 42,

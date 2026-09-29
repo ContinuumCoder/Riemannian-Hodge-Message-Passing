@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
-# Sequential baseline sweeps over several tasks (100 epochs, seed 42) through scripts/run_baselines.sh.
-#   bash scripts/run_baselines_seq.sh "T3 HP_k100"                                   # locally / on the GPU machine
-#   NAME=blA GPU=0 tools/run_bg.sh 'bash scripts/run_baselines_seq.sh "T3 HP_k100"'      # detached on a remote host
-# (machines without pyvista need PYTHONPATH=<repo>/shims to unpickle the T3 dataset)
+# Runs scripts/run_baselines.sh on several tasks in turn (100 epochs, seed 42) with the baseline models listed in
+# MODELS.  Needs the data sets of the tasks and a GPU (machines without pyvista need PYTHONPATH=<repo>/shims to
+# unpickle the T3 data set); the outputs are those of run_baselines.sh: runs/baselines/<task>_<mode>/<model>_s<seed>/,
+# the logs runs/logs/bl_*.log and the summary runs/baselines/summary.txt.
+#   bash scripts/run_baselines_seq.sh "T3 HP_k100"
+#   HOST=<ssh host> NAME=bl_seq GPU=0 tools/run_bg.sh 'bash scripts/run_baselines_seq.sh "T3 HP_k100"'   # detached
 set -uo pipefail
 cd "$(dirname "$0")/.."
 TASKS="${1:?tasks}"

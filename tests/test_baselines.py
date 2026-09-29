@@ -182,7 +182,7 @@ def test_adapter_geometry_and_orientation():
 # input encoder == v1 encoding
 # ================================================================================================================
 def _v1_loop_encoding(theta: np.ndarray, edges: np.ndarray, pts: np.ndarray) -> np.ndarray:
-    """Literal port of datasets/gen_T6_wilson_loop.py::encode_edges_to_nodes (python loop over edges)."""
+    """Literal port of ``encode_edges_to_nodes`` (v1 generator ``gen_T6_wilson_loop.py``; Python loop over edges)."""
     N, n1, c = theta.shape
     n = pts.shape[0]
     ed = pts[edges[:, 1]] - pts[edges[:, 0]]
@@ -218,7 +218,7 @@ def test_node_encoder_matches_v1_loop(c):
 
 
 def test_node_encoder_reproduces_T6_legacy_inputs():
-    """Encoding the native T6 edge connection reproduces the stored v1 node inputs X_data (server data)."""
+    """Encoding the native T6 edge connection reproduces the stored v1 node inputs X_data (needs the T6 datasets)."""
     nat = os.path.join(ROOT, "datasets", "v2", "T6_native.pt")
     pkl = os.path.join(ROOT, "datasets", "T6_wilson_loop.pkl")
     if not (os.path.exists(nat) and os.path.exists(pkl)):
@@ -398,7 +398,7 @@ def _fit_identity(name: str, steps: int = 40, **ov) -> tuple[float, float]:
 @pytest.mark.parametrize("name", [n for n in ALL_MODELS if registry.SPECS[n].family != "rhmp" and n != "deeponet"])
 def test_trainable_on_learnable_tiny_task(name):
     """Every baseline reduces the loss of a learnable tiny task within 40 Adam steps (guards against signal
-    collapse: SCCNN with normalised Laplacians and v1's filter initialisation predicted a constant and never learned).
+    collapse: SCCNN with normalised Laplacians and v1's filter initialisation predicts a constant and does not learn).
     DeepONet is excluded: its branch sees only the mesh mean of the inputs (no local map).  GCN only has to make
     progress: four normalised-adjacency averages cannot reproduce a white-noise node field (oversmoothing)."""
     first, last = _fit_identity(name)
@@ -642,7 +642,7 @@ def _trainer_has_model_flag() -> bool:
                                                ("ours_v1", "node", "tiny"), ("sccnn", "node", "T6")])
 def test_trainer_runs_baseline(name, target, tname, tmp_path):
     if not _trainer_has_model_flag():
-        pytest.skip("rhmp.train has no --model option yet")
+        pytest.skip("rhmp.train has no --model option")
     from rhmp.train import parse_args, run
     torch.set_num_threads(2)
     td = tiny_task(FIXTURES["tri"]("cpu", None), target, N=12, name=tname)

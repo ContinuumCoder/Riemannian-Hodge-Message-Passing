@@ -1,5 +1,5 @@
 {
-  "run": "runs/stage3/HP_k100_S3f_frozen_ref_res",
+  "run": "runs/material_identification/HP_k100_frozen_ref_res",
   "train_task": "HP_k100",
   "eval_task": "HP_k100",
   "native": true,

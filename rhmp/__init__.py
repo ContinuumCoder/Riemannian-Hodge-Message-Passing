@@ -1,6 +1,6 @@
 """RHMP v2: Riemannian Hodge Message Passing on cochain complexes.
 
-Public API (imported lazily so that one sub-module under development never breaks the others)::
+Public API (names are resolved lazily, so that each one imports only its own sub-module)::
 
     from rhmp import RHMP, RHMPConfig, CochainComplex          # model, configuration, complexes
     from rhmp import cg_solve, hodge_decompose, sharp, flat    # DEC toolkit (rhmp.dec)

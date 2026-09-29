@@ -1,4 +1,4 @@
-# robustness: T3 -> T3 (runs/paper/T3_native_s42); R2 centred (v1)
+# robustness: T3 -> T3 (runs/paper_tasks/T3_native_s42); R2 centred (v1)
 
 | condition | R2 | dR2 | NRMSE | SSIM | Pearson | N | max abs dpred |
 |---|---:|---:|---:|---:|---:|---:|---:|

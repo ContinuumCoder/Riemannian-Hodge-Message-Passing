@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Pull server-written results ($HOST:~/$REMOTE_DIR -> local): bench/RESULTS_*.md, bench/*.json and runs/
-# (json / md / log / png / csv only, no checkpoints).
+# Fetch the result files written on the remote host ($HOST:~/$REMOTE_DIR -> local checkout): bench/RESULTS_*.md,
+# bench/*.json and runs/ (json / md / log / png / csv files only; no checkpoints).  Settings: tools/ssh_opts.sh.
 #   HOST=mygpu tools/fetch.sh
 set -euo pipefail
 source "$(dirname "$0")/ssh_opts.sh"

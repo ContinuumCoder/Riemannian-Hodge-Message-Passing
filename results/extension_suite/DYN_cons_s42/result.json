@@ -212,7 +212,7 @@
     "task": "DYN_cons",
     "native": true,
     "root": null,
-    "out": "runs/suite/DYN_cons_s42",
+    "out": "runs/extension_suite/DYN_cons_s42",
     "device": null,
     "epochs": 100,
     "seed": 42,

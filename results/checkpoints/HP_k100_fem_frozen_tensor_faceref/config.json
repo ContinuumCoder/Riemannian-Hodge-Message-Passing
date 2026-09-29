@@ -3,7 +3,7 @@
     "task": "HP_k100",
     "native": true,
     "root": null,
-    "out": "runs/stage3/HP_k100_S3e_fem_frozen_tensor_faceref",
+    "out": "runs/material_identification/HP_k100_fem_frozen_tensor_faceref",
     "device": null,
     "epochs": 5,
     "seed": 42,

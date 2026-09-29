@@ -1,5 +1,5 @@
 {
-  "run": "runs/stage2/T6f_tensor-poly_s42",
+  "run": "runs/metric_variants/T6f_tensor-poly_s42",
   "train_task": "T6f",
   "eval_task": "T6f",
   "native": true,

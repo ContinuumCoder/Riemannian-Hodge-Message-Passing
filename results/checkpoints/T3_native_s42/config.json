@@ -3,7 +3,7 @@
     "task": "T3",
     "native": true,
     "root": null,
-    "out": "runs/paper/T3_native_s42",
+    "out": "runs/paper_tasks/T3_native_s42",
     "device": null,
     "epochs": 100,
     "seed": 42,

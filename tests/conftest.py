@@ -157,7 +157,7 @@ def mesh_mixed_polygons(nx: int = 7, ny: int = 5):
     i, j = i.ravel(), j.ravel()
     polys = []
     used = np.zeros(len(quads), bool)
-    for q in range(len(quads)):  # tiny fixture mesh: a loop is fine here
+    for q in range(len(quads)):  # small fixture mesh: a Python loop is acceptable here
         if used[q]:
             continue
         a, b, c, d = quads[q]

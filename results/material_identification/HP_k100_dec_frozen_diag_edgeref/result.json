@@ -123,7 +123,7 @@
     "task": "HP_k100",
     "native": true,
     "root": null,
-    "out": "runs/stage3/HP_k100_S3e_dec_frozen_diag_edgeref",
+    "out": "runs/material_identification/HP_k100_dec_frozen_diag_edgeref",
     "device": null,
     "epochs": 30,
     "seed": 42,

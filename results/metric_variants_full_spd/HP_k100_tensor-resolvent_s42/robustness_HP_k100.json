@@ -1,5 +1,5 @@
 {
-  "run": "runs/stage2_full/HP_k100_tensor-resolvent_s42",
+  "run": "runs/metric_variants_full_spd/HP_k100_tensor-resolvent_s42",
   "train_task": "HP_k100",
   "eval_task": "HP_k100",
   "native": true,

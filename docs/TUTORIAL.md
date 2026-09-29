@@ -238,7 +238,7 @@ For **variable meshes**, build one complex per sample and batch them block-diago
 `Kb = CochainComplex.batch([K_i ...])`, inputs `torch.cat([x_i ...])[:, None]` (so `B = 1`), and split outputs with
 `Kb.meta['ptr'][model.output_degree]`.  `examples/03_train_poisson.py` is a complete loop of this kind.
 
-### 6.2 Your data as a `TaskData` + the library trainer
+### 6.2 Your data as a `TaskData` and the library trainer
 
 `rhmp.data.TaskData` is the container the trainer (`rhmp.train.run`), the evaluation scripts and the baselines use.
 For a **shared mesh**, `inputs[k]` is `(N, n_k, F_k)` and `target` is `(N, n_t, out_dim)`, both already normalised:
@@ -347,7 +347,7 @@ column (for instance the log median edge length of each mesh as a constant verte
 * **Tensor metric** (`metric_type='tensor'`): per-triangle (per-tetrahedron) SPD material tensors enter through the
   Whitney/Galerkin star.  The default parameterisation `tensor_param='full'` is `σ_f = b_f expm(sum_j s_fj t_j t_j^T)`
   with signed, bounded `s` (every SPD tensor of bounded condition number, including anisotropy misaligned with the
-  edges); `tensor_param='cone'` keeps the older `σ_f = b_f I + sum_j a_fj t_j t_j^T`, `a >= 0`, which only produces
+  edges); `tensor_param='cone'` selects the cone `σ_f = b_f I + sum_j a_fj t_j t_j^T`, `a >= 0`, which only produces
   M-matrix stiffness (the same class as a diagonal metric).  At initialisation `d_0^T H_1 d_0` is exactly the P1 FEM
   stiffness matrix.  Triangle and tetrahedral complexes only; `scaling` `'dec'` or `'none'`.
 * **Resolvent layers** (`layers=[..., 'resolvent', ...]`): the self term becomes
@@ -358,7 +358,7 @@ column (for instance the log median edge length of each mesh as a constant verte
   handling, `solve_precond='twolevel'` for large meshes) and a linear readout.  With `material_dims={k: m}` the
   material columns reach only the metric heads, so the metric is the only path from the material to the output; for
   P1 data `-div(σ grad u) = f` this model class contains the exact discrete solution operator, and the learned metric
-  is the material (README, selling point 4).
+  is the material (README, result 4).
 * **Ablations**: `tie_metrics=False`, `scaling='jacobi'|'none'`, `cross=False`, `gate='relu'`,
   `identity_metric=True`, `poly_order=1`, and `star='unit'` when building the complex.
 * **Speed and memory**: `amp=True` (bf16 autocast for the dense parts on CUDA; sparse products stay fp32),
@@ -457,7 +457,7 @@ print({k: round(v, 6) for k, v in rows.items()})         # exact symmetries: ide
 ## 12. Baselines
 
 `python -m rhmp.train --task T6f --model mgn` trains any registered model with the same data, loss, metrics and
-trainer; parameter-matched models get the v2 model's parameter count unless `--param-budget` is given.
+trainer; parameter-matched models get the parameter count of the v2 model unless `--param-budget` is given.
 `rhmp.baselines.registry.applicable(name, task)` tells whether a model can run on a task.  The list of models, the
 fairness rules and the applicability table are in [`docs/BASELINES.md`](BASELINES.md); the baselines that wrap the
 v1 code use its vendored copy in `rhmp.baselines.v1`.
@@ -481,4 +481,4 @@ print(applicable("mgn", td), applicable("fno", td))     # (True, '') and (False,
 | accuracy depends on mesh resolution although the physics does not | see section 7 (length scales) |
 | `load_task` cannot find data after `pip install` | pass `root=` (the repository or the datasets directory); the default root is the checkout the package lives in |
 | `torch.compile` fails with Inductor | missing Python headers / Triton toolchain; use `backend='aot_eager'` or run eagerly |
-| building many complexes (HP/TET loading) is very slow on a busy CPU | many small tensor ops oversubscribe the threads; use `torch.set_num_threads(1)` or `OMP_NUM_THREADS=1` for the build (`from_triangles` itself is vectorised) |
+| building many complexes (HP/TET loading) is very slow on a heavily loaded CPU | many small tensor ops oversubscribe the threads; use `torch.set_num_threads(1)` or `OMP_NUM_THREADS=1` for the build (`from_triangles` itself is vectorised) |

@@ -1,5 +1,5 @@
 {
-  "run": "runs/new/T6f_s42",
+  "run": "runs/new_tasks/T6f_s42",
   "train_task": "T6f",
   "eval_task": "T6f_mesh11_n1024",
   "native": true,

@@ -213,7 +213,7 @@
     "task": "HP_k100",
     "native": true,
     "root": null,
-    "out": "runs/new/HP_k100_s42",
+    "out": "runs/new_tasks/HP_k100_s42",
     "device": null,
     "epochs": 100,
     "seed": 42,

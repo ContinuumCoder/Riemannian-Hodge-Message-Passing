@@ -1,5 +1,5 @@
 {
-  "run": "runs/paper/T3_native_s42",
+  "run": "runs/paper_tasks/T3_native_s42",
   "train_task": "T3",
   "eval_task": "T3",
   "native": true,

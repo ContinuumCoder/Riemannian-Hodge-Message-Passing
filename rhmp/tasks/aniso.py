@@ -1,5 +1,6 @@
 """Anisotropy task suite: PDEs whose operator is the Whitney/Galerkin Hodge star of a misaligned SPD material tensor
-(generator ``datasets/generators/gen_aniso.py``; equations, discretisations, sizes and protocol in ``docs/ANISO_TASKS.md``).
+(generator ``datasets/generators/gen_aniso.py``; equations, discretisations, sizes and protocol in
+``docs/ANISO_TASKS.md``).
 
 ===============  ===============  ================================================================  ====================
 name             data file        inputs by degree (odd columns first, even last)                    target (readout)
@@ -267,7 +268,8 @@ def load_aniso(name: str, droot: str | None = None, *, native: bool = True, devi
         max_samples: smoke tests (first ``max_samples // 3`` samples of each split part; ``fine`` truncated too).
         keep_on: ``'auto' | device | 'cpu'``: where the complexes and tensors live.
         whitney: keep the Whitney/Galerkin blocks (needed by tensor metrics only); ``False`` drops them per complex
-            while building (``rhmp.tasks.load_task`` strips them only after loading, so its peak includes them).
+            while building, which keeps the host-memory peak low (``rhmp.tasks.load_task(..., whitney=False)``
+            forwards the option).
     """
     from rhmp.tasks import resolve_root
     from rhmp.tasks.synthetic import GPU_BUDGET_GB
@@ -417,7 +419,7 @@ def _galerkin(Kw, k: int, T: Tensor):
     try:
         from rhmp.layers import galerkin_blocks, galerkin_geometry
         M = galerkin_blocks(galerkin_geometry(Kw, k, torch.float64), T.double()[:, None])[:, 0]
-    except ImportError:                                  # older rhmp: signed dyad coefficients, fp32 Whitney blocks
+    except ImportError:                                  # fallback: signed dyad coefficients, fp32 Whitney blocks
         from rhmp.dec import whitney_blocks
         t = Kw.whitney[k]["t"].double()
         dd = t[:, :, :, None] * t[:, :, None, :]

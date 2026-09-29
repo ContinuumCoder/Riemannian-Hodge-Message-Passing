@@ -33,7 +33,7 @@ differs), and the aniso set adds the tensor field on top.  A second file ``*_fin
 samples of the (sequential 70/15/15) *test* split on meshes with 4x as many nodes (same sigma/A/f fields): zero-shot
 resolution transfer on identical physical instances.
 
-Usage (server):
+Usage:
   python3 -u datasets/generators/gen_HP.py --kappa 100 [--aniso | --aniso-max 10] [--n 5000] [--n-fine 500] [--workers 32]
   -> datasets/v2/HP_k100[_aniso|_aniso10].pt, ..._fine.pt (+ .json summaries)
   python3 -u datasets/generators/gen_HP.py --selftest     (FEM convergence check against a manufactured solution)

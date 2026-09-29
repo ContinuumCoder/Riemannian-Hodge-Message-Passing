@@ -125,10 +125,11 @@ class MetricHead(nn.Module):
 class TensorMetricHead(nn.Module):
     """Whitney-consistent material tensor per top cell (DESIGN §9.1).
 
-    ``param='full'`` (default for new models): ``sigma_f = b_f expm(S_f)``, ``S_f = sum_j s_{f,j} t_j t_j^T`` with signed
-    ``s_{f,j} = a tanh(z_{f,j})`` (zero-init): every SPD tensor with bounded condition number (the edge dyads span
-    Sym(2) on triangles and Sym(3) on tets).  ``param='cone'`` (old behaviour; the cone spanned by ``I`` and the edge
-    dyads, i.e. anisotropy along cell edges only):
+    ``param='full'`` (the ``RHMPConfig`` default): ``sigma_f = b_f expm(S_f)``, ``S_f = sum_j s_{f,j} t_j t_j^T`` with
+    signed ``s_{f,j} = a tanh(z_{f,j})`` (zero-init): every SPD tensor with bounded condition number (the edge dyads
+    span Sym(2) on triangles and Sym(3) on tets).  ``param='cone'`` (the default of this class and the
+    parameterisation of configurations saved without ``tensor_param``; the cone spanned by ``I`` and the edge dyads,
+    i.e. anisotropy along cell edges only):
     ``sigma_f = b_f I + sum_j a_{f,j} t_j t_j^T`` in the cell's own edge frame, with
 
         b_f     = exp(a * tanh(z_b))              in [e^-a, e^a]       z_b     = MLP_b(psi_f)
@@ -145,6 +146,7 @@ class TensorMetricHead(nn.Module):
         in_edge: width of ``psi_{e_j}``.
         hidden: hidden width of both MLPs.
         log_range: ``a``.
+        param: ``'full'`` or ``'cone'`` (see above).
     """
 
     def __init__(self, in_top: int, in_edge: int, hidden: int = 32, log_range: float = 2.0, param: str = "cone") -> None:

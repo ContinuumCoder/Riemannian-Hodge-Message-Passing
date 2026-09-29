@@ -1,8 +1,8 @@
 # RHMP v2 — engineering redesign of Riemannian Hodge Message Passing
 
-Status: the design specification of the `rhmp/` package (v2), written before and during the implementation.  The
-mathematics as finally implemented, with the tests of every guarantee, is [MATH.md](MATH.md); the results are in
-[../REPORT.md](../REPORT.md).  The original implementation (v1) is vendored in `rhmp/baselines/v1/` for comparison.
+This document is the design specification of the `rhmp/` package (v2).  [MATH.md](MATH.md) describes the
+mathematics as implemented, with the tests of every guarantee, and [../REPORT.md](../REPORT.md) reports the
+results.  The original implementation (v1) is vendored in `rhmp/baselines/v1/` for comparison.
 
 Paper: "Learning Discrete Riemannian Metrics for Physical Fields with Cochain-Frame Equivariance"
 (Zheng & Allen-Blanchette, arXiv:2608.14556). v1 code: https://github.com/ContinuumCoder/Riemannian-Hodge-Message-Passing
@@ -10,18 +10,18 @@ Paper: "Learning Discrete Riemannian Metrics for Physical Fields with Cochain-Fr
 
 ## 0. What we keep (the insight) and what we fix
 
-Keep, exactly:
+The redesign keeps the following exactly:
 1. **Topology is fixed and exact.** Coboundaries `d_k` come from oriented incidence; `d_{k+1} d_k = 0` holds
    to machine precision for every complex we build (triangles, quads/polygons, tetrahedra, block-diagonal batches).
 2. **Geometry is learned only through SPD cochain metrics** `H_k` (diagonal, one value per k-cell): every
    learnable propagation operator is a metric-weighted Hodge block `d_k^T H_{k+1} d_k` or
    `d_{k-1} H_{k-1} d_{k-1}^T`, plus metric-weighted cross-degree transport `d_k^T H_{k+1} x_{k+1}`, `d_{k-1} H_{k-1} x_{k-1}`.
 3. **Cochain-frame equivariance O(C)**: metrics are predicted only from O(C)-invariant statistics; the only
-   nonlinearity inside the MP stack is the norm gate `g(||m||) m`; normalisation is RMSNorm with a *scalar* gain.
+   nonlinearity inside the message-passing stack is the norm gate `g(||m||) m`; normalisation is RMSNorm with a *scalar* gain.
 4. **E(n)**: all geometric inputs are E(n)-invariant; scalar readouts are invariant, vector readouts equivariant.
 5. **Abelian gauge invariance** `F = d_1 A` from `d_1 d_0 = 0`.
 
-Fix (v1 defects found by inspection + measurement, see `bench/v1_timing.py`):
+Fixes (v1 defects found by inspection and measurement; see `bench/v1_timing.py`):
 
 | # | v1 defect | v2 fix |
 |---|-----------|--------|
@@ -35,9 +35,9 @@ Fix (v1 defects found by inspection + measurement, see `bench/v1_timing.py`):
 | F8 | COO spmm with `.t()`/`.coalesce()` per call, geometry recomputed per forward, `(B,n,C)` permute copies, Python loop in vector readout, per-sample loop for variable meshes, no AMP/TF32 | CSR `d`, `d^T`, `|d|` precomputed; `(n, B, C)` layout (zero-copy spmm view); cached geometry; vectorised readouts; block-diagonal mesh batching; AMP for dense parts, fp32 spmm; optional `torch.compile`, activation checkpointing |
 | F9 | Only triangle meshes, degrees 0..2 | general cochain complexes: triangles, quads/polygons (CW), tetrahedra (degrees 0..3), grids, batches |
 
-v1 reference numbers (RTX PRO 6000 Blackwell, `bench/v1_timing.py`):
-T6 (n0=1024, C=128, L=4, B=64): train step 104.6 ms, infer 51.0 ms, peak 7.17 GB, 0.43M params.
-T7 (C=160): 141.4 ms, 8.89 GB. T6_100K (C=16, L=3, B=2): 25.9 ms/step, complex build 6.5 s.
+v1 reference numbers (RTX PRO 6000 Blackwell, `bench/v1_timing.py`): on T6 (n0=1024, C=128, L=4, B=64) a training
+step takes 104.6 ms and inference 51.0 ms, with 7.17 GB peak memory and 0.43M parameters; on T7 (C=160) a step takes
+141.4 ms with 8.89 GB; on T6_100K (C=16, L=3, B=2) a step takes 25.9 ms and building the complex takes 6.5 s.
 
 ## 1. Package layout
 
@@ -82,7 +82,8 @@ tools/sync.sh, tools/remote.sh, tools/run_bg.sh   (remote workflow, see §8)
 * **Determinism:** the output for sample `i` must not depend on other samples in the batch (test enforced, 1e-6).
 * **Devices:** tests run on CPU (and on CUDA when available); every module must work on both.
 * **No absolute coordinates** anywhere inside the model, except in `NodeVectorReadout` through edge vectors.
-* Python 3.12, torch 2.10 (server). Type hints, docstrings, no PyG/torch_scatter dependency.
+* Reference environment: Python 3.12 and torch 2.10 on the GPU machine.  The code uses type hints and docstrings and
+  has no PyG/torch_scatter dependency.
 
 ## 3. Mathematics of v2
 
@@ -95,12 +96,12 @@ For a complex with top degree `K` (2 for surfaces, 3 for volumes):
     so that it stays > 0 on obtuse pairs; `star2 = 1/area`.
   * `star='barycentric'`: `star1 = |dual edge|/|edge|` with barycentric dual (always > 0); use for tets
     (`star0` dual volume, `star1 = |dual face|/|edge|`, `star2 = |dual edge|/|face|`, `star3 = 1/vol`, barycentric duals).
-  * `star='unit'`: all ones (combinatorial; reproduces v1's implicit prior).
+  * `star='unit'`: all ones (combinatorial; reproduces the implicit prior of v1).
   * quads/polygons: barycentric duals with polygon areas (fan triangulation for area/centroid).
-* `geo[k]`: `(n_k, G_k)` E(n)-invariant descriptors, standardised (log for positive scale quantities,
-  then per-complex z-scoring is **not** allowed — use fixed transforms so that values are comparable across meshes:
+* `geo[k]`: `(n_k, G_k)` E(n)-invariant descriptors, standardised with fixed transforms (log for positive scale
+  quantities) so that values are comparable across meshes. Per-complex z-scoring is **not** allowed;
   `log(x / median_x_of_this_complex)` is allowed because it is a per-mesh scale normalisation that is itself
-  E(n)-invariant and mesh-transferable). Minimum set:
+  E(n)-invariant and mesh-transferable. Minimum set:
   * k=0: log dual area, log mean incident edge length, valence, boundary flag, angle defect (surfaces; 0 for 2-D/vol)
   * k=1: log length, log star1, clamped raw cotan weight, boundary flag, number of cofaces, cos dihedral angle (surfaces, 1 for flat)
   * k=2: log area, log star2, min interior angle, log aspect ratio (circumradius/inradius), boundary flag
@@ -125,7 +126,8 @@ H_m = star[m] * exp( a * tanh( MLP_m(psi_m) ) ),   a = log_range (default 2.0  -
 * Diagnostics: the layer records `log(H/star)` statistics and the condition number `max H / min H` per degree.
 
 ### 3.3 Normalised metric Hodge operators (layers.py)
-(Revised during the implementation: down-block scaling, cross terms and gate corrected; MATH.md §4-5 is authoritative.)
+(The down-block scaling, the cross terms and the gate below are the implemented forms; MATH.md §4-5 is
+authoritative.)
 Work in the symmetrised DEC frame `x_k = star_k^{1/2} u_k` (u = "physical" cochain). Scaling on degree k:
 `scaling='dec'` (default): `S_up = star[k]`, `S_down = 1/star[k]`; `'jacobi'`: `S = diag(operator)` per sample;
 `'none'`: `S = 1`. Stars are normalised per sample by their geometric mean inside the model (numerical hygiene;
@@ -155,7 +157,7 @@ m      = m_self + w_cu * cross_up(x_{k+1}) + w_cd * cross_down(x_{k-1})       (w
 r      = sqrt( mean_c m^2 + eps )                                             # per-cell rms (O(C)-invariant)
 x_k   <- x_k + gamma * sigmoid( MLP( log1p r ) ) * m / r                       # radial norm gate; gamma scalar, MLP 1->16->1
 ```
-(The earlier "gate then per-cell RMSNorm" form cancels the gate exactly and is not used.)
+(The form "gate, then per-cell RMSNorm" cancels the gate exactly and is not used.)
 All degrees are updated synchronously from the layer's input features (as in v1). Ablations must be switchable:
 `gate='relu'`, `cross=False`, `identity_metric=True`, `scaling='none'`, `poly_order=1`, `star='unit'`.
 Activation checkpointing per layer when `cfg.checkpoint_layers`.
@@ -173,7 +175,7 @@ for k = 1..K:
    x_k = o_k ⊙ (1 + e_k)                                            (odd × even = odd)
 ```
 The lifting defines the hidden frame; it must be orientation-consistent (odd) and permutation-equivariant, but O(C) is
-a property of the MP stack, so C-dimensional even gates are allowed here.
+a property of the message-passing stack, so C-dimensional even gates are allowed here.
 
 ### 3.5 Readouts (readout.py)
 * `node_scalar`: `MLP(x_0) -> (n_0, B, out_dim)` (E(n)-invariant).
@@ -272,23 +274,26 @@ class TaskData:            # everything on `device`
     spatial_dim: int
 ```
 `native=True` uses cochain inputs where the physics lives (T5: node_vector readout; T6/T7: edge inputs when the
-generator can provide them, else node-encoded legacy); `native=False` reproduces v1's exact inputs/outputs for fair comparison.
+generator can provide them, else node-encoded legacy); `native=False` reproduces the exact v1 inputs and outputs for a
+fair comparison.
 
 ## 5. Tests (pytest; `python3 -m pytest tests -q`)
-Complex and operators: `d^2 = 0` (all builders, 2-D/3-D, boundary, tets, quads, batches) exactly; validation drops duplicates/degenerates;
-`batch()` == individual complexes (features and operators); stars > 0; boundary flags; geometry E(n)-invariance
-(rotate/reflect/translate `pos` -> identical `geo`, `star`); `gershgorin_bound >= lambda_max` (dense check) and <= 3x.
-Model: O(C) equivariance of `hidden()` (random orthogonal Q, 1e-5 fp32); E(n) invariance/equivariance of readouts;
-vertex relabelling (random permutation of vertices, re-derived faces) -> permuted outputs (1e-5); face orientation
-flips of odd inputs -> sign-consistent outputs; batch independence (B=1 vs B=64 vs block-diag, 1e-6);
-gauge invariance in connection mode (1e-5); operator norm <= 1 (dense eigvalsh, random H); no NaN/inf on sliver meshes
-(aspect ratio 1e4) and extreme even inputs (1e-6..1e6); fp64 vs fp32 agreement; config/checkpoint roundtrip;
-ablation flags run; `torch.compile` smoke (CUDA only, skipped on CPU).
-Trainer and metrics: trainer smoke on a tiny synthetic task (2 epochs, CPU) + metric functions vs the v1 evaluation
-code (`rhmp.baselines.v1.metrics_v1`, 1e-6 on random data); block-diagonal batch training == per-sample loop loss
-(same params, 1e-5).
+The test suite covers three groups:
+* Complex and operators: `d^2 = 0` (all builders, 2-D/3-D, boundary, tets, quads, batches) exactly; validation drops
+  duplicates/degenerates; `batch()` == individual complexes (features and operators); stars > 0; boundary flags;
+  geometry E(n)-invariance (rotate/reflect/translate `pos` -> identical `geo`, `star`); `gershgorin_bound >= lambda_max`
+  (dense check) and <= 3x.
+* Model: O(C) equivariance of `hidden()` (random orthogonal Q, 1e-5 fp32); E(n) invariance/equivariance of readouts;
+  vertex relabelling (random permutation of vertices, re-derived faces) -> permuted outputs (1e-5); face orientation
+  flips of odd inputs -> sign-consistent outputs; batch independence (B=1 vs B=64 vs block-diag, 1e-6);
+  gauge invariance in connection mode (1e-5); operator norm <= 1 (dense eigvalsh, random H); no NaN/inf on sliver
+  meshes (aspect ratio 1e4) and extreme even inputs (1e-6..1e6); fp64 vs fp32 agreement; config/checkpoint roundtrip;
+  ablation flags run; a short `torch.compile` run (CUDA only, skipped on CPU).
+* Trainer and metrics: a short trainer run on a tiny synthetic task (2 epochs, CPU) + metric functions vs the v1
+  evaluation code (`rhmp.baselines.v1.metrics_v1`, 1e-6 on random data); block-diagonal batch training == per-sample
+  loop loss (same parameters, 1e-5).
 
-## 6. Benchmarks & experiments (one GPU per job)
+## 6. Benchmarks and experiments (one GPU per job)
 * `bench/ops_bench.py`: CSR spmm vs COO vs gather/scatter for `d0`, `d1`, `d0^T`, `d1^T` at n0 in {1K, 10K, 100K},
   `B*C` in {128, 8192}; report best per size; `spmm` may dispatch on size if a clear winner exists.
 * `bench/step_bench.py`: v1 vs v2 train-step time / inference time / peak memory on T6 (C=128,L=4,B=64), T7, T6_100K
@@ -316,16 +321,17 @@ HOST=gpu tools/remote.sh 'python3 -m pytest tests -q'    # run a command there (
 HOST=gpu NAME=t6_v2 tools/run_bg.sh python3 -u -m rhmp.train --task T6 ...   # background job, log in runs/logs/
 HOST=gpu tools/fetch.sh                                  # pull result files (json / md / png) back
 ```
-Datasets: `datasets/*.pkl` and `datasets/v2/*.pt` (formats in `docs/DATASETS.md`, sources in `datasets/README.md`),
-v1 checkpoints: `checkpoints_v1/` (`python3 datasets/download_v1.py --ckpt`).
+The datasets are `datasets/*.pkl` and `datasets/v2/*.pt` (formats in `docs/DATASETS.md`, sources in
+`datasets/README.md`); the v1 checkpoints are in `checkpoints_v1/` (`python3 datasets/download_v1.py --ckpt`).
 
-## 9. Stage 2 — algorithm upgrades (pushing the metric insight further)
+## 9. Algorithm upgrades (pushing the metric insight further)
 
 Goal: make the *metric* the physically meaningful object (a material tensor field), discretised the way finite
 element exterior calculus does it, and give the network the global (elliptic) coupling that a metric-defined operator
-implies. Everything stays: fixed d_k, SPD metrics as the only learned propagation, O(C)/E(n) exactness, bounded operators.
+implies. All guarantees are kept: fixed d_k, SPD metrics as the only learned propagation, O(C)/E(n) exactness, bounded
+operators.
 
-### 9.1 Whitney-consistent tensor metric (`metric_type='tensor'`; default stays `'diag'` until validated)
+### 9.1 Whitney-consistent tensor metric (`metric_type='tensor'`; the default is `'diag'`)
 For every top cell f (triangle in 2-D/surfaces, tetrahedron in 3-D) the model predicts a SPD material tensor in the
 cell's own edge frame (E(n)-equivariant, O(C)-invariant inputs):
 ```
@@ -353,15 +359,17 @@ Normalisation: `beta = rowsum_max(|H_1|) · beta_unit(A, S)` where `beta_unit` i
 Degree-0 and top-degree metrics stay diagonal (lumped).
 
 
-**Revision (stage 3, after the representability analysis of [ANISO_TASKS.md](ANISO_TASKS.md)):** the cone `b I + sum_k a_k t_k t_k^T, a_k >= 0`
-only produces M-matrix (positive-edge-weight) stiffness matrices on triangles — the same class as a diagonal metric —
-so it cannot represent misaligned anisotropy. Default is now `tensor_param='full'`:
+**Full parameterisation.** The representability analysis of [ANISO_TASKS.md](ANISO_TASKS.md) shows that the cone
+`b I + sum_k a_k t_k t_k^T, a_k >= 0` only produces M-matrix (positive-edge-weight) stiffness matrices on triangles —
+the same class as a diagonal metric — so it cannot represent misaligned anisotropy. The default is therefore
+`tensor_param='full'`:
 `sigma_f = b_f · expm( sum_k s_{f,k} t_k t_k^T )` with signed bounded `s_{f,k} = a·tanh(.)` (zero-init = b I; the edge
 dyads span Sym(2) on triangles and Sym(3) on tets, so every SPD tensor with bounded condition number is reachable),
 assembled into explicit Galerkin element matrices `M_f = ∫_f w_i · sigma_f w_j` from float64 barycentric gradients
 (`rhmp.layers.galerkin_geometry` / `galerkin_blocks` / `TensorMetric`; same slots and orientation as `K.whitney`; H
 stays SPD because each element block is built from an SPD `sigma_f`, and the construction is well conditioned on
-slivers, unlike a per-cell dyad-Gram inversion).  `tensor_param='cone'` keeps the old behaviour.  See THEORY.md §1.
+slivers, unlike a per-cell dyad-Gram inversion).  `tensor_param='cone'` selects the cone parameterisation above.  See
+THEORY.md §1.
 
 ### 9.2 Resolvent (implicit) Hodge layer (`layer_type='resolvent'`)
 `y = (I + tau L_hat)^{-1} x` computed by batched conjugate gradients on the `(n, B, C)` block system with per-sample
@@ -376,4 +384,4 @@ metric). Layer types are configured per layer, e.g. `layers=['poly','poly','reso
 Reference stars (diag + Whitney/Galerkin), Laplacians `Δ_k` for any metric, Hodge decomposition of k-cochains
 (exact / coexact / harmonic) via the same CG solver, harmonic basis (inverse iteration), Whitney interpolation
 (cochain → vector field at vertices/faces, "sharp") and its adjoint ("flat", vector field → cochain), all batched,
-metric-aware and differentiable. These are library features for the community, used by tests and by the readouts.
+metric-aware and differentiable. They are library features for general use, and the tests and the readouts use them.

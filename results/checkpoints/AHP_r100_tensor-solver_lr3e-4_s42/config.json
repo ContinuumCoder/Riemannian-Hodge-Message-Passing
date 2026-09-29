@@ -3,7 +3,7 @@
     "task": "AHP_r100",
     "native": true,
     "root": null,
-    "out": "runs/aniso/AHP_r100_tensor-solver_lr3e-4_s42",
+    "out": "runs/anisotropy/AHP_r100_tensor-solver_lr3e-4_s42",
     "device": null,
     "epochs": 60,
     "seed": 42,

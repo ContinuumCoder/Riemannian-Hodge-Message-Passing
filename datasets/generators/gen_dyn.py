@@ -19,16 +19,17 @@ Discretisation (finite volumes on the barycentric dual = DEC with the lumped mas
     discrete mass conservation for any u), optionally blended with first-order upwinding A + alpha D,
     D = graph Laplacian with weights |Phi|/2 (symmetric PSD, zero row/column sums: conservative and dissipative);
   * time: Crank-Nicolson  (M + dt/2 (A + nu L)) u^{n+1} = (M - dt/2 (A + nu L)) u^n,  dt = 0.005, 8 sub-steps per
-    stored step (Delta t = 0.04, stored-step CFL U Delta t / h ~ 1.1), 100 stored steps (T = 4).  Unconditionally stable (the symmetric part of A + nu L
-    is PSD in the M inner product) and mass conserving to round-off; the per-step mass residual
-    |1^T M (u^{n+1} - u^n)| / 1^T M |u^n| is stored (max over steps) together with the total drift.
+    stored step (Delta t = 0.04, stored-step CFL U Delta t / h ~ 1.1), 100 stored steps (T = 4).  Unconditionally
+    stable (the symmetric part of A + nu L is PSD in the M inner product) and mass conserving to round-off; the
+    per-step mass residual |1^T M (u^{n+1} - u^n)| / 1^T M |u^n| is stored (max over steps) together with the total
+    drift.
 Stored (DYN, packed like gen_HP.py with ptr0/ptr1/ptr2 over trajectories): pos (n0,2) f32, faces (n2,3) i32,
 theta (n1) f32 (canonical lexicographic edges), vel (n0,2) f32 (node velocities, for node-based baselines),
 traj (n0, T+1) f32 (u at the stored steps), mass (n0) f32, flux (n1) f32 (dual-edge fluxes Phi of the solver).
 DYNfix stores the shared mesh once: pos, faces, mass, and per trajectory theta (N, n1), vel (N, n0, 2),
 traj (N, T+1, n0), flux (N, n1).
 
-Usage (server):
+Usage:
   python3 -u datasets/generators/gen_dyn.py [--n 600] [--n-fix 500] [--workers 32]
   -> datasets/v2/DYN.pt, datasets/v2/DYNfix.pt (+ .json summaries)
 """

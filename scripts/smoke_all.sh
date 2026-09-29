@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
-# 2-epoch smoke training of every task/mode with the v2 model (full data), one line per run in
-# runs/smoke/summary.txt (val R2 after 2 epochs, s/epoch, peak memory).
-#   bash scripts/smoke_all.sh            TASKS="T6 T8" bash scripts/smoke_all.sh
+# Short 2-epoch runs of the v2 model on every task and input mode (full data sets), a check of the data, the trainer
+# and the model.  Needs the v1 pickles, the data sets of scripts/gen_datasets.sh and a GPU; writes $OUT/<task>_<mode>/
+# (default OUT=runs/smoke), the logs runs/logs/smoke_<task>_<mode>.log and one line per run, appended to
+# $OUT/summary.txt (validation R2 after the last epoch, test R2, s/epoch, peak memory, parameter count).
+#   bash scripts/smoke_all.sh
+#   RUNS="T6:native T8:native" bash scripts/smoke_all.sh
 set -uo pipefail
 cd "$(dirname "$0")/.."
 EPOCHS="${EPOCHS:-2}"

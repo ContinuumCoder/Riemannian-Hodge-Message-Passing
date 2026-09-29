@@ -1376,7 +1376,7 @@ def physical_solve(ctx: LayerContext, k: int, x: Tensor, op: PhysicalHodge, shif
             use Jacobi).
         mean_free: vertex solves with the natural boundary condition (``solve_bc='neumann'``): the lumped source
             ``M x`` is made compatible by removing its mean per graph, sample and channel (the ``eps -> 0`` limit of
-            ``(K + eps I) y = M x``, as e.g. the T5 generator), so the solution is the zero-mean (``1^T M y = 0``)
+            ``(K + eps I) y = M x``, as in the T5 generator), so the solution is the zero-mean (``1^T M y = 0``)
             solution of the pure Neumann problem instead of carrying a ``1/shift``-sized constant.
 
     Returns:
@@ -1459,7 +1459,7 @@ class RadialGate(nn.Module):
     ``gate='none'`` (linear models, e.g. the solver preset): ``x + gamma * m`` (no nonlinearity, no normalisation).
 
     Args:
-        mode: ``'norm' | 'relu'``.
+        mode: ``'norm' | 'relu' | 'none'``.
         hidden: hidden width of the gate MLP.
     """
 
@@ -1494,7 +1494,7 @@ class RadialGate(nn.Module):
 # layer
 # --------------------------------------------------------------------------------------------------------------
 class SharedCoboundaries:
-    """Lazily computed, memoised first-stage coboundaries of one layer input.
+    """Lazily computed, memoised first coboundary products of one layer input.
 
     ``up(k) = (d_k diag(s_up)) x_k`` ``(n_{k+1}, B, C)`` and ``dn(k) = (d_{k-1}^T diag(s_dn)) x_k``
     ``(n_{k-1}, B, C)`` (raw coboundaries for Jacobi scaling); each is the first sparse product of the
@@ -1536,7 +1536,7 @@ class RHMPLayer(nn.Module):
         tie_metrics: one metric per degree (up uses ``H_m``, down uses ``1/H_m``) or separate up/down heads.
         scaling: ``'dec' | 'jacobi' | 'none'``.
         cross: cross-degree transport terms.
-        gate: ``'norm' | 'relu'``.
+        gate: ``'norm' | 'relu' | 'none'``.
         identity_metric: every metric ``H = 1`` (ablation of the learned metric; with ``scaling='dec'`` the DEC stars
             of the block's own degree remain through the scaling ``S``; see ``RHMPConfig.identity_metric``).
         fused: use the fused polynomial kernels (``False`` = plain autograd reference path).
@@ -1554,10 +1554,15 @@ class RHMPLayer(nn.Module):
             ``(I + tau L^2 Delta_H)^{-1}`` (``L^D`` = domain measure) instead of ``(I + tau L_hat)^{-1}``: the metric's
             global magnitude then matters (the ``beta``-normalised ``L_hat`` is invariant to ``H -> c H``).
         solve_iters, solve_tol, solve_bc: ``kind='solve'``: CG budget and boundary condition (``'dirichlet'``: fixed
-            ``K.meta['dirichlet'][k]`` or ``K.boundary[k]`` cells, ``'none'``).  A solve layer computes
+            ``K.meta['dirichlet'][k]`` or ``K.boundary[k]`` cells; ``'none'``; ``'neumann'``: no fixed cells and
+            mean-free vertex sources, see :func:`physical_solve`).  A solve layer computes
             ``y_k = (Delta_H + lam / L^2)^{-1} x_k`` with the un-normalised metric Hodge Laplacian (physical units),
             ``lam = softplus(log_lam)`` (init 1e-3), and updates ``x_k <- gate(x_k, y_k - x_k [+ cross terms])``;
             with ``gate='none'`` (gain 1) this is ``x_k <- y_k``.
+        tensor_param: ``'full'`` or ``'cone'`` parameterisation of the tensor-metric heads
+            (:class:`rhmp.metric.TensorMetricHead`).
+        solve_precond: ``'none'`` (Jacobi) or ``'twolevel'`` (Jacobi plus a coarse correction for vertex solves;
+            :func:`physical_solve`).
     """
 
     def __init__(self, top: int, geo_dims: dict[int, int], even_dims: dict[int, int], *, C: int, poly_order: int = 2,

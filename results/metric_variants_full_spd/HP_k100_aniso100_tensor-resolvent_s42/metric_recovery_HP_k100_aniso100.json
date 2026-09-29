@@ -1,5 +1,5 @@
 {
-  "run": "runs/stage2_full/HP_k100_aniso100_tensor-resolvent_s42",
+  "run": "runs/metric_variants_full_spd/HP_k100_aniso100_tensor-resolvent_s42",
   "task": "HP_k100_aniso100",
   "metric_type": "tensor",
   "log_range": 3.0,

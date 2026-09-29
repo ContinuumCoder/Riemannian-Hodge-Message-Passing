@@ -1,14 +1,14 @@
 # Dataset file formats
 
-Where the files come from and how to regenerate them: [datasets/README.md](../datasets/README.md).  Loaders:
-`rhmp.tasks.load_task(name, root, ...)` (paper tasks in `rhmp/tasks/paper.py`, HP / TET in `rhmp/tasks/synthetic.py`,
+[datasets/README.md](../datasets/README.md) describes where the files come from and how to regenerate them.  The
+loader is `rhmp.tasks.load_task(name, root, ...)` (paper tasks in `rhmp/tasks/paper.py`, HP / TET in `rhmp/tasks/synthetic.py`,
 SURF / DYN / QUAL in `rhmp/tasks/suite.py`, the anisotropy suite in `rhmp/tasks/aniso.py`).
 
 ## v1 paper pickles (`datasets/*.pkl`)
 
 Shared-mesh sets are dicts with `points (n0, D)`, `faces (n2, 3)`, `X_data (N, n0, F)` (or `(N, n0)`) and
-`Y_data (N, n0, O)`.  v1 protocol: sequential 70/15/15 split, per-feature mean / std of the training part
-(`X[:nt].mean((0, 1))`, `.std((0, 1)).clamp(1e-6)`).
+`Y_data (N, n0, O)`.  The v1 protocol uses a sequential 70/15/15 split and the per-feature mean / std of the training
+part (`X[:nt].mean((0, 1))`, `.std((0, 1)).clamp(1e-6)`).
 
 | file | points | faces | X_data | Y_data | notes |
 |---|---|---|---|---|---|
@@ -45,7 +45,7 @@ with 4x as many vertices (same physical fields): the zero-shot resolution-transf
 | SURF (`gen_surf.py`) | `pos`, `faces`, `f`, `u` (screened Poisson), `heat` (heat flow), `family` | closed surfaces at a fixed physical resolution (median edge 0.07) |
 | DYN (`gen_dyn.py`) | `pos`, `faces`, edge velocity 1-form, 101 states per trajectory | implicit DEC advection-diffusion with a divergence-free velocity |
 | HP_qual (`gen_qual.py`) | HP_k100 test instances on graded and sliver meshes, `u` and the 4x-finer reference `u_ref`, per-level quality statistics | test only |
-| AHP / ASURF / ACURL / ADARCY (`gen_aniso.py`) | `pos`, `faces` or `tets`, sources, targets (`u`, `heat`, `A`, `J`, `p`), edge projections `logproj_edge`, cell invariants (`logdet_*`, `logratio_*`), true tensors (`sigma_face`, `nu_tet`, `K_tet`) | exact P1 / Nedelec / RT0 solves; `ANISO_representability.json` holds the oracle analysis |
+| AHP / ASURF / ACURL / ADARCY (`gen_aniso.py`) | `pos`, `faces` or `tets`, sources, targets (`u`, `heat`, `A`, `J`, `p`), edge projections `logproj_edge`, cell invariants (`logdet_*`, `logratio_*`), true tensors (`sigma_face`, `nu_tet`, `K_tet`) | exact P1 / Nédélec / RT0 solves; `ANISO_representability.json` holds the oracle analysis |
 
-Full field lists, equations and sizes: the module docstrings of the generators, [TASK_SUITE_DETAILS.md](TASK_SUITE_DETAILS.md)
-and [ANISO_TASKS.md](ANISO_TASKS.md).  `T8_complexes_<star>.pt` is a cache of the T8 complexes written by the loader.
+Full field lists, equations and sizes are in the module docstrings of the generators, in
+[TASK_SUITE_DETAILS.md](TASK_SUITE_DETAILS.md) and in [ANISO_TASKS.md](ANISO_TASKS.md).  `T8_complexes_<star>.pt` is a cache of the T8 complexes written by the loader.

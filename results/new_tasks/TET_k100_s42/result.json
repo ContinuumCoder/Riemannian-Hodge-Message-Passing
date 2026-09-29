@@ -254,7 +254,7 @@
     "task": "TET_k100",
     "native": true,
     "root": null,
-    "out": "runs/new/TET_k100_s42",
+    "out": "runs/new_tasks/TET_k100_s42",
     "device": null,
     "epochs": 100,
     "seed": 42,

@@ -1,11 +1,17 @@
-"""Figures of REPORT.md and README.md (``docs/figures/*.png``).
+"""Figures of REPORT.md and README.md (``docs/figures/fig*.png``).
 
-    # figures 1, 3, 5, 6 from the result files only (matplotlib, no torch)
+Figures 1, 3, 5 and 6 are drawn from the result files in ``results/`` alone (matplotlib, no torch).  Figures 2 and 4
+also need torch, the data sets and trained runs (``--recovery-tensor``, ``--recovery-general``, ``--ellipse-run``; the
+general-stack run of figure 2 is not in the model zoo and is trained by ``scripts/run_metric_variants.sh``), and run
+on the CPU by default (``--device``).  The figures are written to ``--out`` (default ``docs/figures/``); figure 4 also
+writes its direction statistics to ``results/anisotropy/<run>/fig4_direction_stats.json`` when that directory exists.
+
+    # figures 1, 3, 5 and 6
     python3 scripts/make_figures.py --results results --out docs/figures
-    # + figure 2 (metric-recovery scatter) and figure 4 (tensor ellipses): need torch, the checkpoints and the data
+    # all six figures
     python3 scripts/make_figures.py --results results --out docs/figures \\
-        --recovery-tensor results/checkpoints/HP_k100_S3c_solver_tensor_learn \\
-        --recovery-general RUNS/stage2/HP_k100_diag-resolvent_s42 \\
+        --recovery-tensor results/checkpoints/HP_k100_solver_tensor_learn \\
+        --recovery-general runs/metric_variants/HP_k100_diag-resolvent_s42 \\
         --ellipse-run results/checkpoints/AHP_r100_tensor-solver_lr3e-4_s42
 
 Figures:
@@ -31,7 +37,7 @@ import numpy as np
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# reference palette (categorical slots in fixed order) and chart chrome, light surface
+# colour palette (categorical colours in a fixed order) and the colours of the chart elements on a light background
 SURFACE, INK, INK2, MUTED, GRID, AXIS = "#fcfcfb", "#0b0b0b", "#52514e", "#898781", "#e1e0d9", "#c3c2b7"
 BLUE, ORANGE, AQUA, YELLOW = "#2a78d6", "#eb6834", "#1baf7a", "#eda100"
 SEQ = ["#cde2fb", "#9ec5f4", "#6da7ec", "#3987e5", "#256abf", "#184f95", "#0d366b"]   # one-hue blue ramp
@@ -90,14 +96,15 @@ def _hbar_pairs(ax, labels, a, b, la, lb, ca, cb, xmax=1.0):
 # ================================================================================================================
 def fig1(res: str, out: str) -> None:
     plt = _plt()
-    rows = [("Ours, physics-solver mode, learned tensor material", "cab75/stage3/HP_k100_S3c_solver_tensor_learn"),
-            ("Ours, physics-solver mode, learned scalar material", "cab75/stage3/HP_k100_S3c_solver_diag_learn"),
-            ("Ours, general network with an implicit (solve) layer", "cab75/stage2/HP_k100_diag-resolvent_s42"),
-            ("Ours, general network, local layers only", "cab75/new/HP_k100_s42"),
-            ("Ours, geometry only (no material learning)", "cab16/baselines/HP_k100_native/dec_fixed_s42"),
-            ("MeshGraphNet, same size", "cab16/baselines/HP_k100_native/mgn_s42"),
-            ("MeshGraphNet, 5x larger", "cab16/baselines_v1budget/HP_k100_native/mgn_s42"),
-            ("EGNN", "cab16/baselines/HP_k100_native/egnn_s42")]
+    rows = [("Ours, physics-solver mode, learned tensor material",
+             "material_identification/HP_k100_solver_tensor_learn"),
+            ("Ours, physics-solver mode, learned scalar material", "material_identification/HP_k100_solver_diag_learn"),
+            ("Ours, general network with an implicit (solve) layer", "metric_variants/HP_k100_diag-resolvent_s42"),
+            ("Ours, general network, local layers only", "new_tasks/HP_k100_s42"),
+            ("Ours, geometry only (no material learning)", "baselines/HP_k100_native/dec_fixed_s42"),
+            ("MeshGraphNet, same size", "baselines/HP_k100_native/mgn_s42"),
+            ("MeshGraphNet, 5x larger", "baselines_v1_budget/HP_k100_native/mgn_s42"),
+            ("EGNN", "baselines/HP_k100_native/egnn_s42")]
     labels, a, b = [], [], []
     for lab, d in rows:
         r = _load(res, os.path.join(d, "result.json"))
@@ -117,14 +124,14 @@ def fig1(res: str, out: str) -> None:
 
 def fig3(res: str, out: str) -> None:
     plt = _plt()
-    tasks = [("2-D Poisson\nanisotropy 10:1", "cab75/aniso/AHP_r10_diag-solver_s42", "cab75/aniso/AHP_r10_tensor-solver_s42"),
-             ("2-D Poisson\nanisotropy 100:1", "cab75/aniso/AHP_r100_diag-solver_s42",
-              "cab75/aniso/AHP_r100_tensor-solver_lr3e-4_s42"),
-             ("curved surfaces\nfibre diffusion 100:1", "cab75/aniso_solver/ASURF_r100_diag-solver_s42",
-              "cab75/aniso_solver/ASURF_r100_tensor-solver_s42"),
-             ("3-D Darcy flow\nanisotropy 100:1", "cab16/aniso/ADARCYp_r100_n1500_diag-solver_s42",
-              "cab16/aniso/ADARCYp_r100_n1500_tensor-solver_s42")]
-    mgn = _load(res, "cab16/aniso/AHP_r100_mgn_s42/result.json")
+    tasks = [("2-D Poisson\nanisotropy 10:1", "anisotropy/AHP_r10_diag-solver_s42", "anisotropy/AHP_r10_tensor-solver_s42"),
+             ("2-D Poisson\nanisotropy 100:1", "anisotropy/AHP_r100_diag-solver_s42",
+              "anisotropy/AHP_r100_tensor-solver_lr3e-4_s42"),
+             ("curved surfaces\nfibre diffusion 100:1", "anisotropy_surfaces/ASURF_r100_diag-solver_s42",
+              "anisotropy_surfaces/ASURF_r100_tensor-solver_s42"),
+             ("3-D Darcy flow\nanisotropy 100:1", "anisotropy_3d/ADARCYp_r100_n1500_diag-solver_s42",
+              "anisotropy_3d/ADARCYp_r100_n1500_tensor-solver_s42")]
+    mgn = _load(res, "anisotropy_general/AHP_r100_mgn_s42/result.json")
     fig, axes = plt.subplots(1, 2, figsize=(10.0, 3.9), sharey=True)
     w = 0.26
     for ax, key, title in ((axes[0], "test", "meshes like the training ones"), (axes[1], "fine", "4x finer meshes, never seen in training")):
@@ -159,11 +166,11 @@ def fig3(res: str, out: str) -> None:
 
 def fig5(res: str, out: str) -> None:
     plt = _plt()
-    base = _load(res, "cab75/new/T6f_s42/result.json")
+    base = _load(res, "new_tasks/T6f_s42/result.json")
     pts = [("the mesh it was\ntrained on", _r2(base))]
     for tag, lab in (("mesh7_n1024", "a new random mesh\n(same size)"), ("mesh11_n1024", "another new mesh\n(same size)"),
                      ("mesh7_n4096", "a new mesh,\n4x finer"), ("mesh7_n256", "a new mesh,\n4x coarser")):
-        pts.append((lab, _r2(_load(res, f"cab75/transfer/T6f_s42/transfer_T6f_{tag}.json"))))
+        pts.append((lab, _r2(_load(res, f"mesh_transfer/T6f_s42/transfer_T6f_{tag}.json"))))
     fig, ax = plt.subplots(figsize=(7.6, 3.2))
     x = np.arange(len(pts))
     v = np.array([np.nan if p[1] is None else p[1] for p in pts], dtype=float)
@@ -185,8 +192,9 @@ def fig5(res: str, out: str) -> None:
 
 def fig6(res: str, out: str) -> None:
     plt = _plt()
-    specs = [("ours, with exact mass conservation enforced", "cab75/suite/DYNfix_s42/rollout_DYNfix_proj.json", BLUE),
-             ("ours, plain autoregressive", "cab75/suite/DYNfix_s42/rollout_DYNfix.json", ORANGE),
+    specs = [("ours, with exact mass conservation enforced", "extension_suite/DYNfix_s42/rollout_DYNfix_proj.json",
+              BLUE),
+             ("ours, plain autoregressive", "extension_suite/DYNfix_s42/rollout_DYNfix.json", ORANGE),
 ]
     fig, ax = plt.subplots(figsize=(7.6, 4.0))
     lo = -1.25
@@ -366,7 +374,7 @@ def fig4(res: str, out: str, run: str, device: str = "cpu", sample: int = 0,
                  mean_direction_error_deg_true_ratio_gt_10=float(np.mean(dang[strong])),
                  median_ratio_learned=float(np.median(rl)), median_ratio_true=float(np.median(rt)),
                  note="one AHP_r100 test mesh (first test sample); written by scripts/make_figures.py (figure 4)")
-    sp = os.path.join(res, "cab75", "aniso", os.path.basename(os.path.normpath(run)), "fig4_direction_stats.json")
+    sp = os.path.join(res, "anisotropy", os.path.basename(os.path.normpath(run)), "fig4_direction_stats.json")
     if os.path.isdir(os.path.dirname(sp)):
         with open(sp, "w") as fh:
             json.dump(stats, fh, indent=2)
@@ -379,9 +387,9 @@ def main(argv=None) -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--results", default=os.path.join(ROOT, "results"))
     ap.add_argument("--out", default=os.path.join(ROOT, "docs", "figures"))
-    ap.add_argument("--recovery-tensor", default=None, help="run dir (config.json + best.pt): solver-mode tensor run")
-    ap.add_argument("--recovery-general", default=None, help="run dir: general-stack diagonal run")
-    ap.add_argument("--ellipse-run", default=None, help="run dir: AHP tensor-metric run")
+    ap.add_argument("--recovery-tensor", default=None, help="run directory of a solver-mode tensor run")
+    ap.add_argument("--recovery-general", default=None, help="run directory of a general-stack diagonal run")
+    ap.add_argument("--ellipse-run", default=None, help="run directory of an AHP tensor-metric run")
     ap.add_argument("--device", default="cpu")
     ap.add_argument("--only", default=None, help="comma-separated figure numbers, e.g. 1,3")
     a = ap.parse_args(argv)

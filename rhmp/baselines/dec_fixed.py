@@ -16,8 +16,8 @@ from the value of metric learning.
 ``dec_fixed`` is *not* ``RHMPConfig(identity_metric=True)``: in ``rhmp.layers`` the identity-metric ablation sets
 ``log H = 0``, i.e. ``H = 1`` while the operator scaling still uses the star (``scaling='dec'``), which is neither
 the DEC nor the combinatorial operator.  Instead the metric heads are frozen: their last layer is zero-initialised,
-so ``H = star * exp(a * tanh(0)) = star`` exactly, for every input and throughout training (tested).  Frozen heads
-are excluded from the trainable-parameter count.  ``unit_*`` need complexes built with ``star='unit'``
+so ``H = star * exp(a * tanh(0)) = star`` exactly, for every input and throughout training (see the tests).
+Frozen heads are excluded from the trainable-parameter count.  ``unit_*`` need complexes built with ``star='unit'``
 (``rhmp.train --model unit_star`` loads the task that way).
 """
 from __future__ import annotations
@@ -108,7 +108,7 @@ def make_rhmp_variant(name: str, td: Any, args: Any | None = None, **cfg_overrid
 
 @torch.no_grad()
 def metric_is_star(model: RHMP, inputs: dict, K: Any, atol: float = 0.0) -> bool:
-    """True if every recorded ``log(H/star)`` statistic of the last forward pass is within ``atol`` of 0."""
+    """True if every recorded ``log(H/star)`` statistic of a forward pass on ``inputs`` is within ``atol`` of 0."""
     rec = model.record_diagnostics
     model.record_diagnostics = True
     model(inputs, K)

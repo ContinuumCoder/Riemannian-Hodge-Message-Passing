@@ -44,8 +44,9 @@ part.
 
 The OSF archive contains the seven main sets (T1, T2, T3, T5, T6, T7, T8).  `T6_100K_wilson_loop.pkl` (the 100K-face
 scaling study) and `T7_small_yang_mills.pkl` are produced by the v1 generators `gen_T6_100K_wilson_loop.py` and
-`gen_T7_small_yang_mills.py` of the original repository.  The third coordinate of the planar meshes (T5-T8) is 0.  Some pickles (T3) contain pyvista objects next to the numpy
-arrays; on a machine without pyvista, put the unpickling shim on the path: `PYTHONPATH=<repo>/shims`.
+`gen_T7_small_yang_mills.py` of the original repository.  The third coordinate of the planar meshes (T5-T8) is 0.
+Some pickles (T3) contain pyvista objects next to the numpy arrays; on a machine without pyvista, put the unpickling
+shim on the path: `PYTHONPATH=<repo>/shims`.
 
 The native cochain versions of T6/T7 (edge connections, face fluxes) are regenerated from the v1 generators' physics
 into `datasets/v2/T6_native.pt` / `T7_native.pt` (section 2); the T8 loader caches its complexes in

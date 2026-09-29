@@ -139,7 +139,7 @@
     "task": "AHP_r100",
     "native": true,
     "root": null,
-    "out": "runs/aniso/AHP_r100_mgn_s42",
+    "out": "runs/anisotropy_general/AHP_r100_mgn_s42",
     "device": null,
     "epochs": 50,
     "seed": 42,

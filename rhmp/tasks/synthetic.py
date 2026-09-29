@@ -1,12 +1,13 @@
-"""Adapters for the new synthetic variable-mesh tasks (generators in ``datasets/generators/gen_HP.py``, ``gen_TET.py``).
+"""Adapters for the synthetic variable-mesh tasks HP and TET (``datasets/generators/gen_HP.py``, ``gen_TET.py``).
 
 HP  (2-D, triangles):  inputs  f (nodes) | log sigma_e (edges, even) | log sigma_f (faces, even)
 TET (3-D, tets):       inputs  f (nodes) | log sigma_e (edges, even) | log sigma_f (faces, even) | log sigma_t (tets)
 targets: u at nodes (``node_scalar``) or, for the ``flux`` variants, the edge flux ``-sigma_e d0 u``
 (orientation-odd ``cochain`` readout on degree 1); ``fluxd`` divides it by the edge length (flux density, resolution
-independent: the flux cochain itself halves on a 2x finer mesh, which a scale-normalised model cannot anticipate).  ``_aniso`` HP sets use the directional conductivity
-``sigma t^T A t`` along each edge as the edge input (E(n)-invariant).  Conductivities enter in log form (DESIGN §7:
-log-domain for scale features) and are standardised like every other even input.
+independent: the flux cochain itself halves on a 2x finer mesh, which a scale-normalised model cannot anticipate).
+``_aniso`` HP sets use the directional conductivity ``sigma t^T A t`` along each edge as the edge input
+(E(n)-invariant).  Conductivities enter in log form (DESIGN §7: log-domain for scale features) and are standardised
+like every other even input.
 
 Legacy mode (``native=False``) moves everything to the nodes (f and the mean log sigma of the incident edges) so
 that node-input models (v1) can run on the same samples.

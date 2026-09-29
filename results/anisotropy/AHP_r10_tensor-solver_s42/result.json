@@ -111,7 +111,7 @@
     "task": "AHP_r10",
     "native": true,
     "root": null,
-    "out": "runs/aniso/AHP_r10_tensor-solver_s42",
+    "out": "runs/anisotropy/AHP_r10_tensor-solver_s42",
     "device": null,
     "epochs": 30,
     "seed": 42,

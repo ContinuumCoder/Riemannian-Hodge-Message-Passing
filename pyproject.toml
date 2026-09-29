@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "rhmp"
 version = "2.0.0"
-description = "Riemannian Hodge Message Passing v2: learned DEC/Whitney cochain metrics on exact cochain complexes, with a DEC toolkit"
+description = "Riemannian Hodge Message Passing v2: a PyTorch library for learning physical fields on meshes with exact cochain complexes, learned DEC/Whitney cochain metrics and a DEC toolkit"
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [{ name = "Denzel Zheng" }, { name = "Christine Allen-Blanchette" }]

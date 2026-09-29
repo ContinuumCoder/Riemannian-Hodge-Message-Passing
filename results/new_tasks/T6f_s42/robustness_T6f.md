@@ -1,4 +1,4 @@
-# robustness: T6f -> T6f (runs/new/T6f_s42); R2 uncentred (odd cochain target)
+# robustness: T6f -> T6f (runs/new_tasks/T6f_s42); R2 uncentred (odd cochain target)
 
 | condition | R2 | dR2 | NRMSE | SSIM | Pearson | N | max abs dpred |
 |---|---:|---:|---:|---:|---:|---:|---:|

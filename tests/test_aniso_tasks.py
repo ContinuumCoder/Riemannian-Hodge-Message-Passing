@@ -1,4 +1,5 @@
-"""Tests of the anisotropy task suite (``datasets/generators/gen_aniso.py``, ``aniso_fields.py``, ``rhmp/tasks/aniso.py``).
+"""Tests of the anisotropy task suite (``datasets/generators/gen_aniso.py``, ``aniso_fields.py`` and
+``rhmp/tasks/aniso.py``).
 
 * FEEC discretisations: manufactured-solution convergence (P1, mixed RT0, Nedelec), exact ``d^2 = 0`` of the
   generator's incidence matrices and agreement with the complex's ``d``; the Whitney 2-form basis has unit flux

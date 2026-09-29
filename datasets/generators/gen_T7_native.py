@@ -1,6 +1,7 @@
-"""Regenerate T7 (SU(2) Yang-Mills, weak coupling "v3") together with its raw edge cochain.
+"""Regenerate T7 (SU(2) Yang-Mills, weak-coupling configuration of the v1 generator) with its raw edge cochain.
 
-Reproduces ``datasets/gen_T7_yang_mills_su2.py`` (same mesh seed and torch RNG call sequence on CUDA) and dumps
+Reproduces the v1 generator ``datasets/gen_T7_yang_mills_su2.py`` of the original repository (same mesh seed and
+torch RNG call sequence on CUDA) and dumps
 
     A_edges (N, n1, 3) float32   su(2) connection per edge (3 Lie-algebra components), canonical orientation
                                  src < dst, edges sorted lexicographically (= generator order == v1 edge_index)
@@ -9,7 +10,7 @@ Reproduces ``datasets/gen_T7_yang_mills_su2.py`` (same mesh seed and torch RNG c
 The mesh is taken from ``datasets/T7_yang_mills_su2.pkl`` (checked against the seeded regeneration).  Consistency:
 the v1 node encodings recomputed from ``A_edges`` / ``F_faces`` are compared with the stored ``X_data`` / ``Y_data``.
 
-Usage (server):  python3 -u datasets/generators/gen_T7_native.py            -> datasets/v2/T7_native.pt
+Usage (CUDA GPU):  python3 -u datasets/generators/gen_T7_native.py            -> datasets/v2/T7_native.pt
 """
 from __future__ import annotations
 
@@ -53,7 +54,7 @@ def main(out_path: str = os.path.join(ROOT, "datasets", "v2", "T7_native.pt")):
     fei = torch.tensor(face_edge_idx, device=device)
     fes = torch.tensor(face_edge_sign, device=device)
 
-    # ---------------- identical RNG call sequence to datasets/gen_T7_yang_mills_su2.py ----------------
+    # ---------------- identical RNG call sequence to the v1 generator gen_T7_yang_mills_su2.py ----------------
     N = 10000
     torch.manual_seed(42)
     A_edges = torch.randn(N, n_edges, 3, device=device) * 0.1

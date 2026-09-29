@@ -205,7 +205,7 @@
     "task": "HP_k10",
     "native": true,
     "root": null,
-    "out": "runs/new/HP_k10_s42",
+    "out": "runs/new_tasks/HP_k10_s42",
     "device": null,
     "epochs": 100,
     "seed": 42,

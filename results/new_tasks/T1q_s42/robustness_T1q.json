@@ -1,5 +1,5 @@
 {
-  "run": "runs/new/T1q_s42",
+  "run": "runs/new_tasks/T1q_s42",
   "train_task": "T1q",
   "eval_task": "T1q",
   "native": true,

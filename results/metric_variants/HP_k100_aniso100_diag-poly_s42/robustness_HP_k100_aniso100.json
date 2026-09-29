@@ -1,5 +1,5 @@
 {
-  "run": "runs/stage2/HP_k100_aniso100_diag-poly_s42",
+  "run": "runs/metric_variants/HP_k100_aniso100_diag-poly_s42",
   "train_task": "HP_k100_aniso100",
   "eval_task": "HP_k100_aniso100",
   "native": true,

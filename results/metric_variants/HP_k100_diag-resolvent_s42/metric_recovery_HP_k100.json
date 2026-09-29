@@ -1,5 +1,5 @@
 {
-  "run": "runs/stage2/HP_k100_diag-resolvent_s42",
+  "run": "runs/metric_variants/HP_k100_diag-resolvent_s42",
   "task": "HP_k100",
   "metric_type": "diag",
   "log_range": 3.0,

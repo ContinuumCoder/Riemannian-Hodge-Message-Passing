@@ -144,7 +144,7 @@
     "task": "ASURF_r100",
     "native": true,
     "root": null,
-    "out": "runs/aniso_solver/ASURF_r100_tensor-solver_s42",
+    "out": "runs/anisotropy_surfaces/ASURF_r100_tensor-solver_s42",
     "device": null,
     "epochs": 30,
     "seed": 42,

@@ -1,29 +1,33 @@
 #!/usr/bin/env bash
-# Anisotropy task suite (docs/ANISO_TASKS.md): diagonal vs Whitney/Galerkin tensor metrics, 50 epochs, seed 42,
-# sequential on one GPU.  After every run: metric recovery (scripts/metric_recovery.py, JSON + PNG) and the physics
-# residuals of the predictions (rhmp.tasks.aniso.structure_metrics, test split + 4x fine split); SUMMARY.md at the end.
-# Requires the data sets of datasets/generators/gen_aniso.py.  Logs: runs/logs/aniso_<run>.log, outputs: $OUT/<run>/.
+# Trains the anisotropy task suite (docs/ANISO_TASKS.md), one run after the other on one GPU: diagonal vs
+# Whitney/Galerkin tensor metrics and the baselines, 50 epochs, seed 42.  After every completed run it writes the
+# metric recovery (scripts/metric_recovery.py, JSON and PNG; v2 runs only) and the physics residuals of the predictions
+# (rhmp.tasks.aniso.structure_metrics, test split and 4x finer split) into the run directory, and at the end the table
+# $OUT/SUMMARY.md.  Needs the anisotropy data sets (ANISO=1 bash scripts/gen_datasets.sh) and a GPU; writes
+# $OUT/<run>/ (default runs/anisotropy/) and the logs runs/logs/aniso_<run>.log.
 #
-#   GPU=1 NAME=aniso tools/run_bg.sh bash scripts/run_aniso.sh                       # core preset (default)
-#   PRESET=full bash scripts/run_aniso.sh                                          # every task x variant
-#   TASKS="AHP_r100" VARIANTS="diag-solver+ref tensor-solver+ref" bash scripts/run_aniso.sh
-#   EPOCHS=2 EXTRA="--max-train-batches 20" OUT=runs/aniso_smoke bash scripts/run_aniso.sh   # quick check
+#   bash scripts/run_aniso.sh                                                        # core preset (default)
+#   PRESET=full bash scripts/run_aniso.sh                                            # every task and variant
+#   HOST=<ssh host> GPU=1 NAME=aniso tools/run_bg.sh bash scripts/run_aniso.sh       # detached on a remote host
+# TASKS, VARIANTS and MODELS override the preset (e.g. TASKS="AHP_r100" VARIANTS="diag-solver+ref tensor-solver+ref"
+# MODELS="": the two solver-mode variants on AHP_r100, no baselines); EPOCHS=2 EXTRA="--max-train-batches 20"
+# OUT=runs/aniso_2ep gives a short check.
 #
-# Variants (rhmp model; "+ref" = --metric-ref <degree:column of the task's material reference>, see REF below):
-#   diag            diagonal metrics (DEC reference star x bounded learned correction)
+# Variants (v2 model; "+ref" adds --metric-ref <degree:column>, the task's metric reference, see ref_for below):
+#   diag            diagonal metrics (DEC reference star times a bounded learned correction)
 #   tensor          Galerkin tensor metric, full SPD parameterisation b expm(sum s t t^T) (--tensor-param full)
-#   cone            Galerkin tensor metric, old cone b I + sum a t t^T, a >= 0 (--tensor-param cone)
-#   diagfixed       --no-learn-metric: fixed DEC star (x reference): the diagonal physics prior (learn_metric=False)
-#   tensorfixed     --no-learn-metric with the tensor metric: fixed Galerkin star (x isotropic reference)
-#   diag-solver     --solver-mode (one physical-units solve layer, linear lifting/readout; AHP / ADARCYp only)
-#   tensor-solver   --solver-mode with the full tensor metric: exactly the FEM operator family of the target
-# Baselines (MODELS, param-matched to the v2 model): mgn, egnn, dec_fixed (frozen DEC metric heads).
+#   cone            Galerkin tensor metric, cone parameterisation b I + sum a t t^T, a >= 0 (--tensor-param cone)
+#   diagfixed       --no-learn-metric (learn_metric=False): fixed DEC star times the reference (diagonal physics prior)
+#   tensorfixed     --no-learn-metric with the tensor metric: fixed Galerkin star (times the isotropic reference)
+#   diag-solver     --solver-mode (AHP / ADARCYp only): one solve layer in physical units, linear lifting and readout
+#   tensor-solver   --solver-mode, full tensor metric (AHP / ADARCYp only): exactly the target's FEM operator family
+# Baselines (MODELS, parameter-matched to the v2 model): mgn (MeshGraphNet), egnn, dec_fixed (frozen DEC metric heads).
 set -uo pipefail
 cd "$(dirname "$0")/.."
 SEED="${SEED:-42}"
 EPOCHS="${EPOCHS:-50}"
 PRESET="${PRESET:-core}"
-OUT="${OUT:-runs/aniso}"
+OUT="${OUT:-runs/anisotropy}"
 EXTRA="${EXTRA:-}"
 POST="${POST:-1}"
 N3D="${N3D:-_n1500}"        # tet tasks: first 1500 samples (~68 GB host RAM with Whitney blocks); N3D="" = all 3000

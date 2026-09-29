@@ -1,4 +1,4 @@
-# robustness: HP_k100_aniso100 -> HP_k100_aniso100 (runs/stage2/HP_k100_aniso100_tensor-resolvent_s42); R2 centred (v1)
+# robustness: HP_k100_aniso100 -> HP_k100_aniso100 (runs/metric_variants/HP_k100_aniso100_tensor-resolvent_s42); R2 centred (v1)
 
 | condition | R2 | dR2 | NRMSE | SSIM | Pearson | N | max abs dpred |
 |---|---:|---:|---:|---:|---:|---:|---:|

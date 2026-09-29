@@ -29,16 +29,16 @@ Model inputs (all E(n)-invariant; directions only through edge projections, whos
 determine the cell tensor): nodes f; edges log(t_e^T Sigma t_e) (mean over the incident cells); faces / tets tensor
 invariants (log det, log eigenvalue ratio), 3-D faces log(n_f^T nu n_f) (ACURL) or log(n_f^T K^-1 n_f) (ADARCY);
 odd cochain sources: ACURL j (edges), ADARCY F_T (tets).  Evaluation-only ground truth: the per-cell tensors
-(packed symmetric, their eigenvectors are the principal directions) and representability diagnostics (see ``aniso_fields.representability``): ``in_cone`` = the
-cell tensor is reachable by the tensor family {b I + sum_j a_j t_j t_j^T : b > 0, a >= 0}, ``s_max`` = smallest
-max |s_j| of the family b expm(sum_j s_j t_j t_j^T).
+(packed symmetric, their eigenvectors are the principal directions) and representability diagnostics (see
+``aniso_fields.representability``): ``in_cone`` = the cell tensor is reachable by the tensor family
+{b I + sum_j a_j t_j t_j^T : b > 0, a >= 0}, ``s_max`` = smallest max |s_j| of the family b expm(sum_j s_j t_j t_j^T).
 
 Packing: flat concatenations with offsets ptr0..ptr3 (float32 fields, int32 cells) as ``gen_HP.pack``; canonical edges
 (src < dst, lexicographic) and, for tets, canonical faces (sorted triples, lexicographic); triangle faces keep their
 orientation.  ``*_fine.pt`` re-solves the first ``n_fine`` samples of the sequential 70/15/15 test split on meshes with
 4x the nodes (same fields and sources).
 
-Usage (server, CPU only):
+Usage (CPU only):
   CUDA_VISIBLE_DEVICES= python3 -u datasets/generators/gen_aniso.py --workers 24                  # all tasks, r = 10, 100
   CUDA_VISIBLE_DEVICES= python3 -u datasets/generators/gen_aniso.py --tasks AHP ACURL --n 300 --n-fine 20
   CUDA_VISIBLE_DEVICES= python3 -u datasets/generators/gen_aniso.py --analyse 12 --workers 24     # representability oracles

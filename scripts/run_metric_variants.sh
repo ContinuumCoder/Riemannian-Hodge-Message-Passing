@@ -1,17 +1,21 @@
 #!/usr/bin/env bash
-# Stage-2 algorithm comparison (DESIGN §9): diag-poly (current default) vs tensor-poly vs diag-resolvent vs
-# tensor-resolvent, EPOCHS epochs each (default 50, seed 42), sequential on one GPU.  After every run the E4
-# robustness table (scripts/eval_robustness.py) and, for HP/TET, the metric-recovery analysis
-# (scripts/metric_recovery.py) are written into the run directory.
-# Logs: runs/logs/stage2_<task>_<variant>_s<seed>.log, outputs: runs/stage2/<task>_<variant>_s<seed>/
+# Trains the metric and layer variants of docs/DESIGN.md (section 9) one after the other on one GPU: diagonal vs
+# tensor metric and polynomial vs resolvent layers (the default diag-poly, tensor-poly, diag-resolvent and
+# tensor-resolvent), EPOCHS epochs each (default 50, seed 42); after every completed run the robustness table
+# (scripts/eval_robustness.py) and, for HP/TET, the metric-recovery analysis (scripts/metric_recovery.py) are written
+# into the run directory.  Needs the data sets of scripts/gen_datasets.sh (the robustness evaluation of the HP runs
+# also uses QUAL_TASKS, by default HP_qual_graded,HP_qual_sliver of SUITE=1) and a GPU.  Writes
+# $OUT/<task>_<variant>_s<seed>/ (default runs/metric_variants/), the logs
+# runs/logs/metric_variants_<task>_<variant>_s<seed>.log and the table $OUT/SUMMARY.md.
 #
-#   tools/remote.sh '(setsid nohup bash scripts/run_stage2.sh > runs/logs/stage2.log 2>&1 < /dev/null &)'
-#   TASKS="HP_k100_aniso100" VARIANTS="diag-poly tensor-poly" EPOCHS=5 bash scripts/run_stage2.sh    # quick
-#   RESOLVENT_LAYERS="poly,resolvent,resolvent,poly" EXTRA="--amp" bash scripts/run_stage2.sh
-#   VARIANTS="diag-poly diag-poly+ref tensor-resolvent+ref" bash scripts/run_stage2.sh
-#     "+ref": metric reference input --metric-ref 1:0 (log conductivity of the edge = fixed log offset of H_1;
-#     HP/TET only), so that the bounded correction is relative to the known material
-# --log-range is scaled with the material contrast of each task (log_range_for below; LOG_RANGE overrides).
+#   TASKS="HP_k100_aniso100" VARIANTS="diag-poly tensor-poly" EPOCHS=5 bash scripts/run_metric_variants.sh  # 5 epochs
+#   VARIANTS="diag-poly diag-poly+ref tensor-resolvent+ref" bash scripts/run_metric_variants.sh
+#   HOST=<ssh host> NAME=metric_variants tools/run_bg.sh bash scripts/run_metric_variants.sh   # detached, remote
+#
+# "+ref" adds the metric reference --metric-ref 1:0 (the edge log conductivity as a fixed log offset of H_1; HP/TET
+# only), so that the bounded correction is relative to the known material.  RESOLVENT_LAYERS sets the layer types of
+# the resolvent variants (default poly,poly,resolvent,poly), EXTRA adds trainer flags (e.g. "--amp") and POST=0 skips
+# the evaluations.  --log-range is scaled with the material contrast of each task (log_range_for below).
 set -uo pipefail
 cd "$(dirname "$0")/.."
 SEED="${SEED:-42}"
@@ -21,11 +25,11 @@ VARIANTS="${VARIANTS:-diag-poly tensor-poly diag-resolvent tensor-resolvent}"
 RESOLVENT_LAYERS="${RESOLVENT_LAYERS:-poly,poly,resolvent,poly}"
 EXTRA="${EXTRA:-}"
 POST="${POST:-1}"
-OUT="${OUT:-runs/stage2}"
+OUT="${OUT:-runs/metric_variants}"
 mkdir -p runs/logs "$OUT"
-# Bounded metric correction H/star in [e^-a, e^a] spans e^{2a}; scale a with the material contrast of the task
-# (the edge input spans ln kappa, plus ln R for the tensor sets).  Override: LOG_RANGE=<a> (all runs) or
-# SCALE_LOG_RANGE=0 (model default 2).
+# The bounded metric correction H/star lies in [e^-a, e^a], a range of e^{2a}; a is scaled with the material contrast
+# of the task (the edge input spans ln kappa, plus ln R on the tensor sets).  LOG_RANGE=<a> sets a for all runs,
+# SCALE_LOG_RANGE=0 keeps the model default (2).
 log_range_for() {
   if [[ -n "${LOG_RANGE:-}" ]]; then echo "$LOG_RANGE"; return; fi
   if [[ "${SCALE_LOG_RANGE:-1}" != "1" ]]; then echo ""; return; fi
@@ -53,16 +57,16 @@ for t in $TASKS; do
     name="${t}_${v}_s${SEED}"
     echo "=== $(date '+%F %T') $name ($flags)"
     python3 -u -m rhmp.train --task "$t" --native --epochs "$EPOCHS" --seed "$SEED" --out "$OUT/$name" $flags $EXTRA \
-      > "runs/logs/stage2_${name}.log" 2>&1
+      > "runs/logs/metric_variants_${name}.log" 2>&1
     code=$?
-    echo "    exit $code ; $(tail -1 runs/logs/stage2_${name}.log)"
+    echo "    exit $code ; $(tail -1 runs/logs/metric_variants_${name}.log)"
     if [[ "$POST" == "1" && $code -eq 0 ]]; then
       also=""
       case "$t" in HP*) also="--also-tasks ${QUAL_TASKS:-HP_qual_graded,HP_qual_sliver}" ;; esac
       python3 -u scripts/eval_robustness.py "$OUT/$name" --all --max-test 300 $also \
-        >> "runs/logs/stage2_${name}.log" 2>&1
+        >> "runs/logs/metric_variants_${name}.log" 2>&1
       case "$t" in HP*|TET*)
-        python3 -u scripts/metric_recovery.py "$OUT/$name" --n 64 >> "runs/logs/stage2_${name}.log" 2>&1 ;;
+        python3 -u scripts/metric_recovery.py "$OUT/$name" --n 64 >> "runs/logs/metric_variants_${name}.log" 2>&1 ;;
       esac
     fi
   done

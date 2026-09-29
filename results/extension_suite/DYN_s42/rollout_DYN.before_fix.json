@@ -1,5 +1,5 @@
 {
-  "run": "runs/suite/DYN_s42",
+  "run": "runs/extension_suite/DYN_s42",
   "train_task": "DYN",
   "eval_task": "DYN",
   "load_seconds": 6.281671047210693,

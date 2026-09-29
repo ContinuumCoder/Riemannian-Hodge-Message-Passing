@@ -231,7 +231,7 @@
     "task": "HP_k100_aniso100",
     "native": true,
     "root": null,
-    "out": "runs/stage2_full/HP_k100_aniso100_tensor-poly_s42",
+    "out": "runs/metric_variants_full_spd/HP_k100_aniso100_tensor-poly_s42",
     "device": null,
     "epochs": 50,
     "seed": 42,

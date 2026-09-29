@@ -203,7 +203,7 @@
     "task": "T7",
     "native": true,
     "root": null,
-    "out": "runs/paper/T7_native_s42",
+    "out": "runs/paper_tasks/T7_native_s42",
     "device": null,
     "epochs": 100,
     "seed": 42,

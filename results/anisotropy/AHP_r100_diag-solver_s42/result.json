@@ -121,7 +121,7 @@
     "task": "AHP_r100",
     "native": true,
     "root": null,
-    "out": "runs/aniso/AHP_r100_diag-solver_s42",
+    "out": "runs/anisotropy/AHP_r100_diag-solver_s42",
     "device": null,
     "epochs": 30,
     "seed": 42,

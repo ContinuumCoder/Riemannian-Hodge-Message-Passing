@@ -201,7 +201,7 @@
     "task": "T6",
     "native": false,
     "root": null,
-    "out": "runs/paper/T6_legacy_s42",
+    "out": "runs/paper_tasks/T6_legacy_s42",
     "device": null,
     "epochs": 100,
     "seed": 42,

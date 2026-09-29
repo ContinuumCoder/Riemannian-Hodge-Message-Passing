@@ -1,7 +1,7 @@
 """Parameter matching with v1's rule (v1 ``formal_benchmark.py::find_hidden_match``) and a JSON cache.
 
 v1 rule: scan ``hidden = 16, 20, 24, ...`` (< 800) and take the first width whose parameter count is ``>= target``;
-it is accepted if it is ``<= (1 + tol) * target`` (``tol = 0.2``), otherwise it is "the best we can do" (flagged
+it is accepted if it is ``<= (1 + tol) * target`` (``tol = 0.2``), otherwise it is kept as the closest width (flagged
 ``within_tol = False``).  Refinement (``refine=True``): when the step-4 crossing misses the tolerance (small budgets,
 where one step changes the count by > 20 %), the widths between the last two scanned values are tried one by one and
 the first one ``>= target`` is taken (widths a model rejects, e.g. GAT widths not divisible by its 4 heads, are

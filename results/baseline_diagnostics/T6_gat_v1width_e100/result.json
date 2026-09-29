@@ -104,7 +104,7 @@
     "task": "T6",
     "native": false,
     "root": null,
-    "out": "runs/d_debug/T6_gat_v1width_e100",
+    "out": "runs/baseline_diagnostics/T6_gat_v1width_e100",
     "device": null,
     "epochs": 100,
     "seed": 42,

@@ -1,20 +1,23 @@
 """Qualitative field figures of REPORT.md section 6.8 and README.md (``docs/figures/field*.png``).
 
-Each figure draws the fields themselves on the mesh -- ground truth, our prediction(s), a baseline, error maps -- for
-one test sample, so that a reader sees what the accuracy numbers of the tables mean.  Models are loaded and applied
-exactly as ``rhmp.train.eval_ckpt`` does: the task is loaded with the run's star, re-expressed in the run's
-normalisation (``rhmp.train._renormalize``: raw material / metric-reference columns, mean-free solver statistics),
-predicted with ``rhmp.train.predict`` (block-diagonal batches) and denormalised with the run's target statistics.
-The displayed sample is the first test sample of each task (no selection), except figure 2, which shows the median
-case: among the first 20 test samples, the one whose scalar-metric R2 is closest to their median (``--ahp-sample``
-overrides it).  The R2 in a panel title is the R2 of that one sample (``1 - SS_res / SS_tot`` centred on the sample's
-own mean; uncentred for the odd face flux of figure 3), which is stricter than the pooled test R2 of the tables (the
-pooled SS_tot also contains the between-sample variance); figures 1 and 2 print the medians over the first 20 test
-samples in their captions.
+Each figure draws the fields themselves on the mesh of one test sample -- ground truth, our prediction(s), a baseline
+and error maps -- so that a reader sees what the accuracy numbers of the tables mean.  The script needs the data sets
+and the checkpoints of the model zoo (``results/checkpoints``), and a GPU is recommended (all figures take about 1.5
+minutes on a GPU host); it writes the figures to ``--out`` (default ``docs/figures/``) and the per-panel numbers to
+``--stats`` (default ``results/field_figures/field_figures_stats.json``).
 
-    # all figures (GPU host with the data sets; about 1.5 minutes)
-    python3 scripts/make_field_figures.py --out docs/figures
-    python3 scripts/make_field_figures.py --only 1,3        # a subset
+    python3 scripts/make_field_figures.py --out docs/figures          # all figures
+    python3 scripts/make_field_figures.py --only 1,3                  # a subset
+
+Models are loaded and applied exactly as ``rhmp.train.eval_ckpt`` does: the task is loaded with the run's star,
+re-expressed in the run's normalisation (``rhmp.train._renormalize``: raw material / metric-reference columns,
+mean-free solver statistics), predicted with ``rhmp.train.predict`` (block-diagonal batches) and denormalised with the
+run's target statistics.  The displayed sample is the first test sample of each task (no selection), except in
+figure 2, which shows the median case: among the first 20 test samples, the one whose scalar-metric R2 is closest to
+their median (``--ahp-sample`` overrides it).  The R2 in a panel title is the R2 of that one sample
+(``1 - SS_res / SS_tot`` centred on the sample's own mean; uncentred for the odd face flux of figure 3), which is
+stricter than the pooled test R2 of the tables (the pooled SS_tot also contains the between-sample variance); figures
+1 and 2 print the medians over the first 20 test samples in their captions.
 
 Figures:
 
@@ -36,8 +39,7 @@ Figures:
 Checkpoints: all from the model zoo (``results/checkpoints``), including the three comparison runs
 ``HP_k100_general_s42`` (general stack, local layers; test R2 0.8255 / 4x 0.6992), ``HP_k100_mgn_s42`` (MeshGraphNet,
 v2 budget; 0.9488 / 0.2581) and ``AHP_r100_mgn_s42`` (MeshGraphNet; 0.665 / 0.400); every run can be overridden
-(``--hp-solver``, ``--hp-general``, ...).  The per-panel numbers are written to ``--stats`` (default
-``results/cab75/fieldviz/field_figures_stats.json``).
+(``--hp-solver``, ``--hp-general``, ...).
 """
 from __future__ import annotations
 
@@ -901,14 +903,14 @@ def fig6(out: str, device, run: str, sample: int = 0, n_arrows: int = 230) -> No
 def main(argv=None) -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", default=os.path.join(ROOT, "docs", "figures"))
-    ap.add_argument("--stats", default=os.path.join(ROOT, "results", "cab75", "fieldviz", "field_figures_stats.json"))
+    ap.add_argument("--stats", default=os.path.join(ROOT, "results", "field_figures", "field_figures_stats.json"))
     ap.add_argument("--device", default=None)
     ap.add_argument("--only", default=None, help="comma-separated figure numbers, e.g. 1,3")
     ap.add_argument("--hp-sample", type=int, default=0, help="figure 1: test sample (default 0, the first)")
     ap.add_argument("--ahp-sample", default="median",
                     help="figure 2: 'median' (default: the median case of the scalar-metric R2 over the first 20 test "
                          "samples) or a test sample index")
-    ap.add_argument("--hp-solver", default=os.path.join(ZOO, "HP_k100_S3c_solver_tensor_learn"))
+    ap.add_argument("--hp-solver", default=os.path.join(ZOO, "HP_k100_solver_tensor_learn"))
     ap.add_argument("--hp-general", default=os.path.join(ZOO, "HP_k100_general_s42"))
     ap.add_argument("--hp-mgn", default=os.path.join(ZOO, "HP_k100_mgn_s42"))
     ap.add_argument("--ahp-diag", default=os.path.join(ZOO, "AHP_r100_diag-solver_s42"))

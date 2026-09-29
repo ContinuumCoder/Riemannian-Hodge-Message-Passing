@@ -1,9 +1,9 @@
 """Extension task suite: SURF (closed surfaces), DYN (advection-diffusion rollouts), QUAL (mesh-quality shift).
 
-Datasets are produced by ``datasets/generators/gen_surf.py``, ``gen_dyn.py`` and ``gen_qual.py`` (details, equations and
-sizes in ``docs/TASK_SUITE_DETAILS.md``).  Every loader returns a :class:`rhmp.data.TaskData` built exactly like the
-HP/TET loaders of :mod:`rhmp.tasks.synthetic` (normalisation from the training part, ``node_scalar`` readout,
-complexes on the GPU when they fit ``GPU_BUDGET_GB``):
+Datasets are produced by ``datasets/generators/gen_surf.py``, ``gen_dyn.py`` and ``gen_qual.py`` (details,
+equations and sizes in ``docs/TASK_SUITE_DETAILS.md``).  Every loader returns a :class:`rhmp.data.TaskData` built
+exactly like the HP/TET loaders of :mod:`rhmp.tasks.synthetic` (normalisation from the training part,
+``node_scalar`` readout, complexes on the GPU when they fit ``GPU_BUDGET_GB``):
 
 ==================  ==================================================================================================
 name                content
@@ -31,10 +31,10 @@ DYNfix_cons         exactly conservative variant on the fixed mesh: target du = 
                     sum_i M_i du_i = 0 exactly for any weights.
 DYN_cons            the same on variable meshes, with the model readout ``mdiv:1`` that divides the divergence by the
                     lumped mass inside the model (``rhmp.readout.MassDivReadout``).
-DYN_cons_mass,      the first conservative convention (kept to evaluate the runs trained with it): target M du (the
-DYNfix_cons_mass    mass change per dual cell) with the plain ``div:1`` readout.  Ill-conditioned for rollouts: the
+DYN_cons_mass,      conservative variant with target M du (the mass change per dual cell) and the plain ``div:1``
+DYNfix_cons_mass    readout, kept to evaluate checkpoints trained with it.  Ill-conditioned for rollouts: the
                     node-uniform loss on M du leaves errors ~1/M_i in du (M varies ~900:1 on the DYN meshes), which
-                    explode in a few autoregressive steps.
+                    diverge within a few autoregressive steps.
 HP_qual_graded      HP_k100 physics on graded meshes (corner / circle refinement) and the original meshes, test only;
 HP_qual_sliver      ... on sliver meshes (Delaunay of anisotropically scaled point clouds); one extra test set per
                     quality level (``base``, ``corner_r16``, ``circle_a30``, ``a8``, ...) -> accuracy-vs-quality curves.
@@ -43,9 +43,8 @@ HP_qual_*_ref       target = reference solution from the 4x-finer HP mesh interp
 ==================  ==================================================================================================
 
 Test-only tasks use statistics of their own samples; ``python3 scripts/eval_on.py --run RUN --task HP_qual_sliver``
-(or ``python3 -m rhmp.train --task HP_qual_sliver --eval-ckpt RUN`` once these names are registered in
-``rhmp.tasks.load_task``) re-expresses inputs/targets in the normalisation of the training run before evaluating
-(``train._renormalize``).
+(or ``python3 -m rhmp.train --task HP_qual_sliver --eval-ckpt RUN``) re-expresses inputs/targets in the
+normalisation of the training run before evaluating (``train._renormalize``).
 
 Rollouts: ``rollout_eval(model, task, steps)`` feeds the model's (denormalised) prediction back as the next input and
 reports R2 / NRMSE per horizon and the drift of the discrete mass ``sum_i M_i u_i`` (lumped mass of the generator).
@@ -70,7 +69,7 @@ __all__ = ["SUITE_TASKS", "SUITE_DEFAULTS", "suite_task_defaults", "load_surf", 
 
 # variable-mesh complexes are kept on the GPU when their estimated size is below this (override: RHMP_GPU_BUDGET_GB)
 GPU_BUDGET_GB = float(os.environ.get("RHMP_GPU_BUDGET_GB", 24.0))
-BUILD_THREADS = int(os.environ.get("RHMP_BUILD_THREADS", 4))   # complexes are built in a thread pool (x3 faster)
+BUILD_THREADS = int(os.environ.get("RHMP_BUILD_THREADS", 4))   # complexes are built in a thread pool (about 3x faster)
 SURF_FAMILIES = ("ellipsoid", "superquadric", "sphere_pert", "torus", "double_torus")   # codes of gen_surf.py
 
 SUITE_DEFAULTS: dict[str, dict] = {
@@ -431,7 +430,7 @@ def _window_times(T: int, windows) -> np.ndarray:
 
 
 DYN_TARGETS = ("state", "delta", "cons", "cons_mass")
-MASS_DIV_READOUT = "mdiv:1"     # y_i = (d0^T b)_i / star0_i inside the model (requested from the model owner)
+MASS_DIV_READOUT = "mdiv:1"     # y_i = (d0^T b)_i / star0_i inside the model (rhmp.readout.MassDivReadout)
 
 
 def _check_dyn_target(target: str) -> None:
@@ -466,7 +465,7 @@ def mass_div_readout_available() -> bool:
 
 
 def dual_edge_lengths(K) -> Tensor:
-    """Barycentric dual edge lengths ``l*_e = sum_{f ni e} |c_f - m_e|`` (face centroid to edge midpoint), ``(n1,)``."""
+    """Barycentric dual edge lengths ``l*_e = sum_{f ∋ e} |c_f - m_e|`` (face centroid to edge midpoint), ``(n1,)``."""
     P = K.pos.double().cpu()
     F = K.cells[2].long().cpu()
     E = K.cells[1].long().cpu()
@@ -540,8 +539,9 @@ def load_dyn(name: str = "DYN", droot: str | None = None, *, native: bool = True
         windows: windows per trajectory (every ``T // windows`` steps; ``'all'`` = all ``T``).
         target: ``'state'`` (u_{t+1}, task ``DYN``), ``'delta'`` (u_{t+1} - u_t, task ``DYN_delta``; the rollout
             adds the predicted increment), ``'cons'`` (task ``DYN_cons``: du with scale-only normalisation and the
-            mass-weighted divergence readout ``mdiv:1``, exactly conservative) or ``'cons_mass'`` (task ``DYN_cons_mass``: the mass change per dual
-            cell ``M du`` with the plain ``div:1`` readout; the first, ill-conditioned conservative convention).
+            mass-weighted divergence readout ``mdiv:1``, exactly conservative) or ``'cons_mass'`` (task
+            ``DYN_cons_mass``: the mass change per dual cell ``M du`` with the plain ``div:1`` readout; an
+            ill-conditioned conservative convention, kept to evaluate checkpoints trained with it).
         max_samples: smoke tests: about ``max_samples`` windows in total (whole trajectories, 1/3 per split part).
     Inputs (native): ``{0: u_t (n0, 1), 1: theta (n1, 1)}`` (theta odd); legacy: ``{0: [u_t, v_x, v_y] (n0, 3)}``.
     """

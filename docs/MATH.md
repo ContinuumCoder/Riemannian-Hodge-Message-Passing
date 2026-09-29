@@ -1,9 +1,9 @@
 # The mathematics of RHMP v2, as implemented
 
 This document states the operators that the `rhmp` package computes, the guarantees they satisfy, and the tests in
-`tests/` that check each guarantee.  It follows the design (`docs/DESIGN.md` §3 and §9) with the corrections
-adopted during implementation (symmetrised DEC frame for both block types, half-operator cross terms, radial gate
-after the RMS normalisation, full-SPD tensor parameterisation, solve layers).  Code references are given as
+`tests/` that check each guarantee.  It follows the design specification (`docs/DESIGN.md` §3 and §9) and records
+where the implementation refines it (symmetrised DEC frame for both block types, half-operator cross terms, radial
+gate after the RMS normalisation, full-SPD tensor parameterisation, solve layers).  Code references are given as
 `module.function`.  Test names are `file::test` and run with `python -m pytest tests/<file>`.
 
 Notation.  `K` is the top degree (2 for surfaces, 3 for tetrahedral volumes); `n_k` the number of k-cells; features
@@ -117,7 +117,7 @@ mean over the m-cells of the sample of log1p(|x_m|^2 / C)
   only.
 * `tie_metrics=True` (default): one metric per degree; the up block of degree `m-1` uses `H_m` and the down block of
   degree `m+1` uses `H_m^{-1}` (a star and its inverse).  `tie_metrics=False`: separate heads for the two uses.
-* `identity_metric=True` (ablation): `log H = 0`, i.e. `H = 1`, while the scaling may still use the star
+* `identity_metric=True` (ablation): `log H = 0`, i.e. `H = 1`, while the scaling can keep using the star
   (for a frozen `H = ⋆` use the `dec_fixed` baseline).
 * `H_m / (⋆̂_m exp(ref_m)) ∈ [e^-a, e^a]`: the learned part is bounded.  `model.diagnostics` reports the fraction of
   saturated cells (`.clamp_fraction`: `|tanh| > 0.99`; `.sat`: `|φ| > 0.95 a`).
@@ -272,7 +272,7 @@ invariant to the edge-orientation convention (`w_e` and `t_e` flip together).
 
 ## 8. Whitney-Galerkin tensor metric
 
-`cfg.metric_type='tensor'` (DESIGN §9.1; the default metric stays `'diag'`) replaces the diagonal metric of the intermediate
+`cfg.metric_type='tensor'` (DESIGN §9.1; the default metric is `'diag'`) replaces the diagonal metric of the intermediate
 degrees in the up blocks and cross-up terms by the Galerkin (Whitney) Hodge star of a per-top-cell SPD material
 tensor (`rhmp.metric.TensorMetricHead`, `rhmp.dec.apply_whitney_metric`):
 
@@ -308,15 +308,15 @@ L = A^T H A / (ρ β_unit)   =>  ||L|| <= 1          cross-up  T = A^T H / (sqrt
 not a square root of `L`; it is normalised separately with `||A^T H|| <= ||A|| ||H||`.)
 
 Properties: `H_k` is SPD (each element block is built from an SPD `σ_f`; for the cone a positive combination of PSD
-blocks), E(n)-equivariant,
-mesh-transferable and per sample.  At initialisation (`b = 1`, `a = 0`), `d_0^T H_1 d_0` is exactly the P1
-finite-element stiffness matrix (the unclamped cotan Laplacian) and on tetrahedra `d_1^T H_2 d_1` is the Nédélec
-curl-curl stiffness; with learned `σ` it is the anisotropic FEM operator.  With `metric_reference`, `b_f` is scaled by
-`exp(mean of ref over the m-cells of f)` and, for the edge metric, `a_{f,j}` by `exp(ref of direction edge j)`.
+blocks), E(n)-equivariant, mesh-transferable and per sample.  At initialisation (`b = 1`, `a = 0`), `d_0^T H_1 d_0`
+is exactly the P1 finite-element stiffness matrix (the unclamped cotan Laplacian) and on tetrahedra `d_1^T H_2 d_1` is
+the Nédélec curl-curl stiffness; with learned `σ` it is the anisotropic FEM operator.  With `metric_reference`, `b_f`
+is scaled by `exp(mean of ref over the m-cells of f)` and, for the edge metric, `a_{f,j}` by
+`exp(ref of direction edge j)`.
 Caveat: the tensor coordinates are not identifiable from `d_0^T H_1 d_0` (which sees `H_1` only on the image of
 `d_0`); interpret learned tensors (`model.metric_fields(...)[l]['sigma']`) through their action and anisotropy
-statistics.  Requires triangle or tetrahedral complexes
-(`K.whitney` does not exist for polygons) and `scaling` `'dec'` or `'none'`.
+statistics.  The tensor metric requires triangle or tetrahedral complexes (`K.whitney` does not exist for polygons)
+and `scaling` `'dec'` or `'none'`.
 
 | guarantee | tests |
 |---|---|

@@ -18,7 +18,7 @@ vertices, every grid quad split along a random diagonal so that connectivity dif
 
 Operators (:func:`cotan_operators`): cotan edge weights ``w_e = (cot a + cot b) / 2`` (unclamped; ``a, b`` the angles
 opposite the edge), stiffness ``L = d0^T diag(w) d0`` (identical to the P1 FEM Laplace-Beltrami stiffness) and the
-barycentric lumped mass ``M_ii = sum_{T ni i} |T| / 3`` (= the barycentric dual area, i.e. rhmp's ``star0``).
+barycentric lumped mass ``M_ii = sum_{T ∋ i} |T| / 3`` (= the barycentric dual area, i.e. rhmp's ``star0``).
 """
 from __future__ import annotations
 
@@ -204,7 +204,7 @@ def d0_matrix(edges: np.ndarray, n: int) -> sp.csr_matrix:
 
 
 def cotan_weights(pts: np.ndarray, faces: np.ndarray, edges: np.ndarray) -> np.ndarray:
-    """Unclamped cotan weights ``w_e = sum_{T ni e} cot(angle of T opposite e) / 2`` for canonical ``edges``."""
+    """Unclamped cotan weights ``w_e = sum_{T ∋ e} cot(angle of T opposite e) / 2`` for canonical ``edges``."""
     n = len(pts)
     key = edges[:, 0].astype(np.int64) * n + edges[:, 1]
     w = np.zeros(len(edges))

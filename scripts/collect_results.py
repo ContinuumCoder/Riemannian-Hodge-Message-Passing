@@ -1,11 +1,15 @@
-"""Regenerate ``results/RESULTS.md`` from the result files in ``results/`` (JSON only; no torch needed).
+"""Regenerate ``results/RESULTS.md`` from the result files in ``results/``.
+
+The script only reads JSON files (the per-run results in ``results/``, or in a ``runs/`` directory of your own) and
+needs neither torch, nor a GPU, nor the data sets; it writes the Markdown tables to ``--out`` (default: standard
+output).
 
     python3 scripts/collect_results.py results --out results/RESULTS.md      # the tables of REPORT.md
-    python3 scripts/collect_results.py runs --index-only                      # quick index of your own runs/**/result.json
+    python3 scripts/collect_results.py runs --index-only                      # index of runs/**/result.json
 
-``results/`` holds the per-run summaries of the release experiments, organised by the machine that produced them
-(``results/cab75/<runs-subpath>/``, ``results/cab16/<runs-subpath>/``: ``result.json``, ``result_v1.json``,
-``robustness_*.json``, ``metric_recovery_*.json``, ``rollout_*.json``, ``eval_*.json``, ``transfer_*.json``, ...), and
+``results/`` holds the per-run summaries of the release experiments, one directory per experiment group and run
+(``results/<group>/<run>/``: ``result.json``, ``result_v1.json``, ``robustness_*.json``, ``metric_recovery_*.json``,
+``rollout_*.json``, ``eval_*.json``, ``transfer_*.json``, ...; the groups are listed in ``results/README.md``), and
 ``results/v1_paper/all_metrics.json`` (the paper's own v1 metrics, seed 42).  Every number of the tables below is read
 from these files; a missing file gives ``-``.
 
@@ -125,29 +129,29 @@ def table(header: list[str], rows: list[list[Any]], align: str | None = None) ->
 # sections
 # ================================================================================================================
 PAPER = [  # task, v1 dir, native dir, legacy dir, [(variant label, dir)], note
-    ("T1 vorticity", "cab75/paper/T1_v1_s42", "cab75/paper/T1_native_s42", "cab75/paper/T1_legacy_s42",
-     [("+ latent 1:8", "cab75/paper/T1_native_latent8_s42"), ("T1q (quad CW complex)", "cab75/new/T1q_s42")],
+    ("T1 vorticity", "paper_tasks/T1_v1_s42", "paper_tasks/T1_native_s42", "paper_tasks/T1_legacy_s42",
+     [("+ latent 1:8", "paper_tasks/T1_native_latent8_s42"), ("T1q (quad CW complex)", "new_tasks/T1q_s42")],
      "legacy input = frame components (not representable by an invariant model)"),
-    ("T2 torus transport", "cab75/paper/T2_v1_s42", "cab75/paper/T2_native_s42", None,
-     [("+ latent 1:8", "cab75/paper/T2_native_latent8_s42"), ("+ latent 1:16", "cab75/paper/T2_native_latent16_s42"),
-      ("+ latent 1:8 + resolvent", "cab75/paper/T2_native_latent8_res_s42")],
-     "the data hide a fixed velocity field; latent edge columns are the honest per-cell parameters"),
-    ("T3 ellipsoid flow", "cab75/paper/T3_v1_s42", "cab75/paper/T3_native_s42", "cab75/paper/T3_legacy_s42", [],
+    ("T2 torus transport", "paper_tasks/T2_v1_s42", "paper_tasks/T2_native_s42", None,
+     [("+ latent 1:8", "paper_tasks/T2_native_latent8_s42"), ("+ latent 1:16", "paper_tasks/T2_native_latent16_s42"),
+      ("+ latent 1:8 + resolvent", "paper_tasks/T2_native_latent8_res_s42")],
+     "the data hide a fixed velocity field; latent edge columns are explicit per-cell parameters"),
+    ("T3 ellipsoid flow", "paper_tasks/T3_v1_s42", "paper_tasks/T3_native_s42", "paper_tasks/T3_legacy_s42", [],
      "least-squares vector readout at its round-trip ceiling"),
-    ("T5 electrostatics", "cab75/paper/T5_v1_s42", "cab75/paper/T5_native_s42", "cab75/paper/T5_legacy_s42",
-     [("+ resolvent", "cab75/paper/T5_native_res_s42"), ("T5g (grad readout), poly", "cab75/paper/T5g_native_poly_s42"),
-      ("T5g, resolvent", "cab75/paper/T5g_native_res_s42"),
-      ("T5g solver mode, frozen tensor", "cab75/paper/T5g_solver_frozen_tensor_s42"),
-      ("T5g solver mode, learned tensor", "cab75/paper/T5g_solver_learn_tensor_s42"),
-      ("T5g solver mode, learned diagonal", "cab75/paper/T5g_solver_learn_diag_s42")],
+    ("T5 electrostatics", "paper_tasks/T5_v1_s42", "paper_tasks/T5_native_s42", "paper_tasks/T5_legacy_s42",
+     [("+ resolvent", "paper_tasks/T5_native_res_s42"), ("T5g (grad readout), poly", "paper_tasks/T5g_native_poly_s42"),
+      ("T5g, resolvent", "paper_tasks/T5g_native_res_s42"),
+      ("T5g solver mode, frozen tensor", "paper_tasks/T5g_solver_frozen_tensor_s42"),
+      ("T5g solver mode, learned tensor", "paper_tasks/T5g_solver_learn_tensor_s42"),
+      ("T5g solver mode, learned diagonal", "paper_tasks/T5g_solver_learn_diag_s42")],
      "target = v1 edge->node average of -d0 phi; generator has negative-weight edges (tensor metric only)"),
-    ("T6 Wilson loop", "cab75/paper/T6_v1_s42", "cab75/paper/T6_native_s42", "cab75/paper/T6_legacy_s42",
-     [("T6f (face target)" + DAGGER, "cab75/new/T6f_s42")], ""),
-    ("T7 Yang-Mills SU(2)", "cab75/paper/T7_v1_s42", "cab75/paper/T7_native_s42", "cab75/paper/T7_legacy_s42",
-     [("T7f (face target)" + DAGGER, "cab75/new/T7f_s42")], ""),
-    ("T8 airfoil pressure", "cab75/paper/T8_v1_s42", "cab75/paper/T8_native_s42", None,
-     [("T8v (+ inflow 1-form)", "cab75/paper/T8v_native_s42"), ("T8v + abs. scale", "cab75/paper/T8v_native_abs_s42"),
-      ("T8v + resolvent", "cab75/paper/T8v_native_res_s42")],
+    ("T6 Wilson loop", "paper_tasks/T6_v1_s42", "paper_tasks/T6_native_s42", "paper_tasks/T6_legacy_s42",
+     [("T6f (face target)" + DAGGER, "new_tasks/T6f_s42")], ""),
+    ("T7 Yang-Mills SU(2)", "paper_tasks/T7_v1_s42", "paper_tasks/T7_native_s42", "paper_tasks/T7_legacy_s42",
+     [("T7f (face target)" + DAGGER, "new_tasks/T7f_s42")], ""),
+    ("T8 airfoil pressure", "paper_tasks/T8_v1_s42", "paper_tasks/T8_native_s42", None,
+     [("T8v (+ inflow 1-form)", "paper_tasks/T8v_native_s42"), ("T8v + abs. scale", "paper_tasks/T8v_native_abs_s42"),
+      ("T8v + resolvent", "paper_tasks/T8v_native_res_s42")],
      "v1 used absolute-coordinate features and selected on the test split; v2 is strictly E(n)-invariant"),
 ]
 
@@ -168,9 +172,9 @@ def sec_paper(R: Results) -> str:
             det.append([task.split()[0], lab, f(r2(res)), f(r2(res, "test100")), f(get(res, "test", "SSIM")),
                         f(get(res, "test", "Pearson")), f(get(res, "test", "NRMSE")), fk(res.get("params")),
                         str(res.get("best_epoch", "-")), f"`{d}`"])
-    s = ["## 1. Paper tasks (v1 protocol: 100 epochs, seed 42, sequential 70/15/15, best by validation R2)\n",
-         "test100 R2 (first 100 test samples, as the v1 paper tables).  *v1 (re-evaluated)*: the v1 checkpoints "
-         "evaluated by `python -m rhmp.train --eval-v1` with the same split and metric code.\n",
+    s = ["## 1. Paper tasks (v1 protocol: 100 epochs, seed 42, sequential 70/15/15 split, best by validation R2)\n",
+         "test100 R2: the first 100 test samples, as in the tables of the v1 paper.  *v1 (re-evaluated)*: the v1 "
+         "checkpoints, evaluated by `python -m rhmp.train --eval-v1` with the same split and metric code.\n",
          table(["task", "v1 (re-evaluated)", "v2 native", "v2 legacy", "v2 variants", "note"], rows, "lrrrll"),
          "\nAll runs of the table (full test split and test100):\n",
          table(["task", "run", "test R2", "test100 R2", "SSIM", "Pearson", "NRMSE", "params", "best ep.", "result"],
@@ -179,23 +183,23 @@ def sec_paper(R: Results) -> str:
 
 
 NEW = [  # label, dir, note
-    ("T1q (quad CW complex)", "cab75/new/T1q_s42", ""),
-    ("T6f (edge connection -> face flux)", "cab75/new/T6f_s42", ""),
-    ("T7f (SU(2) edge -> face)", "cab75/new/T7f_s42", ""),
-    ("HP_k10", "cab75/new/HP_k10_s42", ""),
-    ("HP_k100", "cab75/new/HP_k100_s42", ""),
-    ("HP_k1000", "cab75/new/HP_k1000_s42", ""),
-    ("HP_k100_aniso", "cab75/new/HP_k100_aniso_s42", ""),
-    ("HPflux_k100 (edge flux)", "cab75/new/HPflux_k100_s42", "flux halves under refinement; see HPfluxd"),
-    ("HPfluxd_k100 (flux density)", "cab75/new/HPfluxd_k100_s42", ""),
-    ("TET_k100 (3-D tetrahedra)", "cab75/new/TET_k100_s42", ""),
-    ("TETflux_k100 (face flux)", "cab75/new/TETflux_k100_s42", ""),
-    ("SURF (variable closed surfaces)", "cab75/suite/SURF_s42", ""),
-    ("SURF_heat", "cab75/suite/SURF_heat_s42", ""),
-    ("DYN (one step, variable meshes)", "cab75/suite/DYN_s42", "rollouts: section 8"),
-    ("DYNfix (one step, fixed mesh)", "cab75/suite/DYNfix_s42", "rollouts: section 8"),
-    ("DYNfix_cons (exactly conservative map)", "cab75/suite/DYNfix_cons_s42", "one-step du target"),
-    ("DYN_cons (first convention, M du)", "cab75/suite/DYN_cons_s42", "diverges in rollouts"),
+    ("T1q (quad CW complex)", "new_tasks/T1q_s42", ""),
+    ("T6f (edge connection -> face flux)", "new_tasks/T6f_s42", ""),
+    ("T7f (SU(2) edge -> face)", "new_tasks/T7f_s42", ""),
+    ("HP_k10", "new_tasks/HP_k10_s42", ""),
+    ("HP_k100", "new_tasks/HP_k100_s42", ""),
+    ("HP_k1000", "new_tasks/HP_k1000_s42", ""),
+    ("HP_k100_aniso", "new_tasks/HP_k100_aniso_s42", ""),
+    ("HPflux_k100 (edge flux)", "new_tasks/HPflux_k100_s42", "flux halves under refinement; see HPfluxd"),
+    ("HPfluxd_k100 (flux density)", "new_tasks/HPfluxd_k100_s42", ""),
+    ("TET_k100 (3-D tetrahedra)", "new_tasks/TET_k100_s42", ""),
+    ("TETflux_k100 (face flux)", "new_tasks/TETflux_k100_s42", ""),
+    ("SURF (variable closed surfaces)", "extension_suite/SURF_s42", ""),
+    ("SURF_heat", "extension_suite/SURF_heat_s42", ""),
+    ("DYN (one step, variable meshes)", "extension_suite/DYN_s42", "rollouts: section 8"),
+    ("DYNfix (one step, fixed mesh)", "extension_suite/DYNfix_s42", "rollouts: section 8"),
+    ("DYNfix_cons (exactly conservative map)", "extension_suite/DYNfix_cons_s42", "one-step du target"),
+    ("DYN_cons (first convention, M du)", "extension_suite/DYN_cons_s42", "diverges in rollouts"),
 ]
 
 
@@ -211,54 +215,59 @@ def sec_new(R: Results) -> str:
                      f(r2(res, "fine")) if isinstance(res.get("fine"), dict) else "-", extra or "-",
                      fk(res.get("params")), str(res.get("epochs_run", "-")), note or "-", f"`{d}`"])
     return "\n".join(["## 2. New tasks and the extension suite (v2 defaults, 100 epochs, seed 42)\n",
-                      f"{DAGGER} uncentred R2 (odd cochain target).  4x: zero-shot test on 4x finer meshes.\n",
+                      f"{DAGGER} uncentred R2 (orientation-odd cochain target).  4x: zero-shot test on 4x finer "
+                      "meshes.\n",
                       table(["task", "test R2", "test100 R2", "4x R2", "transfer sets", "params", "epochs", "note",
                              "result"], rows, "lrrrlrrll")])
 
 
-STAGE = [  # label, dir
-    ("diag + poly (default)", "cab75/stage2/HP_k100_diag-poly_s42"),
-    ("tensor (cone) + poly", "cab75/stage2/HP_k100_tensor-poly_s42"),
-    ("tensor (full SPD) + poly", "cab75/stage2_full/HP_k100_tensor-poly_s42"),
-    ("diag + resolvent", "cab75/stage2/HP_k100_diag-resolvent_s42"),
-    ("tensor (cone) + resolvent", "cab75/stage2/HP_k100_tensor-resolvent_s42"),
-    ("tensor (full SPD) + resolvent", "cab75/stage2_full/HP_k100_tensor-resolvent_s42"),
-    ("solver mode, frozen tensor metric + face sigma reference", "cab75/stage3/HP_k100_S3e_fem_frozen_tensor_faceref"),
-    ("solver mode, frozen diagonal metric + edge sigma reference", "cab75/stage3/HP_k100_S3e_dec_frozen_diag_edgeref"),
-    ("solver mode, learned tensor metric (material -> metric only)", "cab75/stage3/HP_k100_S3c_solver_tensor_learn"),
-    ("solver mode, learned diagonal metric (material -> metric only)", "cab75/stage3/HP_k100_S3c_solver_diag_learn"),
-    ("material-only routing + resolvent", "cab75/stage3/HP_k100_S3a_material_res"),
-    ("material-only routing + edge reference + resolvent", "cab75/stage3/HP_k100_S3b_material_ref_res"),
-    ("aux PDE-residual loss (w = 1) + resolvent", "cab75/stage3/HP_k100_S3d_auxpde_res"),
-    ("frozen diagonal + true edge reference + resolvent", "cab75/stage3/HP_k100_S3f_frozen_ref_res"),
-    ("pure DEC (frozen, no reference) + resolvent", "cab75/stage3/HP_k100_S3g_frozen_noref_res"),
+VARIANTS = [  # label, dir
+    ("diag + poly (default)", "metric_variants/HP_k100_diag-poly_s42"),
+    ("tensor (cone) + poly", "metric_variants/HP_k100_tensor-poly_s42"),
+    ("tensor (full SPD) + poly", "metric_variants_full_spd/HP_k100_tensor-poly_s42"),
+    ("diag + resolvent", "metric_variants/HP_k100_diag-resolvent_s42"),
+    ("tensor (cone) + resolvent", "metric_variants/HP_k100_tensor-resolvent_s42"),
+    ("tensor (full SPD) + resolvent", "metric_variants_full_spd/HP_k100_tensor-resolvent_s42"),
+    ("solver mode, frozen tensor metric + face sigma reference",
+     "material_identification/HP_k100_fem_frozen_tensor_faceref"),
+    ("solver mode, frozen diagonal metric + edge sigma reference",
+     "material_identification/HP_k100_dec_frozen_diag_edgeref"),
+    ("solver mode, learned tensor metric (material -> metric only)",
+     "material_identification/HP_k100_solver_tensor_learn"),
+    ("solver mode, learned diagonal metric (material -> metric only)",
+     "material_identification/HP_k100_solver_diag_learn"),
+    ("material-only routing + resolvent", "material_identification/HP_k100_material_res"),
+    ("material-only routing + edge reference + resolvent", "material_identification/HP_k100_material_ref_res"),
+    ("aux PDE-residual loss (w = 1) + resolvent", "material_identification/HP_k100_auxpde_res"),
+    ("frozen diagonal + true edge reference + resolvent", "material_identification/HP_k100_frozen_ref_res"),
+    ("pure DEC (frozen, no reference) + resolvent", "material_identification/HP_k100_frozen_noref_res"),
 ]
-STAGE_OTHER = [
-    ("HP_k1000 diag + poly", "cab16/stage2b/HP_k1000_noref_s42"),
-    ("HP_k1000 diag + poly + edge reference", "cab16/stage2b/HP_k1000_ref_s42"),
-    ("HP_k1000 diag + resolvent + edge reference", "cab16/stage2b/HP_k1000_ref_res_s42"),
-    ("HP_k10000 diag + poly", "cab16/stage2b/HP_k10000_noref_s42"),
-    ("HP_k10000 diag + poly + edge reference", "cab16/stage2b/HP_k10000_ref_s42"),
-    ("HP_k100_aniso100 diag + poly", "cab75/stage2/HP_k100_aniso100_diag-poly_s42"),
-    ("HP_k100_aniso100 diag + resolvent", "cab75/stage2/HP_k100_aniso100_diag-resolvent_s42"),
-    ("HP_k100_aniso100 diag + poly + edge reference", "cab16/stage2b/HP_k100_aniso100_ref_s42"),
-    ("HP_k100_aniso100 tensor (cone) + poly", "cab75/stage2/HP_k100_aniso100_tensor-poly_s42"),
-    ("HP_k100_aniso100 tensor (full) + poly", "cab75/stage2_full/HP_k100_aniso100_tensor-poly_s42"),
-    ("HP_k100_aniso100 tensor (cone) + resolvent", "cab75/stage2/HP_k100_aniso100_tensor-resolvent_s42"),
-    ("HP_k100_aniso100 tensor (full) + resolvent", "cab75/stage2_full/HP_k100_aniso100_tensor-resolvent_s42"),
-    ("TET_k100 diag + poly", "cab75/stage2/TET_k100_diag-poly_s42"),
-    ("TET_k100 diag + resolvent", "cab75/stage2/TET_k100_diag-resolvent_s42"),
-    ("TET_k100 (1500 samples) diag + poly", "cab75/stage2_tet1500/TET_k100_diag-poly_s42"),
-    ("TET_k100 (1500 samples) diag + resolvent", "cab75/stage2_tet1500/TET_k100_diag-resolvent_s42"),
-    ("TET_k100 (1500 samples) tensor + resolvent", "cab75/stage2_tet1500/TET_k100_tensor-resolvent_s42"),
-    ("T6f diag + poly", "cab75/stage2/T6f_diag-poly_s42"),
-    ("T6f diag + resolvent", "cab75/stage2/T6f_diag-resolvent_s42"),
-    ("T6f tensor + poly", "cab75/stage2/T6f_tensor-poly_s42"),
-    ("T6f tensor + resolvent", "cab75/stage2/T6f_tensor-resolvent_s42"),
+VARIANTS_OTHER = [
+    ("HP_k1000 diag + poly", "high_contrast/HP_k1000_noref_s42"),
+    ("HP_k1000 diag + poly + edge reference", "high_contrast/HP_k1000_ref_s42"),
+    ("HP_k1000 diag + resolvent + edge reference", "high_contrast/HP_k1000_ref_res_s42"),
+    ("HP_k10000 diag + poly", "high_contrast/HP_k10000_noref_s42"),
+    ("HP_k10000 diag + poly + edge reference", "high_contrast/HP_k10000_ref_s42"),
+    ("HP_k100_aniso100 diag + poly", "metric_variants/HP_k100_aniso100_diag-poly_s42"),
+    ("HP_k100_aniso100 diag + resolvent", "metric_variants/HP_k100_aniso100_diag-resolvent_s42"),
+    ("HP_k100_aniso100 diag + poly + edge reference", "high_contrast/HP_k100_aniso100_ref_s42"),
+    ("HP_k100_aniso100 tensor (cone) + poly", "metric_variants/HP_k100_aniso100_tensor-poly_s42"),
+    ("HP_k100_aniso100 tensor (full) + poly", "metric_variants_full_spd/HP_k100_aniso100_tensor-poly_s42"),
+    ("HP_k100_aniso100 tensor (cone) + resolvent", "metric_variants/HP_k100_aniso100_tensor-resolvent_s42"),
+    ("HP_k100_aniso100 tensor (full) + resolvent", "metric_variants_full_spd/HP_k100_aniso100_tensor-resolvent_s42"),
+    ("TET_k100 diag + poly", "metric_variants/TET_k100_diag-poly_s42"),
+    ("TET_k100 diag + resolvent", "metric_variants/TET_k100_diag-resolvent_s42"),
+    ("TET_k100 (1500 samples) diag + poly", "metric_variants_tet1500/TET_k100_diag-poly_s42"),
+    ("TET_k100 (1500 samples) diag + resolvent", "metric_variants_tet1500/TET_k100_diag-resolvent_s42"),
+    ("TET_k100 (1500 samples) tensor + resolvent", "metric_variants_tet1500/TET_k100_tensor-resolvent_s42"),
+    ("T6f diag + poly", "metric_variants/T6f_diag-poly_s42"),
+    ("T6f diag + resolvent", "metric_variants/T6f_diag-resolvent_s42"),
+    ("T6f tensor + poly", "metric_variants/T6f_tensor-poly_s42"),
+    ("T6f tensor + resolvent", "metric_variants/T6f_tensor-resolvent_s42"),
 ]
 
 
-def _stage_rows(R: Results, spec) -> list:
+def _variant_rows(R: Results, spec) -> list:
     rows = []
     for lab, d in spec:
         res = R.run(d)
@@ -270,16 +279,19 @@ def _stage_rows(R: Results, spec) -> list:
     return rows
 
 
-def sec_stage(R: Results) -> str:
+def sec_variants(R: Results) -> str:
     return "\n".join([
-        "## 3. Metric and layer variants (stage 2 / 3)\n",
-        "HP_k100 (inputs f, log sigma on edges and faces; `--log-range 3` for stage 3); general-stack runs 50 epochs, "
-        "solver-mode runs 30 epochs (frozen FEM control: 5).\n",
-        table(["variant (HP_k100)", "test R2", "4x R2", "params", "epochs", "result"], _stage_rows(R, STAGE), "lrrrrl"),
+        "## 3. Metric and layer variants\n",
+        "HP_k100 with the inputs f and log sigma (on edges and faces); `--log-range 3` for the material-identification "
+        "runs.  General-stack runs are trained for 50 epochs, solver-mode runs for 30 epochs (the frozen FEM control "
+        "for 5).\n",
+        table(["variant (HP_k100)", "test R2", "4x R2", "params", "epochs", "result"], _variant_rows(R, VARIANTS),
+              "lrrrrl"),
         "\nOther tasks (50 epochs):\n",
-        table(["variant", "test R2", "4x R2", "params", "epochs", "result"], _stage_rows(R, STAGE_OTHER), "lrrrrl"),
-        "\nThe tensor-metric TET runs on all 3000 samples and the 1500-sample tensor + poly run were stopped by host "
-        "memory (Whitney blocks); see REPORT.md, limitations.\n"])
+        table(["variant", "test R2", "4x R2", "params", "epochs", "result"], _variant_rows(R, VARIANTS_OTHER),
+              "lrrrrl"),
+        "\nThe tensor-metric TET runs on all 3000 samples and the 1500-sample tensor + poly run ran out of host "
+        "memory (Whitney blocks) and are not listed; see the limitations in REPORT.md.\n"])
 
 
 # ----------------------------------------------------------------------------------------------------------------
@@ -318,46 +330,58 @@ def _recovery_rows(R: Results, dirs: list[str]) -> list:
 
 def sec_recovery(R: Results) -> str:
     dirs = sorted({os.path.dirname(os.path.relpath(p, R.root))
-                   for p in glob.glob(os.path.join(R.root, "*", "*", "*", "metric_recovery_*.json"))})
-    order = ["stage3", "stage2_full", "stage2", "aniso"]
-    dirs.sort(key=lambda d: (next((i for i, o in enumerate(order) if f"/{o}/" in f"/{d}/"), 9), d))
+                   for p in glob.glob(os.path.join(R.root, "*", "*", "metric_recovery_*.json"))})
+    order = ["material_identification", "metric_variants_full_spd", "metric_variants", "anisotropy"]
+    # the material-identification runs in a fixed order (learned metrics before the frozen controls), the others
+    # alphabetically
+    runs = ["HP_k100_material_res", "HP_k100_material_ref_res", "HP_k100_solver_diag_learn",
+            "HP_k100_solver_tensor_learn", "HP_k100_auxpde_res", "HP_k100_dec_frozen_diag_edgeref",
+            "HP_k100_fem_frozen_tensor_faceref", "HP_k100_frozen_ref_res", "HP_k100_frozen_noref_res"]
+
+    def rank(d: str) -> tuple:
+        run = os.path.basename(d)
+        return (next((i for i, o in enumerate(order) if f"/{o}/" in f"/{d}/"), 9),
+                runs.index(run) if run in runs else len(runs), d)
+    dirs.sort(key=rank)
     rows = _recovery_rows(R, dirs)
     return "\n".join([
         "## 4. Metric recovery: learned metric vs true material (first 32 test samples, physical units)\n",
-        "r = pooled Pearson correlation per layer: diagonal metrics `log(H_1/star_1)` vs the true edge `log sigma`; "
-        "tensor metrics the edge action `log mean_f t_e^T sigma_f t_e` vs the edge `log sigma` and the face "
-        "`log det(sigma_f)/2` vs the face `log sigma` (tensor sets: half log det of the true tensor).  slope / "
-        "intercept of `learned = slope * true + intercept` for the layer with the largest |r| (1 / 0: the metric is "
-        "the material in physical units).  Generated by `scripts/metric_recovery.py`.\n",
+        "r: pooled Pearson correlation per layer, for diagonal metrics between `log(H_1/star_1)` and the true edge "
+        "`log sigma`, for tensor metrics between the edge action `log mean_f t_e^T sigma_f t_e` and the edge "
+        "`log sigma` and between the face `log det(sigma_f)/2` and the face `log sigma` (tensor sets: half the log "
+        "determinant of the true tensor).  Slope and intercept: least-squares fit `learned = slope * true + intercept` "
+        "for the layer with the largest |r| (slope 1 and intercept 0: the metric equals the material in physical "
+        "units).  Generated by `scripts/metric_recovery.py`.\n",
         table(["run", "metric", "layers", "ref / material", "test R2", "edge r per layer", "edge slope / icpt",
                "face r per layer", "face slope / icpt", "anisotropy ratio median"], rows, "llllrlllll")])
 
 
 # ----------------------------------------------------------------------------------------------------------------
 ANISO_SOLVER = [  # task, diag dir, tensor dir
-    ("AHP_r10", "cab75/aniso/AHP_r10_diag-solver_s42", "cab75/aniso/AHP_r10_tensor-solver_s42"),
-    ("AHP_r100", "cab75/aniso/AHP_r100_diag-solver_s42", "cab75/aniso/AHP_r100_tensor-solver_lr3e-4_s42"),
-    ("AHP_r100 (tensor lr 1e-3, 30 ep.)", "cab75/aniso/AHP_r100_diag-solver_s42", "cab75/aniso/AHP_r100_tensor-solver_s42"),
-    ("ASURF_r100 (surfaces)", "cab75/aniso_solver/ASURF_r100_diag-solver_s42",
-     "cab75/aniso_solver/ASURF_r100_tensor-solver_s42"),
-    ("ADARCYp_r100 (3-D, 1500 samples)", "cab16/aniso/ADARCYp_r100_n1500_diag-solver_s42",
-     "cab16/aniso/ADARCYp_r100_n1500_tensor-solver_s42"),
+    ("AHP_r10", "anisotropy/AHP_r10_diag-solver_s42", "anisotropy/AHP_r10_tensor-solver_s42"),
+    ("AHP_r100", "anisotropy/AHP_r100_diag-solver_s42", "anisotropy/AHP_r100_tensor-solver_lr3e-4_s42"),
+    ("AHP_r100 (tensor lr 1e-3, 30 ep.)", "anisotropy/AHP_r100_diag-solver_s42",
+     "anisotropy/AHP_r100_tensor-solver_s42"),
+    ("ASURF_r100 (surfaces)", "anisotropy_surfaces/ASURF_r100_diag-solver_s42",
+     "anisotropy_surfaces/ASURF_r100_tensor-solver_s42"),
+    ("ADARCYp_r100 (3-D, 1500 samples)", "anisotropy_3d/ADARCYp_r100_n1500_diag-solver_s42",
+     "anisotropy_3d/ADARCYp_r100_n1500_tensor-solver_s42"),
 ]
 ANISO_GENERAL = [
-    ("AHP_r100 diag + ref", "cab16/aniso/AHP_r100_diag+ref_s42"),
-    ("AHP_r100 tensor + ref", "cab16/aniso/AHP_r100_tensor+ref_s42"),
-    ("AHP_r100 MeshGraphNet", "cab16/aniso/AHP_r100_mgn_s42"),
-    ("ASURF_r100 diag + ref", "cab16/aniso/ASURF_r100_diag+ref_s42"),
-    ("ASURF_r100 tensor + ref", "cab16/aniso/ASURF_r100_tensor+ref_s42"),
-    ("ASURF_r100 dec_fixed (frozen DEC star)", "cab16/aniso/ASURF_r100_dec_fixed_s42"),
-    ("ACURLb_r10 (3-D curl-curl, 1500) diag + ref", "cab16/aniso/ACURLb_r10_n1500_diag+ref_s42"),
-    ("ACURLb_r10 (3-D curl-curl, 1500) tensor + ref", "cab16/aniso/ACURLb_r10_n1500_tensor+ref_s42"),
+    ("AHP_r100 diag + ref", "anisotropy_general/AHP_r100_diag+ref_s42"),
+    ("AHP_r100 tensor + ref", "anisotropy_general/AHP_r100_tensor+ref_s42"),
+    ("AHP_r100 MeshGraphNet", "anisotropy_general/AHP_r100_mgn_s42"),
+    ("ASURF_r100 diag + ref", "anisotropy_general/ASURF_r100_diag+ref_s42"),
+    ("ASURF_r100 tensor + ref", "anisotropy_general/ASURF_r100_tensor+ref_s42"),
+    ("ASURF_r100 dec_fixed (frozen DEC star)", "anisotropy_general/ASURF_r100_dec_fixed_s42"),
+    ("ACURLb_r10 (3-D curl-curl, 1500) diag + ref", "anisotropy_general/ACURLb_r10_n1500_diag+ref_s42"),
+    ("ACURLb_r10 (3-D curl-curl, 1500) tensor + ref", "anisotropy_general/ACURLb_r10_n1500_tensor+ref_s42"),
 ]
 
 
 def sec_aniso(R: Results) -> str:
     out = ["## 5. Anisotropy family (AHP, ASURF, ACURL, ADARCY)\n"]
-    rep = R.load("cab75/aniso_analysis/all.json")
+    rep = R.load("anisotropy_oracle/all.json")
     if rep:
         def m(task, key):
             return get(rep, task, "oracle_rel_err", key, "mean")
@@ -372,9 +396,9 @@ def sec_aniso(R: Results) -> str:
                 if get(rep, t, "dataset", "cone_frac", "mean") is not None]
         out += ["Oracle representability: relative L2 solution error when the true tensors are replaced by the best "
                 "member of each metric family (12 test samples; `datasets/generators/gen_aniso.py --analyse 12`, "
-                "`results/cab75/aniso_analysis/all.json`).\n",
-                table(["task", "diagonal star (TPFA)", "old cone tensor", "full tensor (s bounded by 5)"], rows, "lrrr"),
-                "\nFraction of cells whose true tensor lies in the old cone parameterisation:\n",
+                "`results/anisotropy_oracle/all.json`).\n",
+                table(["task", "diagonal star (TPFA)", "cone tensor", "full tensor (s bounded by 5)"], rows, "lrrr"),
+                "\nFraction of cells whose true tensor lies in the cone parameterisation:\n",
                 table(["task", "cone fraction"], cone, "lr")]
     rows = []
     for task, dd, td in ANISO_SOLVER:
@@ -385,7 +409,8 @@ def sec_aniso(R: Results) -> str:
                             isinstance(b[k], dict))
         rows.append([task, f(r2(a)), f(r2(a, "fine")), fk(get(a, "params")), f(r2(b)), f(r2(b, "fine")),
                      fk(get(b, "params")), fam or "-"])
-    out += ["\nSolver mode (material only through the metric; 30 epochs, AHP_r100 tensor: lr 3e-4, 60 epochs):\n",
+    out += ["\nSolver mode (the material enters only through the metric; 30 epochs; AHP_r100 tensor: lr 3e-4, 60 "
+            "epochs):\n",
             table(["task", "diagonal test R2", "diagonal 4x R2", "params", "tensor test R2", "tensor 4x R2", "params",
                    "tensor per-family test"], rows, "lrrrrrrl")]
     rows = []
@@ -395,7 +420,7 @@ def sec_aniso(R: Results) -> str:
                         isinstance(res[k], dict)) if res else ""
         rows.append([lab, f(r2(res)), f(r2(res, "fine")), fk(get(res, "params")), str(get(res, "epochs_run", default="-")),
                      fam or "-"])
-    out += ["\nGeneral stack (poly layers, with the material reference `+ ref`; 50 epochs) and baselines:\n",
+    out += ["\nGeneral stack (polynomial layers; `+ ref`: with the metric reference; 50 epochs) and baselines:\n",
             table(["run", "test R2", "4x R2", "params", "epochs", "per-family test"], rows, "lrrrrl")]
     return "\n".join(out)
 
@@ -416,23 +441,23 @@ def _paper_v1(R: Results, task: str, model: str) -> float | None:
 def sec_baselines(R: Results) -> str:
     out = ["## 6. Baselines (common trainer, v1 protocol, 100 epochs, seed 42)\n",
            "v2 budget: parameter-matched to the v2 model (about 90K on T6 / HP / SURF, 0.31M on T8); v1 budget: about "
-           "0.43M (the v1 model's count).  MPSN / SCCNN / Clifford-SMPN use the *v1 edge protocol* on T3/T6 "
-           "(edge-averaged targets, edge-space R2, as the v1 paper).  paper: the v1 paper numbers "
-           "(`results/v1_paper/all_metrics.json`).  Full test split R2.\n"]
+           "0.43M (the parameter count of the v1 model).  MPSN / SCCNN / Clifford-SMPN use the *v1 edge protocol* on "
+           "T3/T6 (edge-averaged targets, edge-space R2, as in the v1 paper).  paper: the numbers reported in the v1 "
+           "paper (`results/v1_paper/all_metrics.json`).  All values are R2 on the full test split.\n"]
     rows = []
     for m in BL_MODELS:
-        a = R.run(f"cab16/baselines/T6_legacy/{m}_s42")
-        b = R.run(f"cab16/baselines_v1budget/T6_legacy/{m}_s42")
-        c = R.run(f"cab16/baselines/T3_legacy/{m}_s42")
-        n = R.run(f"cab16/baselines/T6_native/{m}_s42")
-        nv1 = R.run(f"cab16/baselines_v1budget/T6_native/{m}_s42")
-        t3n = R.run(f"cab16/baselines/T3_native/{m}_s42")
+        a = R.run(f"baselines/T6_legacy/{m}_s42")
+        b = R.run(f"baselines_v1_budget/T6_legacy/{m}_s42")
+        c = R.run(f"baselines/T3_legacy/{m}_s42")
+        n = R.run(f"baselines/T6_native/{m}_s42")
+        nv1 = R.run(f"baselines_v1_budget/T6_native/{m}_s42")
+        t3n = R.run(f"baselines/T3_native/{m}_s42")
         if not any((a, b, c, n, nv1, t3n)):
             continue
         rows.append([BL_NAMES[m], f(r2(a), 3), f(r2(b), 3), f(_paper_v1(R, "T6", m), 3), f(r2(c), 3),
                      f(r2(n), 3), f(r2(nv1), 3), f(r2(t3n), 3)])
-    v2 = [R.run("cab75/paper/T6_legacy_s42"), R.run("cab75/paper/T3_native_s42"), R.run("cab75/paper/T6_native_s42"),
-          R.run("cab75/paper/T3_legacy_s42")]
+    v2 = [R.run("paper_tasks/T6_legacy_s42"), R.run("paper_tasks/T3_native_s42"), R.run("paper_tasks/T6_native_s42"),
+          R.run("paper_tasks/T3_legacy_s42")]
     rows.insert(0, ["RHMP v2", f(r2(v2[0]), 3), "-", f(_paper_v1(R, "T6", "ours"), 3) + " (v1)",
                     f(r2(v2[3]), 3) + " (native " + f(r2(v2[1]), 3) + ")", f(r2(v2[2]), 3), "-", f(r2(v2[1]), 3)])
     out += ["### T6 and T3\n",
@@ -440,16 +465,16 @@ def sec_baselines(R: Results) -> str:
                    "T6 native (v2 budget)", "T6 native (v1 budget)", "T3 native"], rows, "lrrrrrrr")]
     # HP_k100
     rows = []
-    v2 = [("RHMP v2 general stack, diag + poly (100 ep.)", "cab75/new/HP_k100_s42"),
-          ("RHMP v2 general stack, diag + resolvent (50 ep.)", "cab75/stage2/HP_k100_diag-resolvent_s42"),
-          ("RHMP v2 solver mode, learned diagonal (30 ep.)", "cab75/stage3/HP_k100_S3c_solver_diag_learn"),
-          ("RHMP v2 solver mode, learned tensor (30 ep.)", "cab75/stage3/HP_k100_S3c_solver_tensor_learn")]
+    v2 = [("RHMP v2 general stack, diag + poly (100 ep.)", "new_tasks/HP_k100_s42"),
+          ("RHMP v2 general stack, diag + resolvent (50 ep.)", "metric_variants/HP_k100_diag-resolvent_s42"),
+          ("RHMP v2 solver mode, learned diagonal (30 ep.)", "material_identification/HP_k100_solver_diag_learn"),
+          ("RHMP v2 solver mode, learned tensor (30 ep.)", "material_identification/HP_k100_solver_tensor_learn")]
     for lab, d in v2:
         res = R.run(d)
         rows.append([lab, f(r2(res), 4), f(r2(res, "fine"), 4), fk(get(res, "params")), "-", "-", "-"])
     for m in BL_MODELS:
-        a = R.run(f"cab16/baselines/HP_k100_native/{m}_s42")
-        b = R.run(f"cab16/baselines_v1budget/HP_k100_native/{m}_s42")
+        a = R.run(f"baselines/HP_k100_native/{m}_s42")
+        b = R.run(f"baselines_v1_budget/HP_k100_native/{m}_s42")
         if not (a or b):
             continue
         rows.append([BL_NAMES[m], f(r2(a), 3), f(r2(a, "fine"), 3), fk(get(a, "params")), f(r2(b), 3),
@@ -459,24 +484,24 @@ def sec_baselines(R: Results) -> str:
                   "lrrrrrr")]
     # SURF
     rows = []
-    res = R.run("cab75/suite/SURF_s42")
+    res = R.run("extension_suite/SURF_s42")
     rows.append(["RHMP v2", f(r2(res), 4), f(r2(res, "geo"), 4), f(r2(res, "topo"), 4), fk(get(res, "params"))])
     for m in BL_MODELS:
-        a = R.run(f"cab16/baselines/SURF_native/{m}_s42")
+        a = R.run(f"baselines/SURF_native/{m}_s42")
         if a:
             rows.append([BL_NAMES[m], f(r2(a), 4), f(r2(a, "geo"), 4), f(r2(a, "topo"), 4), fk(get(a, "params"))])
     out += ["\n### SURF (closed surfaces; geometry transfer to superquadrics, topology transfer to genus 2)\n",
             table(["model", "test R2", "geo R2", "topo R2", "params"], rows, "lrrrr")]
     # T8
     rows = []
-    for lab, d in [("RHMP v2 (T8 native)", "cab75/paper/T8_native_s42"), ("RHMP v2 (T8v)", "cab75/paper/T8v_native_s42")]:
+    for lab, d in [("RHMP v2 (T8 native)", "paper_tasks/T8_native_s42"), ("RHMP v2 (T8v)", "paper_tasks/T8v_native_s42")]:
         res = R.run(d)
         rows.append([lab, f(r2(res), 3), f(r2(res, "test100"), 3), "-", fk(get(res, "params"))])
-    v1 = R.run("cab75/paper/T8_v1_s42", "result_v1.json")
+    v1 = R.run("paper_tasks/T8_v1_s42", "result_v1.json")
     rows.append(["v1 model (re-evaluated checkpoint)", f(r2(v1), 3), f(r2(v1, "test100"), 3),
                  f(_paper_v1(R, "T8", "ours"), 3), fk(get(v1, "params"))])
     for m in BL_MODELS:
-        a = R.run(f"cab16/baselines/T8_native/{m}_s42")
+        a = R.run(f"baselines/T8_native/{m}_s42")
         if a:
             rows.append([BL_NAMES[m], f(r2(a), 3), f(r2(a, "test100"), 3), f(_paper_v1(R, "T8", m), 3),
                          fk(get(a, "params"))])
@@ -489,19 +514,19 @@ def sec_baselines(R: Results) -> str:
 def sec_transfer(R: Results) -> str:
     out = ["## 7. Transfer, symmetry and robustness\n"]
     rows = []
-    base = R.run("cab75/new/T6f_s42")
+    base = R.run("new_tasks/T6f_s42")
     rows.append(["training mesh (test split)", "1024", f(r2(base), 4)])
     for tag, lab in (("mesh7_n1024", "new random mesh (seed 7)"), ("mesh11_n1024", "new random mesh (seed 11)"),
                      ("mesh7_n4096", "4x finer new mesh"), ("mesh7_n256", "4x coarser new mesh")):
-        res = R.load(f"cab75/transfer/T6f_s42/transfer_T6f_{tag}.json")
+        res = R.load(f"mesh_transfer/T6f_s42/transfer_T6f_{tag}.json")
         rows.append([lab, str(get(res, "n_pts", default="-")), f(r2(res), 4)])
     out += ["### T6f zero-shot mesh / resolution transfer (`scripts/t6_mesh_transfer.py`; 200 test samples per mesh, "
             f"uncentred R2{DAGGER})\n", table(["evaluation mesh", "vertices", "R2"], rows, "lrr")]
     # robustness
-    rob = [("T6f", "cab75/new/T6f_s42/robustness_T6f.json"), ("T3", "cab75/paper/T3_native_s42/robustness_T3.json"),
-           ("HP_k100 solver tensor", "cab75/stage3/HP_k100_S3c_solver_tensor_learn/robustness_HP_k100.json"),
-           ("HP_k100 diag + resolvent", "cab75/stage2/HP_k100_diag-resolvent_s42/robustness_HP_k100.json"),
-           ("T1q", "cab75/new/T1q_s42/robustness_T1q.json"), ("T7f", "cab75/new/T7f_s42/robustness_T7f.json")]
+    rob = [("T6f", "new_tasks/T6f_s42/robustness_T6f.json"), ("T3", "paper_tasks/T3_native_s42/robustness_T3.json"),
+           ("HP_k100 solver tensor", "material_identification/HP_k100_solver_tensor_learn/robustness_HP_k100.json"),
+           ("HP_k100 diag + resolvent", "metric_variants/HP_k100_diag-resolvent_s42/robustness_HP_k100.json"),
+           ("T1q", "new_tasks/T1q_s42/robustness_T1q.json"), ("T7f", "new_tasks/T7f_s42/robustness_T7f.json")]
     conds = ["batch=1", "relabel", "flip-orient", "rotate", "reflect", "gauge=0.1", "gauge=1", "gauge=10",
              "noise=0.01", "noise=0.1"]
     rows = []
@@ -515,10 +540,10 @@ def sec_transfer(R: Results) -> str:
     out += ["\n### Symmetry and robustness of trained models (300 test samples; dR2 relative to the base R2; "
             "`scripts/eval_robustness.py RUN --all`)\n",
             table(["model", "base R2"] + [f"dR2 {c}" for c in conds], rows, "l" + "r" * (1 + len(conds)))]
-    # QUAL
+    # mesh-quality shift
     rows = []
-    for lab, d in (("diag + poly (50 ep.)", "cab75/stage2/HP_k100_diag-poly_s42"),
-                   ("tensor + poly (50 ep.)", "cab75/stage2/HP_k100_tensor-poly_s42")):
+    for lab, d in (("diag + poly (50 ep.)", "metric_variants/HP_k100_diag-poly_s42"),
+                   ("tensor + poly (50 ep.)", "metric_variants/HP_k100_tensor-poly_s42")):
         for kind in ("sliver_ref", "graded_ref"):
             res = R.run(d, f"eval_HP_qual_{kind}.json")
             if not res:
@@ -531,27 +556,27 @@ def sec_transfer(R: Results) -> str:
             "= 4x-finer reference; `scripts/eval_on.py --task HP_qual_*_ref`)\n",
             table(["model", "set"] + [f"level {i}" for i in range(width - 2)], rows, "ll" + "l" * (width - 2))]
     rows = []
-    for lab, p in (("2-epoch smoke model", "cab75/e_qual_eval/eval_HP_qual_graded.json"),
-                   ("diag + poly (50 ep.)", "cab75/stage2/HP_k100_diag-poly_s42/eval_HP_qual_graded.json"),
-                   ("tensor + poly (50 ep.)", "cab75/stage2/HP_k100_tensor-poly_s42/eval_HP_qual_graded.json")):
+    for lab, p in (("short 2-epoch run", "mesh_quality/eval_HP_qual_graded.json"),
+                   ("diag + poly (50 ep.)", "metric_variants/HP_k100_diag-poly_s42/eval_HP_qual_graded.json"),
+                   ("tensor + poly (50 ep.)", "metric_variants/HP_k100_tensor-poly_s42/eval_HP_qual_graded.json")):
         res = R.load(p)
         if res:
             rows.append([lab, f(get(res, "base", "R2"), 3), f(get(res, "corner_r64", "R2"), 3),
                          f(get(res, "base", "relL2M_pooled"), 3), f(get(res, "corner_r64", "relL2M_pooled"), 3)])
-    out += ["\nCorner refinement (graded meshes): node-uniform R2 drops because the refined nodes sit where u is "
-            "about 0; the mass-weighted relative L2 error (pooled) measures the field error:\n",
+    out += ["\nCorner refinement (graded meshes): the node-uniform R2 drops because the refined nodes lie where u "
+            "is about 0; the pooled mass-weighted relative L2 error measures the field error:\n",
             table(["model", "R2 base", "R2 corner_r64", "mass-weighted rel. L2 base", "corner_r64"], rows, "lrrrr")]
     return "\n".join(out)
 
 
 def sec_rollout(R: Results) -> str:
     rows = []
-    specs = [("DYNfix, mass projection", "cab75/suite/DYNfix_s42/rollout_DYNfix_proj.json"),
-             ("DYNfix, no projection", "cab75/suite/DYNfix_s42/rollout_DYNfix.json"),
-             ("DYN (variable meshes), no projection", "cab75/suite/DYN_s42/rollout_DYN.json"),
-             ("DYN, mass projection", "cab75/suite/DYN_s42/rollout_DYN_proj.json"),
-             ("DYNfix_cons (exactly conservative map)", "cab75/suite/DYNfix_cons_s42/rollout_DYNfix_cons.json"),
-             ("DYN_cons (first convention, M du)", "cab75/suite/DYN_cons_s42/rollout_DYN_cons.json")]
+    specs = [("DYNfix, mass projection", "extension_suite/DYNfix_s42/rollout_DYNfix_proj.json"),
+             ("DYNfix, no projection", "extension_suite/DYNfix_s42/rollout_DYNfix.json"),
+             ("DYN (variable meshes), no projection", "extension_suite/DYN_s42/rollout_DYN.json"),
+             ("DYN, mass projection", "extension_suite/DYN_s42/rollout_DYN_proj.json"),
+             ("DYNfix_cons (exactly conservative map)", "extension_suite/DYNfix_cons_s42/rollout_DYNfix_cons.json"),
+             ("DYN_cons (first convention, M du)", "extension_suite/DYN_cons_s42/rollout_DYN_cons.json")]
     hs = (1, 5, 10, 25, 50, 100)
     pers = None
     for lab, p in specs:
@@ -594,7 +619,7 @@ def sec_index(R: Results, root_is_results: bool = True) -> str:
 def main(argv: list[str] | None = None) -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("root", nargs="?", default="results", help="results directory (or a runs/ directory)")
-    ap.add_argument("--out", default=None, help="markdown file to write (default: stdout)")
+    ap.add_argument("--out", default=None, help="Markdown file to write (default: standard output)")
     ap.add_argument("--index-only", action="store_true", help="only the index of all result.json files")
     a = ap.parse_args(argv)
     R = Results(a.root)
@@ -603,10 +628,10 @@ def main(argv: list[str] | None = None) -> None:
     else:
         parts = ["# RHMP v2 results\n",
                  "Generated by `python3 scripts/collect_results.py results --out results/RESULTS.md` from the result "
-                 "files in `results/` (see the header of that script for the conventions).  The narrative and the "
-                 "interpretation are in [REPORT.md](../REPORT.md); speed and memory are in "
+                 "files in `results/`; the conventions are described in the docstring of that script.  The results "
+                 "are discussed in [REPORT.md](../REPORT.md); speed and memory measurements are in "
                  "[bench/RESULTS_step.md](../bench/RESULTS_step.md) and [bench/RESULTS_ops.md](../bench/RESULTS_ops.md).\n",
-                 sec_paper(R), sec_new(R), sec_stage(R), sec_recovery(R), sec_aniso(R), sec_baselines(R),
+                 sec_paper(R), sec_new(R), sec_variants(R), sec_recovery(R), sec_aniso(R), sec_baselines(R),
                  sec_transfer(R), sec_rollout(R), sec_index(R)]
         text = "\n".join(parts)
     if a.out:

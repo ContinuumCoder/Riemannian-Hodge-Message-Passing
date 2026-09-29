@@ -107,7 +107,7 @@
     "task": "T5g",
     "native": true,
     "root": null,
-    "out": "runs/paper/T5g_solver_frozen_tensor_s42",
+    "out": "runs/paper_tasks/T5g_solver_frozen_tensor_s42",
     "device": null,
     "epochs": 5,
     "seed": 42,

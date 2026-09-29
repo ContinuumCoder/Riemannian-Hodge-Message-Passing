@@ -32,7 +32,7 @@ Stored per sample (packed with offsets ptr0/ptr1/ptr2 like gen_HP.py): pos (n0,3
 the outward normal), f, u, heat (n0) f32; per-sample ``family`` / ``genus`` (N,) int64; ``sample_stats`` (mesh
 report, residuals, shape parameters).
 
-Usage (server):
+Usage:
   python3 -u datasets/generators/gen_surf.py [--n 5700] [--n-geo 500] [--n-topo 500] [--workers 32]
   -> datasets/v2/SURF.pt (families a, c, d interleaved; sequential 70/15/15 split in the loader),
      datasets/v2/SURF_geo.pt (b), datasets/v2/SURF_topo.pt (e)   (+ .json summaries)

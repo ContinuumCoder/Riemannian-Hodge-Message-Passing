@@ -186,7 +186,7 @@
     "task": "T6f",
     "native": true,
     "root": null,
-    "out": "runs/new/T6f_s42",
+    "out": "runs/new_tasks/T6f_s42",
     "device": null,
     "epochs": 100,
     "seed": 42,

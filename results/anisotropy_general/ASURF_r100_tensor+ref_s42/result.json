@@ -263,7 +263,7 @@
     "task": "ASURF_r100",
     "native": true,
     "root": null,
-    "out": "runs/aniso/ASURF_r100_tensor+ref_s42",
+    "out": "runs/anisotropy_general/ASURF_r100_tensor+ref_s42",
     "device": null,
     "epochs": 50,
     "seed": 42,

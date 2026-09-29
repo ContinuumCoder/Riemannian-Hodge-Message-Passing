@@ -202,7 +202,7 @@
     "task": "DYNfix",
     "native": true,
     "root": null,
-    "out": "runs/suite/DYNfix_s42",
+    "out": "runs/extension_suite/DYNfix_s42",
     "device": null,
     "epochs": 100,
     "seed": 42,

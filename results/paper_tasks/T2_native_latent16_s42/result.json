@@ -203,7 +203,7 @@
     "task": "T2",
     "native": true,
     "root": null,
-    "out": "runs/paper/T2_native_latent16_s42",
+    "out": "runs/paper_tasks/T2_native_latent16_s42",
     "device": null,
     "epochs": 100,
     "seed": 42,

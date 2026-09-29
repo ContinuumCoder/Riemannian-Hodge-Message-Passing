@@ -205,7 +205,7 @@
     "task": "HP_k1000",
     "native": true,
     "root": null,
-    "out": "runs/stage2b/HP_k1000_noref_s42",
+    "out": "runs/high_contrast/HP_k1000_noref_s42",
     "device": null,
     "epochs": 50,
     "seed": 42,

@@ -111,7 +111,7 @@
     "task": "T6",
     "native": false,
     "root": null,
-    "out": "runs/d_debug/T6_mpsn_v1edge",
+    "out": "runs/baseline_diagnostics/T6_mpsn_v1edge",
     "device": null,
     "epochs": 3,
     "seed": 42,

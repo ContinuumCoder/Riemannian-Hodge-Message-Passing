@@ -112,7 +112,7 @@
     "task": "T6",
     "native": false,
     "root": null,
-    "out": "runs/d_debug/T6_sccnn_node_stable",
+    "out": "runs/baseline_diagnostics/T6_sccnn_node_stable",
     "device": null,
     "epochs": 3,
     "seed": 42,

@@ -1,5 +1,5 @@
 {
-  "run": "runs/stage3/HP_k100_S3e_fem_frozen_tensor_faceref",
+  "run": "runs/material_identification/HP_k100_fem_frozen_tensor_faceref",
   "task": "HP_k100",
   "metric_type": "tensor",
   "log_range": 3.0,

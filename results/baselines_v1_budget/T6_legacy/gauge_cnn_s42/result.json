@@ -119,7 +119,7 @@
     "task": "T6",
     "native": false,
     "root": null,
-    "out": "runs/baselines_v1budget/T6_legacy/gauge_cnn_s42",
+    "out": "runs/baselines_v1_budget/T6_legacy/gauge_cnn_s42",
     "device": null,
     "epochs": 100,
     "seed": 42,

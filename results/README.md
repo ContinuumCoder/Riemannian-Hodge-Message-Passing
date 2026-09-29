@@ -1,0 +1,39 @@
+# Result files
+
+Every run reported in [REPORT.md](../REPORT.md) is stored as `results/<group>/<run>/` (baselines:
+`results/<group>/<task>_<mode>/<model>_s<seed>/`), with the files written by the trainer and the evaluation scripts:
+`result.json` (test metrics and the full configuration, whose `out` argument names the original run directory under
+`runs/`) and, where they apply, `robustness_*.json`, `metric_recovery_*.json`, `rollout_*.json`, `eval_*.json`,
+`transfer_*.json` and `structure_metrics.json`.  All tables are generated from these files by
+`python3 scripts/collect_results.py results --out results/RESULTS.md`, and the figures of `docs/figures/` by
+`scripts/make_figures.py` and `scripts/make_field_figures.py`.
+
+| path | contents | REPORT.md |
+|---|---|---|
+| `paper_tasks/` | paper tasks T1-T8 with the v1 protocol: v2 native and legacy inputs, variants (latent columns, resolvent layers, T5g with a gradient readout and in solver mode, T8v), and the re-evaluated v1 checkpoints (`result_v1.json`) | 1.3, 6.1, 6.5, 6.6 |
+| `new_tasks/` | new tasks with the v2 defaults (100 epochs): T1q, T6f, T7f, HP_k10 / HP_k100 / HP_k1000, HP_k100_aniso, HPflux / HPfluxd, TET_k100, TETflux_k100 | 1.2, 1.3, 6.2, 6.5, 6.6 |
+| `extension_suite/` | extension suite (100 epochs): SURF, SURF_heat, DYN, DYNfix, DYN_cons, DYNfix_cons, with their rollouts | 1.2, 6.2, 6.5, 6.7 |
+| `metric_variants/` | diagonal vs tensor (cone) metric and polynomial vs resolvent layers on HP_k100, HP_k100_aniso100, T6f and TET_k100 (50 epochs), with robustness, metric-recovery and mesh-quality evaluations | 1.2, 1.4, 6.3, 6.5, 6.6 |
+| `metric_variants_full_spd/` | the HP_k100 and HP_k100_aniso100 tensor-metric runs of `metric_variants/` with the full-SPD tensor parameterisation | 6.3 |
+| `metric_variants_tet1500/` | TET_k100 variants on the first 1500 samples, within the host-memory limit of the tensor metric | 8 |
+| `high_contrast/` | HP_k1000, HP_k10000 and HP_k100_aniso100 with and without the metric reference (`--metric-ref 1:0`) | 6.2, 6.3 |
+| `material_identification/` | HP_k100: solver mode with learned and frozen metrics, material-only routing, the operator-identification loss (`--aux-pde`) and frozen DEC controls; the metric-recovery tables `METRIC_RECOVERY*.md` | 1.2, 1.3, 1.4, 6.3, 6.5 |
+| `anisotropy/` | AHP_r10 and AHP_r100 in solver mode, diagonal vs full-SPD tensor metric, with metric recovery and the statistics of figure 4 | 1.1, 1.4, 6.4 |
+| `anisotropy_surfaces/` | ASURF_r100 (fibre diffusion on closed surfaces) in solver mode, diagonal vs tensor metric | 1.1, 6.4 |
+| `anisotropy_3d/` | ADARCYp_r100 (3-D Darcy pressure on tetrahedra, 1500 samples) in solver mode, diagonal vs tensor metric | 1.1, 6.4 |
+| `anisotropy_general/` | AHP_r100, ASURF_r100 and ACURLb_r10 with the general stack and the metric reference, the frozen DEC control and MeshGraphNet | 1.1, 6.2, 6.4 |
+| `anisotropy_oracle/` | oracle representability of the metric families (`datasets/generators/gen_aniso.py --analyse 12`) | 1.1, 6.4 |
+| `mesh_transfer/` | T6f zero-shot transfer to new meshes and resolutions (`scripts/t6_mesh_transfer.py`) | 1.2, 6.6 |
+| `mesh_quality/` | mesh-quality shift (sliver and graded meshes) of an HP_k100 model trained for 2 epochs (`scripts/eval_on.py`) | 6.6 |
+| `conservative_rollouts_flux/`, `conservative_rollouts_u/` | short 8-epoch runs of the exactly conservative DYNfix_cons map (flux-density and `div` readouts), with 100-step rollouts | [TASK_SUITE_DETAILS](../docs/TASK_SUITE_DETAILS.md) |
+| `baselines/` | baselines through the common trainer with the v2 parameter budget: T6, T3, HP_k100, SURF, T8 (100 epochs) | 1.2, 6.5 |
+| `baselines_v1_budget/` | the same with the v1 parameter budget (about 0.43M) on T6 and HP_k100 | 1.2, 6.5 |
+| `baseline_diagnostics/` | T6 diagnostic runs of GAT, MPSN, SCCNN and Clifford-SMPN (edge protocol, width, normalisation; mostly 3 epochs) | [BASELINES](../docs/BASELINES.md) |
+| `benchmarks/` | raw numbers of the training-step, batching, operator and baseline benchmarks ([bench/RESULTS_step.md](../bench/RESULTS_step.md), [bench/RESULTS_ops.md](../bench/RESULTS_ops.md), [BASELINES](../docs/BASELINES.md)) | 3 |
+| `field_figures/` | per-panel numbers of the qualitative field figures (`scripts/make_field_figures.py`) | 6.8 |
+| `v1_eval_T6/` | the v1 T6 checkpoint evaluated with `python -m rhmp.train --eval-v1` (the same evaluation as `paper_tasks/T6_v1_s42/result_v1.json`) | 6.1 |
+| `vector_readout_oracle.json` | T3 and T5 oracle of the vector readouts (least squares, direct, Whitney): round trip through edge cochains, and the ceilings with free or gradient edge values | 6.1 |
+| `checkpoints/` | the model zoo: fifteen trained models (`best.pt`, `config.json`, `result.json`; [README](checkpoints/README.md)) | 7 |
+| `v1_paper/` | the metrics of the v1 paper (`all_metrics.json`, seed 42) | 6.1, 6.5 |
+| `RESULTS.md` | every table ([RESULTS.md](RESULTS.md)), generated by `python3 scripts/collect_results.py results --out results/RESULTS.md` | 6 |
+| `param_match.json`, `param_match_baselines.json` | cached results of the parameter-matching rule (`rhmp.baselines.param_match`; matched widths and parameter counts) for the benchmark and other runs, and for the baseline runs | 6.5 |

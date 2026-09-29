@@ -50,15 +50,16 @@ class RHMPConfig:
         tie_metrics: one metric per degree (up uses ``H_m``, down uses ``1/H_m``) vs. separate up/down heads.
         scaling: ``'dec' | 'jacobi' | 'none'`` operator scaling.
         cross: cross-degree transport terms.
-        gate: ``'norm'`` (radial gate) or ``'relu'`` (ablation).
+        gate: ``'norm'`` (radial gate), ``'relu'`` (ablation) or ``'none'`` (no nonlinearity; used by
+            :meth:`solver_preset`).
         identity_metric: every metric ``H = 1`` (ablation of the learned metric, DESIGN §3.2): no learned correction
             and no reference star inside ``H``.  With ``scaling='dec'`` the blocks still carry the DEC stars of their
             own degree through the symmetric scaling ``S`` (``S_up = star_k``, ``S_down = 1/star_k``), so the geometric
             (physics) prior survives at that level; the fully combinatorial variant builds the complex with
             ``star='unit'`` (all reference stars 1) or uses ``scaling='none'``.  The default model is the pure DEC
             operator (``H = star``) at initialisation.
-        readout: ``'node_scalar' | 'node_vector' | 'cochain:k' | 'even:k' | 'grad' | 'curl' | 'div' | 'div:k'``
-            (see ``rhmp.readout``; ``grad``/``curl``/``div`` satisfy ``d d = 0`` constraints exactly).
+        readout: ``'node_scalar' | 'node_vector' | 'cochain:k' | 'even:k' | 'grad' | 'curl' | 'div' | 'div:k' |
+            'mdiv' | 'mdiv:k'`` (see ``rhmp.readout``; ``grad``/``curl``/``div`` satisfy ``d d = 0`` exactly).
         out_dim: output channels (number of vector fields for ``node_vector``).
         vector_mode: ``'ls' | 'direct'`` (``node_vector`` only).
         checkpoint_layers: activation checkpointing per layer (training memory).
@@ -82,12 +83,13 @@ class RHMPConfig:
             hidden field, e.g. a velocity 1-form the data do not provide), initialised ``N(0, 0.1^2)`` and inserted
             before the even columns of ``inputs[k]`` (layout ``[connection | odd | latent | even]``): odd cochains for
             ``k >= 1`` (they enter the odd path and the lifting gates, never the metric heads), vertex columns for
-            ``k = 0``.  These are the only mesh-sized parameters, so they tie the model to ONE mesh (shared-mesh tasks;
-            a different ``n_k`` or a block-diagonal batch raises).  They are created by ``model.init_latents(K)`` (call it
-            before building the optimizer) or lazily, with a warning, by the first forward; checkpoints store them.
+            ``k = 0``.  These are the only mesh-sized parameters, so they tie the model to *one* mesh (shared-mesh
+            tasks; a different ``n_k`` or a block-diagonal batch raises).  They are created by ``model.init_latents(K)``
+            (call it before building the optimizer) or lazily, with a warning, by the first forward; checkpoints store
+            them.
             All symmetry statements hold conditional on the latent field.
         material_dims: ``{k: m}``: the last ``m`` even columns of ``inputs[k]`` are *material* columns (e.g.
-            ``log sigma``): they feed ONLY the metric heads (``psi`` of the degree-k metric, the tensor-metric
+            ``log sigma``): they feed *only* the metric heads (``psi`` of the degree-k metric, the tensor-metric
             descriptors) and ``metric_reference``, never the lifting, a gate or any feature path, so the only route
             from the material to the output is the metric ``H``.
         lifting: ``'mlp'`` (default) or ``'linear'`` (``x_0 = W f_0``, ``x_k = Lin(d x_{k-1}) + Lin(f_k)``: no geometry,
@@ -98,7 +100,7 @@ class RHMPConfig:
             count grows like the square root of the mesh condition number; warm starts reuse the previous solve layer)
             and boundary condition (``'dirichlet'``: ``K.meta['dirichlet'][k]`` or ``K.boundary[k]`` fixed; ``'none'``:
             no fixed cells; ``'neumann'``: no fixed cells and vertex solves return the zero-mean (lumped mass)
-            solution of the pure Neumann problem, as e.g. the T5 generator).
+            solution of the pure Neumann problem, as in the T5 generator).
             A solve layer computes ``y_k = (Delta_H + lam / L^2)^{-1} x_k`` with the un-normalised metric Hodge
             Laplacian ``Delta_H`` (FEM stiffness / lumped mass for k = 0) and ``lam = softplus(log_lam)`` (init 1e-3,
             ``L^D`` = domain measure).  See :meth:`solver_preset`.
@@ -112,8 +114,8 @@ class RHMPConfig:
         tensor_param: tensor-metric parameterisation: ``'full'`` (default) ``sigma_f = b_f expm(sum_j s_j t_j t_j^T)``
             with signed bounded ``s`` (every SPD tensor with bounded condition number, incl. anisotropy misaligned with
             the edges) or ``'cone'`` (``b_f I + sum_j a_j t_j t_j^T``, ``a >= 0``: M-matrix stiffness only, the same
-            class as the diagonal metric on triangles).  Configs saved before this option (no ``tensor_param`` key,
-            ``metric_type='tensor'``) load as ``'cone'``.
+            class as the diagonal metric on triangles).  Configurations saved without a ``tensor_param`` key (with
+            ``metric_type='tensor'``) load as ``'cone'``, the parameterisation they were trained with.
         resolvent_grad: ``'implicit'`` (adjoint CG solve, memory independent of the iterations; default) or
             ``'unrolled'`` (autograd through the checkpointed iterations; memory grows with ``resolvent_iters``).
         metric_type: ``'diag'`` (diagonal metrics, default) or ``'tensor'`` (Whitney/Galerkin material-tensor metric
@@ -231,7 +233,7 @@ class RHMPConfig:
         ``C=4``, ``readout_head='linear'`` (``grad``: ``E = d_0 Lin_nobias(x_0)``); everything can be overridden through
         ``kw`` (``in_dims`` is required).
 
-        For data generated by ``-div(sigma grad u) = f`` with P1 finite elements (lumped-mass right-hand side,
+        For P1 finite-element data of ``-div(sigma grad u) = f`` (lumped-mass right-hand side,
         homogeneous Dirichlet boundary) this class contains the exact discrete solution operator: with
         ``metric_type='tensor'`` (``H_1`` = Whitney/Galerkin star, ``b_f = sigma_f``: e.g. ``sigma`` as a material
         column on the top degree with ``metric_reference`` and ``learn_metric=False``, or learned), and on triangle
@@ -265,7 +267,7 @@ class RHMPConfig:
             raise ValueError(f"unknown RHMPConfig keys: {sorted(unknown)}")
         d = dict(d)
         if d.get("metric_type") == "tensor" and "tensor_param" not in d:
-            d["tensor_param"] = "cone"                                       # configs saved before 'full' existed
+            d["tensor_param"] = "cone"                                       # saved without tensor_param: cone
         return cls(**d)
 
 
@@ -520,7 +522,7 @@ class RHMP(nn.Module):
 
         Returns:
             One dict per layer (see ``RHMPLayer.metric_fields``): ``{'log_ratio': {m: (n_m, B)}, 'phi': {m: (n_m, B)},
-            'tensor': {km: (b (n_top, B), a (n_top, B, m))}}``.
+            'tensor': {km: (b (n_top, B), a (n_top, B, m))}, 'sigma': {km: (n_top, B, D, D)}}``.
         """
         inputs, ctx = self._prepare(inputs, K)
         with self._autocast(K):
@@ -549,7 +551,7 @@ class RHMP(nn.Module):
             f: source ``(n_k, B)`` or ``(n_k, B, 1)`` (physical units).
             k: degree of the equation.
             layer: index of the layer whose metric is used (default: the last layer).
-            bc: ``'dirichlet' | 'none'`` (default ``cfg.solve_bc``).
+            bc: ``'dirichlet' | 'none' | 'neumann'`` (default ``cfg.solve_bc``; only ``'dirichlet'`` excludes rows).
 
         Returns:
             ``(1, B)`` (single complex) or ``(num_graphs, B)``; differentiable w.r.t. the model parameters.
@@ -602,10 +604,10 @@ class RHMP(nn.Module):
 
         Linear readouts: ``cochain:k`` (``h_k W^T``), ``grad`` with ``readout_head='linear'`` (``d_0 (h_0 W^T)``),
         ``curl`` (``d_1 (h_1 W^T)``), ``div[:k]`` (``d_{k-1}^T (h_k W^T)``), ``mdiv[:k]`` (``S^{-1} d_{k-1}^T (h_k W^T)``);
-        the output is ``F W^T`` with the features
-        ``F = Op(h)``.  With a (linear) task ``output_map`` the fit is made in the target space through the composed
-        map ``output_map o Op`` (one output column).  The solver class (``solver_preset``) is exact up to the overall
-        gain of lifting x readout; this initialises that gain from data (the trainer does it for ``--solver-mode``).
+        the output is ``F W^T`` with the features ``F = Op(h)``.  With a (linear) task ``output_map`` the fit is made
+        in the target space through the composed map ``output_map o Op`` (one output column).  The solver class
+        (``solver_preset``) is exact up to the overall gain of lifting x readout; this initialises that gain from data
+        (the trainer does it for ``--solver-mode``).
 
         Args:
             inputs, K: one batch (as for :meth:`forward`); target: model output units ``(n_out, B, out_dim)`` or, with

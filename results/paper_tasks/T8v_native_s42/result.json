@@ -209,7 +209,7 @@
     "task": "T8v",
     "native": true,
     "root": null,
-    "out": "runs/paper/T8v_native_s42",
+    "out": "runs/paper_tasks/T8v_native_s42",
     "device": null,
     "epochs": 100,
     "seed": 42,

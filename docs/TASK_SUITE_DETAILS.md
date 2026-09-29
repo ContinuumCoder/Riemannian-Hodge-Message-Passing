@@ -1,6 +1,6 @@
 # Task suite, extension (SURF, DYN, QUAL): generators, discretisations, sizes, protocols
 
-Scope: the priority-2 tasks of `docs/TASK_SUITE.md`. Generators are in `datasets/generators/`: `gen_surf.py`, `gen_dyn.py`,
+Scope: the extension tasks of `docs/TASK_SUITE.md`. Generators are in `datasets/generators/`: `gen_surf.py`, `gen_dyn.py`,
 `gen_qual.py`, plus the meshing helpers in `surfaces.py`. They use numpy/scipy only and are seeded. Loaders, rollout
 evaluation and structure metrics are in `rhmp/tasks/suite.py` (`SUITE_TASKS`). Tests are in `tests/test_suite_tasks.py`,
 and `scripts/eval_on.py` evaluates a trained run on another task or rolls it out. File format and loader
@@ -9,7 +9,7 @@ concatenations with offsets `ptr0/ptr1/ptr2`, with float32 fields and int32 cell
 split, statistics from the training part, the `node_scalar` readout, and keep complexes on the GPU only if they fit
 `GPU_BUDGET_GB`.
 
-Regenerate everything (≈1 min wall with 24 workers; or `SUITE=1 SKIP_CORE=1 bash scripts/gen_datasets.sh`):
+Regenerate everything (≈1 min of wall time with 24 workers; alternatively `SUITE=1 SKIP_CORE=1 bash scripts/gen_datasets.sh`):
 
 ```
 python3 -u datasets/generators/gen_surf.py --workers 24   # SURF.pt, SURF_geo.pt, SURF_topo.pt   (40 s)
@@ -17,7 +17,7 @@ python3 -u datasets/generators/gen_dyn.py  --workers 24   # DYN.pt, DYNfix.pt   
 python3 -u datasets/generators/gen_qual.py --workers 24   # HP_qual_graded.pt, HP_qual_sliver.pt  (6 s)
 ```
 
-## Inventory (generated 2026-09-27)
+## Inventory
 
 | file | samples | nodes per mesh (min–max, mean) | size | gen time¹ | used by |
 |---|---|---|---|---|---|
@@ -31,13 +31,14 @@ python3 -u datasets/generators/gen_qual.py --workers 24   # HP_qual_graded.pt, H
 
 ¹ Sample generation with 24 worker processes, excluding packing/saving. Every file has a `.json` summary next to it.
 
-Loading (GPU 1 at 100 % load from other jobs):
-* `SURF`: 46 s. Complexes are built in a 4-thread pool, 36 s. Stage 2 added the Whitney blocks, so a complex is
-  ~4.7 MB and the 5700 SURF complexes take ~27 GB. That is above the 24 GB budget, so they stay on the CPU and the
-  trainer moves each block-diagonal batch. `--data-on device` (or `RHMP_GPU_BUDGET_GB=40`) keeps them on the GPU.
+Loading times, measured on a GPU shared with other jobs (100 % load):
+* `SURF`: 46 s, of which building the complexes in a 4-thread pool takes 36 s. With the Whitney blocks of the tensor
+  metric a complex is ~4.7 MB, and the 5700 SURF complexes take ~27 GB. That is above the 24 GB budget, so they stay on
+  the CPU and the trainer moves each block-diagonal batch to the GPU. `--data-on device` (or `RHMP_GPU_BUDGET_GB=40`)
+  keeps them on the GPU.
 * `DYN`: 8 s. `DYNfix`: 0.7 s. `HP_qual_*`: 11 s.
-* Host-to-device copies use pinned memory with one synchronisation. Synchronous pageable copies took ~5 ms per small
-  tensor on the busy GPU (236 ms per `K.to('cuda')`), which had made the loads take 150–290 s.
+* Host-to-device copies use pinned memory with one synchronisation. Synchronous pageable copies take ~5 ms per small
+  tensor on that GPU (236 ms per `K.to('cuda')`) and make the loads take 150–290 s.
 
 ## Registry (`rhmp.tasks.suite.SUITE_TASKS`)
 
@@ -51,7 +52,7 @@ Loading (GPU 1 at 100 % load from other jobs):
 | `DYNfix`, `DYNfix_delta` | as DYN, one shared mesh | as DYN | 8750/1875/1875 (350/75/75 × 25) + rollout (75 × 100) | 128, 4, 64 windows |
 | `DYNfix_cons` | as DYNfix | du = u_{t+1} − u_t (scale-only), predicted through a fixed exactly-conservative map (default: flux density, readout `cochain:1`) | as DYNfix | 128, 4, 64 |
 | `DYN_cons` | as DYN | as DYNfix_cons, with the model readout `mdiv:1` (division by the lumped mass inside the model) | as DYN | 128, 4, 16 |
-| `DYN_cons_mass`, `DYNfix_cons_mass` | as DYN | first convention, M⊙du with readout `div:1`; ill-conditioned, kept to evaluate old runs | as DYN / DYNfix | as DYN / DYNfix |
+| `DYN_cons_mass`, `DYNfix_cons_mass` | as DYN | first convention, M⊙du with readout `div:1`; ill-conditioned, retained to evaluate the runs trained with it | as DYN / DYNfix | as DYN / DYNfix |
 | `HP_qual_graded`, `HP_qual_sliver` | as HP_k100 (0: f; 1: log sigma; 2: log sigma) | u, the P1 solution on the shifted mesh | test only: (0, 0, N); one extra test per quality level | – |
 | `HP_qual_graded_ref`, `HP_qual_sliver_ref` | as above | u_ref, the 4x-finer reference interpolated to the nodes | as above | – |
 
@@ -104,7 +105,7 @@ resolution* is deliberate. The v2 model is exactly invariant to the length unit:
 geometry descriptors are log(x/median), and operators are Gershgorin-normalised. A PDE with an absolute length scale
 (ε, T below) is therefore learnable only if (PDE length)/(mesh spacing) is the same in every sample. Here
 √ε/h ≈ 3.2 edge lengths. Each surface also gets a random rotation and a translation U[−0.5, 0.5]³. Coordinates never
-enter v2; coordinate-based baselines must learn the invariance.
+enter the v2 model; coordinate-based baselines must learn the invariance.
 
 Mesh quality (min angle / max angle / 99th-percentile aspect R/(2r) / share of negative cotan weights):
 
@@ -117,12 +118,12 @@ Mesh quality (min angle / max angle / 99th-percentile aspect R/(2r) / share of n
 | double torus (topo) | 19.8° | 126.3° | 1.36 | 15.4 %² | 64 |
 
 ² Tiny negative weights on the diagonals of the nearly rectangular torus cells, where the opposite angles are ≈ 90°.
-rhmp's cotan star clamps them at 1e-2 · median; the generator uses the unclamped operator.
+The cotan star of rhmp clamps them at 1e-2 · median; the generator uses the unclamped operator.
 
 ### Physics and discretisation (float64)
 Positions are rounded to float32 *before* the solve, so the stored mesh reproduces the operators exactly.
 * L = d0ᵀ diag(w) d0 with w_e = (cot α + cot β)/2, unclamped. This is the P1-FEM Laplace–Beltrami stiffness:
-  PSD, with L1 = 0 and 1ᵀL = 0. M = diag(barycentric dual areas), the lumped mass, identical to rhmp's `star0`
+  PSD, with L1 = 0 and 1ᵀL = 0. M = diag(barycentric dual areas), the lumped mass, identical to `star0` in rhmp
   (checked in the tests, as is w = rhmp `star1` wherever unclamped).
 * Source f is an embedding-space Gaussian random field (64 random Fourier features, length scale U[0.25, 0.6], unit
   variance) plus 1–4 Gaussian bumps (centres at random vertices, widths U[0.1, 0.3], amplitudes ±U[1, 2.5]),
@@ -132,7 +133,7 @@ Positions are rounded to float32 *before* the solve, so the stored mesh reproduc
 * **SURF_heat**: u_T = exp(TΔ_LB) f (heat flow ∂_t u = Δ_LB u for time T; Δ_LB ≤ 0), from 10 implicit Euler steps (M + dt L) v^{k+1} = M v^k with
   dt = T/10 and T = 0.05 (= ε, so both operators agree to first order in the spectrum). std(u_T) = 0.73.
 * Measured: relative residuals ≤ 9.1e-15 (u) and ≤ 1.5e-15 (heat, max over steps). Heat mass drift ≤ 1e-15. Every
-  surface was valid on the first attempt.
+  surface passes the validity checks at the first attempt.
 
 ### Protocol
 Train/val/test are families (a)+(c)+(d), interleaved (sample i → family i mod 3) with a sequential 70/15/15 split,
@@ -145,7 +146,7 @@ as `geo_*` / `topo_*` next to `test_*` and the per-family in-distribution subset
   `topo`: this is the topology transfer, at the same lobe geometry, resolution and meshing style.
 * **Integral constraint** (`suite.surf_integral_error`): both targets conserve Σ M u = Σ M f exactly, because 1ᵀL = 0
   in every solve. Report mean and max of |Σ M u_pred − Σ M f| / Σ M |f|. The stored targets give ~1e-7 (float32).
-* Symmetries: E(n) (random rotation/reflection of `pos`; exact for v2, informative for coordinate baselines), vertex
+* Symmetries: E(n) (random rotation/reflection of `pos`; exact for the v2 model, informative for coordinate baselines), vertex
   relabelling, and face-orientation convention (flip a random subset of faces).
 * Physics residual of a prediction: ‖(M + εL) u_pred − M f‖ / ‖M f‖, computable from `surfaces.cotan_operators`.
 
@@ -197,15 +198,15 @@ as `geo_*` / `topo_*` next to `test_*` and the per-family in-distribution subset
 * **Exactly conservative variants.** The conserved quantity is Σ M u (M = lumped mass). Any update that conserves
   it exactly for arbitrary network weights has the form du = M⁻¹ · (a zero-sum vector). The zero-sum vector comes
   from d₀ᵀ: the `div:1` readout, or d₀ᵀ inside a fixed output map.
-  * **First convention (`DYN_cons_mass`, `DYNfix_cons_mass`): wrong for rollouts.** The loss was a node-uniform MSE
-    on the mass change y = M du (readout `div:1`), and rollouts used u ← u + y/M.
+  * **First convention (`DYN_cons_mass`, `DYNfix_cons_mass`): unsuitable for rollouts.** The loss is a node-uniform MSE
+    on the mass change y = M du (readout `div:1`), and rollouts use u ← u + y/M.
     * The lumped mass varies about 900:1 on the DYN meshes (Delaunay of uniform random points; M_min/M_median =
       0.008). Errors in y come out roughly uniform in absolute size, so they become ~1/M_i errors in du.
-    * The trained `DYN_cons_s42` run (`results/cab75/suite/DYN_cons_s42`; 100 epochs, one-step R² 0.954 on y) has one-step errors of up to 6.8 in
-      du at the smallest cells, against a typical |du| of 0.01. Its rollouts explode: R2@5 = −7e24, NaN from step 7.
+    * The trained `DYN_cons_s42` run (`results/extension_suite/DYN_cons_s42`; 100 epochs, one-step R² 0.954 on y) has one-step errors of up to 6.8 in
+      du at the smallest cells, against a typical |du| of 0.01. Its rollouts diverge: R2@5 = −7e24, NaN from step 7.
       The largest errors sit exactly at the M/median = 0.008–0.03 nodes and grow about 700× per step.
-    * Conservation itself held exactly: predicted y summed to 4e-10 per mesh.
-    * The 2-epoch smoke model looked stable only because it predicted y ≈ 0.
+    * Conservation itself holds exactly: the predicted y sums to 4e-10 per mesh.
+    * A 2-epoch model appears stable only because it predicts y ≈ 0.
   * **Corrected convention (`DYNfix_cons`).** The loss is on du itself (u-space, scale-only normalisation), and the
     conservative structure lives in a fixed output map between network and loss:
     * default `cons_param='flux'`: du = (M̄/M) d₀ᵀ(ℓ*/ℓ̄* ⊙ b), with b an odd edge cochain (readout `cochain:1`).
@@ -220,11 +221,12 @@ as `geo_*` / `topo_*` next to `test_*` and the per-family in-distribution subset
   * **Post-hoc conservation for any model.** `rollout_eval(..., project_mass=True)`, or `eval_on.py --project-mass`,
     shifts each trajectory by a constant after every step so that Σ M u is restored.
 
-Rollouts after the fix (full test sets, 100 steps; R² at horizons 1 / 5 / 10 / 25 / 50 / 100):
+Rollouts of the state model and of both conservative conventions (full test sets, 100 steps; R² at horizons
+1 / 5 / 10 / 25 / 50 / 100):
 
 | run | rollout R² | mass drift (mean) @10 / @25 / @100 |
 |---|---|---|
-| DYN_s42 (state; unchanged by the fix) | 0.999 / 0.966 / 0.889 / 0.219 / −3.76 / −20.35 | 0.12 / 0.98 / 5.13 |
+| DYN_s42 (state target, no conservation constraint) | 0.999 / 0.966 / 0.889 / 0.219 / −3.76 / −20.35 | 0.12 / 0.98 / 5.13 |
 | DYN_s42 + `--project-mass` | 0.999 / 0.966 / 0.896 / **0.655 / 0.252 / −0.33** | 0 / 0 / 0 |
 | persistence (DYN test set) | 0.989 / 0.791 / 0.398 / −0.62 / −1.54 / −2.51 | – |
 | DYN_cons_s42 (first convention) | 0.990 / −7e24 / NaN / NaN / NaN / NaN | NaN (float overflow) |
@@ -236,27 +238,27 @@ Restoring the mass is what keeps the state model's long rollouts meaningful: its
 
 The corrected conservative convention is stable and beats persistence at every horizon, but it learns slowly. After 8
 epochs the one-step val R² on du is 0.076 (flux) or 0.060 (div), whereas DYNfix_delta reaches 0.44 after 2 epochs. A
-likely reason: the advective flux Φ_e ū_e is bilinear in the odd edge input and the signed node state, and the odd
+likely reason is that the advective flux Φ_e ū_e is bilinear in the odd edge input and the signed node state, and the odd
 lifting (odd linear map times an even gate built from norms) can only form that product indirectly.
 
 ### Structure metrics to report
-R² and NRMSE vs horizon (1–100) and the step at which R² < 0 or the rollout diverges; mass drift of the predictions vs
-horizon (the reference dynamics keep it below 3e-14); max-principle violation of the predicted states; the same
-curves on DYNfix (fixed mesh, the long-rollout stability study).
+Report R² and NRMSE against the horizon (1–100) and the step at which R² < 0 or the rollout diverges; the mass drift of
+the predictions against the horizon (the reference dynamics keep it below 3e-14); the max-principle violation of the
+predicted states; and the same curves on DYNfix (fixed mesh, the long-rollout stability study).
 
 ---
 
 ## QUAL: mesh-quality shift for HP models (test only)
 
 ### Generator (`gen_qual.py`)
-* **Physical instances.** The first 100 *test* samples of `HP_k100` (ids 4250–4349 of N = 5000). They use the same
+* **Physical instances.** The instances are the first 100 *test* samples of `HP_k100` (ids 4250–4349 of N = 5000). They use the same
   seed (2026), the same conductivity/source fields (`gen_HP.draw_fields`, κ = 100) and the same node counts. Every
   instance is re-meshed at every level, so curves compare identical physical problems.
 * **Solver.** `solve_on_mesh` is identical to `gen_HP.solve_sample` (isotropic): P1 FEM for −div(σ∇u) = f with u = 0
   on ∂Ω, centroid σ, lumped right-hand side. It is bitwise equal on the HP mesh (unit test), and the stored `base`
   level equals the stored HP_k100 samples exactly (max|Δu| = 0).
 * **Stored keys.** All HP keys (pos, faces, f, u, bnd, sigma_edge, logsigma_face, flux, flux_fem), so the HP loader
-  code (`synthetic._build_set`) is reused unchanged. Added: `u_ref`, the P1 solution on the 4x-finer HP reference mesh
+  code (`synthetic._build_set`) is reused unchanged. Additional keys: `u_ref`, the P1 solution on the 4x-finer HP reference mesh
   (the `HP_k100_fine` mesh) linearly interpolated to the nodes; `level` codes; per-sample quality statistics.
 
 ### Levels (means over 100 instances; aspect = circumradius / (2 · inradius))
@@ -272,7 +274,7 @@ The HP training meshes are Delaunay triangulations of uniform random points. The
 with angles of ~0.04° and aspect ratios up to ~900. The per-mesh **maximum** aspect is dominated by such outliers
 (base: 877; a8: 1.2e4), so the p99 aspect and the share of triangles with aspect > 10 describe the levels better.
 With stretches a ≥ 16 the P1 solution itself becomes meaningless: the error vs the reference is 47 % at a = 16 and
-99 % at a = 300, because the maximum-angle condition is violated. So the sliver levels stop at a = 8, where the
+99 % at a = 300, because the maximum-angle condition is violated. The sliver levels therefore stop at a = 8, where the
 per-mesh maximum aspect is ~1.4e3 (median over instances).
 
 ### Protocol and metrics
@@ -286,7 +288,7 @@ per-mesh maximum aspect is ~1.4e3 (median over instances).
 * **Use the mass-weighted relative L2 error** `relL2M` = ‖u_pred − u‖_M / ‖u‖_M (M = lumped mass = `K.star[0]`;
   `suite.mass_weighted_errors`, reported by `eval_on.py` for node-scalar tasks) to compare levels. Node-pooled
   R² / NRMSE weight every node equally, so on graded meshes they depend on where the nodes are. Example: a 2-epoch
-  HP_k100 smoke model on `HP_qual_graded` gives, for base → corner_r64, pooled R²
+  HP_k100 model on `HP_qual_graded` gives, for base → corner_r64, pooled R²
   0.705 → 0.381, NRMSE 0.035 → 0.030 (it *improves*: the nodes cluster at the Dirichlet corner where u ≈ 0), and
   relL2M 0.534 → 0.739 (the actual degradation).
 * The same model on the other sets, per level (pooled R²):
@@ -294,25 +296,29 @@ per-mesh maximum aspect is ~1.4e3 (median over instances).
   * `HP_qual_sliver_ref`: a8 0.541.
   * `HP_qual_graded` circle levels: 0.72–0.73 (relL2M 0.54 → 0.61).
 
-  Results are in `results/cab75/e_qual_eval/eval_*.json`. Evaluation takes about 1 min per set on a shared GPU.
+  Results are in `results/mesh_quality/eval_*.json`. Evaluation takes about 1 min per set on a GPU shared with other jobs.
 
 ---
 
 ## Tests (`tests/test_suite_tasks.py`, 35 tests, ~5 s, CPU plus a CUDA-only transfer test)
-Mesh validity and genus for every family, `d²=0`, no dropped faces, Euler characteristic. Operators vs the complex
-(star0 = lumped mass, star1 = cotan weights where unclamped, L = d0ᵀdiag(w)d0). Solver residuals < 1e-8, constants
-preserved, heat mass conservation, stored float32 mesh reproducing the solve. DYN: fluxes exactly divergence-free,
-advection conservative and skew, upwind PSD, mass residual < 1e-12, constants steady. QUAL solver bitwise equal to
-`gen_HP.solve_sample`; QUAL levels valid (CCW, cover the square, no degenerate faces). End to end: tiny data sets are
-generated into a temporary directory and every loader is checked (split sizes, shapes, degrees, extra sets, test-only
-views, legacy mode). `rollout_eval` is checked with an oracle model (R² = 1 at every horizon, drift at round-off) and
-with a small RHMP. With the `div:1` readout (`DYN_cons`, `DYNfix_cons`), a randomly initialised RHMP conserves Σ M u in rollouts to < 1e-5 while the state changes. `surf_integral_error` and `mass_weighted_errors` are checked. One trainer epoch on tiny SURF and DYN through `rhmp.train.run(args, task=...)`.
-The pinned-memory complex transfer is checked to equal `K.to('cuda')` field by field.
+The tests check mesh validity and genus for every family, `d²=0`, that no faces are dropped, and the Euler
+characteristic; the operators against the complex (star0 = lumped mass, star1 = cotan weights where unclamped,
+L = d0ᵀdiag(w)d0); solver residuals < 1e-8, preserved constants, heat mass conservation, and that the stored float32
+mesh reproduces the solve. For DYN they check that the fluxes are exactly divergence-free, that advection is
+conservative and skew and the upwind term PSD, a mass residual < 1e-12 and steady constants. The QUAL solver is
+bitwise equal to `gen_HP.solve_sample`, and the QUAL levels are valid (CCW, covering the square, no degenerate faces).
+End to end, tiny data sets are generated into a temporary directory and every loader is checked (split sizes, shapes,
+degrees, extra sets, test-only views, legacy mode). `rollout_eval` is checked with an oracle model (R² = 1 at every
+horizon, drift at round-off) and with a small RHMP. With the `div:1` readout (`DYN_cons`, `DYNfix_cons`), a randomly
+initialised RHMP conserves Σ M u in rollouts to < 1e-5 while the state changes. `surf_integral_error` and
+`mass_weighted_errors` are checked, and one trainer epoch runs on tiny SURF and DYN data through
+`rhmp.train.run(args, task=...)`. The pinned-memory complex transfer is checked to equal `K.to('cuda')` field by
+field.
 
 ---
 
-## Smoke runs (v2 defaults C=128, L=4, 2 epochs, seed 42; one GPU shared with ~10 other processes)
-Pipeline validation during development; times are inflated by GPU sharing.  The 100-epoch results are in
+## Short runs (v2 defaults C=128, L=4, 2 epochs, seed 42; on a GPU shared with ~10 other processes)
+These runs validate the pipeline; their times are inflated because the GPU is shared.  The 100-epoch results are in
 [../REPORT.md](../REPORT.md) §6.2 and §6.7.
 
 | task | val R² ep1 / ep2 | test R² | extra tests (R²) | s/epoch | peak GB |
@@ -335,12 +341,12 @@ persistence baseline u(t) = u_0 in brackets; drift = mean |Σ M u_pred(t) − Σ
 | DYNfix_delta | 0.995 / 0.898 / 0.699 / 0.210 / −0.096 / −0.422 (as DYNfix) | 0.12 / 0.61 | 1.9 |
 | DYNfix_cons_mass (first convention, 2 epochs, y ≈ 0) | 0.988 / 0.787 / 0.369 / −0.85 / −1.74 / −2.17 (as DYNfix) | 0 / 0 | **4.0e-8** (data: 9.0e-9) |
 
-Reading (2 epochs, i.e. pipeline validation, not final accuracy):
+How to read these results (2 epochs, i.e. pipeline validation, not final accuracy):
 * Geometry and topology transfer on SURF are essentially lossless for the local operator: topo 0.943 vs 0.943 on
   in-distribution tori.
 * On the state target, one-step R² is uninformative (persistence already scores 0.989). The increment target
   (`_delta`) is the better training signal and beats persistence at every horizon.
-* The first conservative convention (then called DYNfix_cons, now `DYNfix_cons_mass`) kept the mass exactly, as
-  the readout (d₀ᵀ) guarantees. It diverges once trained (see "Exactly conservative variants" above).
-* Timing: SURF 269 s/epoch, DYN 334 s/epoch, DYNfix 44 s/epoch on the shared GPU. The ~0.7 s per SURF batch of
-  20K nodes is ~10× slower than with an exclusive GPU.
+* The first conservative convention (`DYNfix_cons_mass`) keeps the mass exactly, as the readout (d₀ᵀ) guarantees,
+  but it diverges once trained (see "Exactly conservative variants" above).
+* Timing: SURF 269 s/epoch, DYN 334 s/epoch, DYNfix 44 s/epoch on the GPU shared with other processes. The ~0.7 s per
+  SURF batch of 20K nodes is ~10× slower than with an exclusive GPU.

@@ -9,8 +9,9 @@
   ``(n_k_i, F_k)`` tensors and ``target`` a list of ``(n_t_i, out_dim)`` tensors.  :func:`mesh_minibatch` builds a
   block-diagonal batch (``CochainComplex.batch``; ``B = 1``, cells concatenated, ``K.batch[k]`` sample ids).
 
-Normalisation follows v1 (the v1 training script ``formal_benchmark.py``): per-feature mean/std over (samples, cells) of the
-training part, ``std.clamp(1e-6)``; torch's unbiased std for the shared-mesh pickles, numpy's biased std for T8.
+Normalisation follows v1 (the v1 training script ``formal_benchmark.py``): per-feature mean/std over (samples,
+cells) of the training part, ``std.clamp(1e-6)``; torch's unbiased std for the shared-mesh pickles, numpy's biased
+std for T8.
 Orientation-odd quantities (cochain inputs/targets on degree >= 1) and vector targets are only *scaled*
 (mean 0, RMS scale) so that the normalisation commutes with orientation flips / rotations; see ``Stats``.
 """
@@ -67,7 +68,7 @@ def pack_to(obj, device):
     ``obj`` may be a tensor, a (nested) list/tuple/dict, or a dataclass such as a ``CochainComplex`` (sparse CSR
     tensors included); the structure is rebuilt with views into a few contiguous device buffers.  Moving e.g. 5000
     variable-mesh complexes (~200K small tensors) this way takes seconds even on a GPU that is time-sliced with other
-    processes, where per-tensor synchronous copies took tens of minutes.
+    processes, where per-tensor synchronous copies take tens of minutes.
 
     Returns:
         an object of the same structure on ``device`` (non-tensor leaves are shared).
@@ -140,7 +141,7 @@ def pack_to(obj, device):
 
 
 def add_abs_scale(task: "TaskData") -> "TaskData":
-    """Append a constant EVEN vertex column ``log(median edge length)`` (absolute length units) to ``inputs[0]``.
+    """Append a constant *even* vertex column ``log(median edge length)`` (absolute length units) to ``inputs[0]``.
 
     The v2 model is scale-free by design (descriptors ``log(x / median x)``, stars normalised per graph), so a task
     whose physics has a fixed length scale (e.g. meshes of different sizes with a fixed diffusion length) must get the
@@ -406,11 +407,11 @@ class OutputMap:
     defined relative to the physical orientation of the domain.  The task supplies that orientation here:
 
     * ``kind='sparse'``: ``y_t = M y_m`` (e.g. the oriented face -> node average
-      ``y_i = mean_{f ni i} sigma_f x_f`` with ``sigma_f = +1`` for counter-clockwise faces, applied to a
+      ``y_i = mean_{f ∋ i} sigma_f x_f`` with ``sigma_f = +1`` for counter-clockwise faces, applied to a
       ``cochain:2`` readout);
     * ``kind='cross_normal'``: ``v_i = n_i x g_i`` (rotation by +90 deg in the tangent plane of an oriented surface,
       applied to a ``node_vector`` readout);
-    * ``kind='direct_vector'``: edge scalars -> vertex vectors ``v_i = sum_{e ni i} w_e t_e / deg_i`` (``t_e`` unit
+    * ``kind='direct_vector'``: edge scalars -> vertex vectors ``v_i = sum_{e ∋ i} w_e t_e / deg_i`` (``t_e`` unit
       src->dst vector; the v1 edge-to-node average), ``M`` of shape ``(D n0, n1)`` (row ``D i + c``), applied to a
       ``grad`` readout (``w = d0 phi``) for T5g.
 

@@ -1,8 +1,8 @@
 """Evaluation metrics in torch (vectorised, any device), numerically matching the v1 numpy/torch code.
 
 Reference implementations: the v1 evaluation script ``compute_all_metrics.py``, functions ``compute_r2_mse_mae``,
-``compute_nrmse``, ``compute_ssim_pearson`` (vendored in ``rhmp.baselines.v1.metrics_v1``).  ``tests/test_metrics.py`` checks
-agreement to 1e-6 on random data.
+``compute_nrmse``, ``compute_ssim_pearson`` (vendored in ``rhmp.baselines.v1.metrics_v1``).
+``tests/test_metrics.py`` checks agreement to 1e-6 on random data.
 
 Conventions (identical to v1):
 
@@ -219,8 +219,8 @@ def summarize(pred: TensorOrList, target: TensorOrList, y_stats, *, r2_std: Tens
         r2_std: optional per-feature std ``(d,)`` defining the v1 normalisation. When the training normalisation
             differs from v1's (e.g. isotropic scaling of vector targets), ``R2_v1`` recomputes R2 in the v1
             normalised space (only the std matters: the mean cancels in R2).
-        n_samples: restrict every metric (including the SSIM data range) to the first ``n_samples`` samples, as
-            ``compute_all_metrics.evaluate_task`` did for the paper tables (100 test samples).
+        n_samples: restrict every metric (including the SSIM data range) to the first ``n_samples`` samples, as the
+            v1 function ``compute_all_metrics.evaluate_task`` does for the paper tables (100 test samples).
         prefix: prepended to every key.
         center: centred (v1) or uncentred (orientation-odd targets) R2, see :func:`r2_score`.
     Returns:

@@ -1,4 +1,4 @@
-"""Robustness transforms and the E4 robustness table (exact symmetries, gauge noise, input noise, batch composition).
+"""Robustness transforms and the robustness table (exact symmetries, gauge noise, input noise, batch composition).
 
 Library API (used by ``scripts/eval_robustness.py`` and ``tests/test_train.py``)::
 
@@ -194,7 +194,8 @@ def transformed_task(task: TaskData, idx: torch.Tensor, *, perm_seed=None, flip_
 
 
 def gauge_task(task: TaskData, idx: torch.Tensor, s: float, seed: int = 0) -> TaskData:
-    """theta -> theta + d0 lambda on the connection columns (raw units), lambda ~ N(0, s^2) per node and sample."""
+    """Test-split view with gauge noise ``theta -> theta + d0 lambda`` on the connection columns (raw units),
+    ``lambda ~ N(0, s^2)`` per node and sample."""
     c = task.connection_dims.get(1, 0)
     if c == 0:
         raise ValueError("task has no connection inputs")
@@ -214,7 +215,7 @@ def gauge_task(task: TaskData, idx: torch.Tensor, s: float, seed: int = 0) -> Ta
 
 
 def noise_task(task: TaskData, idx: torch.Tensor, s: float, seed: int = 0) -> TaskData:
-    """Gaussian noise of std ``s`` on all normalised inputs."""
+    """Test-split view with Gaussian noise of standard deviation ``s`` on all normalised inputs."""
     g = torch.Generator().manual_seed(seed)
     if not task.variable_mesh:
         sel = idx.to(task.target.device)
@@ -248,7 +249,7 @@ def robustness_table(model, task: TaskData, te: torch.Tensor, *, eval_batch: int
                      flip_orient: bool = False, rotate: bool = False, reflect: bool = False,
                      gauge_noise=(), noise=(), batch_sizes=(), extra: bool = True, seed: int = 0,
                      log=print) -> list[dict]:
-    """Rows of the E4 table for ``model`` on the test samples ``te`` of ``task``.
+    """Rows of the robustness table for ``model`` on the test samples ``te`` of ``task``.
 
     Args:
         model: trained ``RHMP`` in eval mode (``record_diagnostics = False`` recommended).
@@ -262,7 +263,7 @@ def robustness_table(model, task: TaskData, te: torch.Tensor, *, eval_batch: int
         batch_sizes: evaluation batch sizes (batch independence, with ``max_dpred`` vs the reference).
         extra: also evaluate the task's extra test sets (``fine``, quality splits...).
     Returns:
-        list of dicts ``{condition, R2, MSE, NRMSE, SSIM, Pearson, N, [max_dpred], dR2}``.
+        list of dicts ``{condition, R2, MSE, NRMSE, SSIM, Pearson, N, [max_dpred], [seconds], dR2}``.
     """
     from rhmp.train import evaluate, predict
     keys = ("R2", "MSE", "NRMSE", "SSIM", "Pearson", "N")

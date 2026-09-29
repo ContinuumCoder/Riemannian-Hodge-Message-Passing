@@ -172,7 +172,7 @@
     "task": "HP_k100",
     "native": true,
     "root": null,
-    "out": "runs/stage2/HP_k100_diag-poly_s42",
+    "out": "runs/metric_variants/HP_k100_diag-poly_s42",
     "device": null,
     "epochs": 50,
     "seed": 42,
